@@ -546,11 +546,116 @@
       }
     }
 
+    .lead-developer-section {
+      display: flex;
+      justify-content: center;
+      margin-top: 4rem;
+      margin-bottom: 4rem;
+    }
+
+    .lead-developer-card {
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
+      backdrop-filter: blur(25px);
+      border: 2px solid rgba(0, 245, 255, 0.4);
+      border-radius: 32px;
+      padding: 4rem 3rem;
+      text-align: center;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 0 40px rgba(0, 245, 255, 0.3);
+    }
+
+    .lead-developer-card::before {
+      content: '';
+      position: absolute;
+      top: -3px;
+      left: -3px;
+      right: -3px;
+      bottom: -3px;
+      background: linear-gradient(135deg, #00f5ff, #7b68ee, #ff1493, #ffd700, #00f5ff);
+      background-size: 300% 300%;
+      border-radius: 35px;
+      z-index: -1;
+      opacity: 0.8;
+      animation: leadGlow 4s ease-in-out infinite alternate, gradientShift 6s linear infinite;
+    }
+
+    @keyframes leadGlow {
+      0% { opacity: 0.6; }
+      100% { opacity: 0.9; }
+    }
+
+    .lead-developer-card:hover {
+      transform: translateY(-20px) scale(1.03);
+      box-shadow: 0 40px 80px rgba(0, 245, 255, 0.4), 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .lead-developer-card .support-avatar {
+      font-size: 5rem;
+      margin-bottom: 2.5rem;
+      filter: drop-shadow(0 6px 20px rgba(0, 245, 255, 0.6));
+    }
+
+    .lead-developer-card .support-name {
+      font-size: 2.5rem;
+      margin-bottom: 0.8rem;
+      background: linear-gradient(135deg, #00f5ff, #ffffff, #7b68ee);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 900;
+      text-shadow: 0 0 30px rgba(0, 245, 255, 0.5);
+    }
+
+    .lead-developer-card .support-role {
+      color: #00f5ff;
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      font-weight: 700;
+    }
+
+    .lead-developer-card .support-description {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      margin-bottom: 2rem;
+    }
+
+    .lead-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #00f5ff, #7b68ee);
+      color: #ffffff;
+      padding: 0.8rem 1.5rem;
+      border-radius: 25px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      box-shadow: 0 8px 25px rgba(0, 245, 255, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .beta-testers-section {
+      margin-top: 2rem;
+    }
+
+    .beta-testers-title {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 3rem;
+      background: linear-gradient(135deg, #ff1493, #ffd700);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 700;
+    }
+
     .support-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
       gap: 2.5rem;
-      margin-top: 4rem;
     }
 
     .support-card {
@@ -730,6 +835,24 @@
     }
 
     @media (max-width: 768px) {
+      .lead-developer-section {
+        justify-content: center;
+        margin-bottom: 3rem;
+      }
+      
+      .lead-developer-card {
+        padding: 3rem 2.5rem;
+        max-width: 100%;
+      }
+      
+      .lead-developer-card .support-avatar {
+        font-size: 4rem;
+      }
+      
+      .lead-developer-card .support-name {
+        font-size: 2rem;
+      }
+      
       .support-grid {
         grid-template-columns: 1fr;
         gap: 2rem;
@@ -930,8 +1053,8 @@
       <h2 class="section-title">🛸 Support Team</h2>
       <p class="section-subtitle">Meet the dedicated team behind OLIT's stellar performance</p>
       
-      <div class="support-grid">
-        <div class="support-card">
+      <div class="lead-developer-section">
+        <div class="lead-developer-card">
           <div class="support-avatar">👨‍💻</div>
           <h3 class="support-name">Vinayak</h3>
           <p class="support-role">Lead Developer & Creator</p>
@@ -939,37 +1062,43 @@
             The visionary creator and lead developer behind OLIT. Architect of all advanced systems, 
             space exploration mechanics, and gaming features. Always pushing the boundaries of what's possible in Discord bots.
           </p>
+          <div class="lead-badge">🌟 Project Founder</div>
         </div>
-        
-        <div class="support-card">
-          <div class="support-avatar">🌍🌙</div>
-          <h3 class="support-name">EarthandMoon</h3>
-          <p class="support-role">Beta Tester & Quality Assurance</p>
-          <p class="support-description">
-            Dedicated beta tester who ensures all features work flawlessly before release. 
-            Expert at finding bugs and providing valuable feedback to improve the user experience.
-          </p>
-        </div>
+      </div>
 
-        <div class="support-card">
-          <div class="support-avatar">🎮</div>
-          <h3 class="support-name">Liam</h3>
-          <p class="support-role">Beta Tester & Game Balance</p>
-          <p class="support-description">
-            Passionate beta tester specializing in game mechanics and balance testing. 
-            Helps fine-tune difficulty curves and ensures all games provide the perfect challenge for players.
-          </p>
-        </div>
-        
-        <div class="support-card special-card">
-          <div class="support-avatar">🚀</div>
-          <h3 class="support-name">Booster16</h3>
-          <p class="support-role">Elite Game Master & Beta Tester</p>
-          <p class="support-description">
-            The legendary explorer who inspired the Booster Catch Challenge. Known for achieving 
-            perfect catches and discovering rare phenomena across the galaxy.
-          </p>
-          <div class="special-badge">⭐ VIP Explorer</div>
+      <div class="beta-testers-section">
+        <h3 class="beta-testers-title">🧪 Beta Testing Team</h3>
+        <div class="support-grid">
+          <div class="support-card">
+            <div class="support-avatar">🌍🌙</div>
+            <h3 class="support-name">EarthandMoon</h3>
+            <p class="support-role">Beta Tester & Quality Assurance</p>
+            <p class="support-description">
+              Dedicated beta tester who ensures all features work flawlessly before release. 
+              Expert at finding bugs and providing valuable feedback to improve the user experience.
+            </p>
+          </div>
+
+          <div class="support-card">
+            <div class="support-avatar">🎮</div>
+            <h3 class="support-name">Liam</h3>
+            <p class="support-role">Beta Tester & Game Balance</p>
+            <p class="support-description">
+              Passionate beta tester specializing in game mechanics and balance testing. 
+              Helps fine-tune difficulty curves and ensures all games provide the perfect challenge for players.
+            </p>
+          </div>
+          
+          <div class="support-card special-card">
+            <div class="support-avatar">🚀</div>
+            <h3 class="support-name">Booster16</h3>
+            <p class="support-role">Elite Game Master & Beta Tester</p>
+            <p class="support-description">
+              The legendary explorer who inspired the Booster Catch Challenge. Known for achieving 
+              perfect catches and discovering rare phenomena across the galaxy.
+            </p>
+            <div class="special-badge">⭐ VIP Explorer</div>
+          </div>
         </div>
       </div>
       
