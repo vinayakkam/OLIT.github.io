@@ -638,6 +638,52 @@
       margin-right: auto;
     }
 
+    .company-logo {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .logo-container {
+      flex-shrink: 0;
+    }
+
+    .logo-container svg {
+      filter: drop-shadow(0 0 10px rgba(0, 245, 255, 0.5));
+      animation: logoGlow 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes logoGlow {
+      0% { filter: drop-shadow(0 0 10px rgba(0, 245, 255, 0.5)); }
+      100% { filter: drop-shadow(0 0 20px rgba(0, 245, 255, 0.8)); }
+    }
+
+    .company-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .company-name {
+      font-size: 2rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #00f5ff, #7b68ee);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 0;
+      line-height: 1;
+    }
+
+    .company-subtitle {
+      font-size: 0.9rem;
+      color: #9ca3af;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin: 0.2rem 0 0 0;
+    }
+
     @media (max-width: 768px) {
       .support-grid {
         grid-template-columns: 1fr;
@@ -654,6 +700,20 @@
       }
       
       .support-cta h3 {
+        font-size: 1.5rem;
+      }
+      
+      .company-logo {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .logo-container svg {
+        width: 50px;
+        height: 50px;
+      }
+      
+      .company-name {
         font-size: 1.5rem;
       }
     }
@@ -872,7 +932,49 @@
     <div class="container">
       <div class="footer-content">
         <div class="footer-section">
-          <h3>🚀 OLIT</h3>
+          <div class="company-logo">
+            <div class="logo-container">
+              <svg width="60" height="60" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="100" cy="100" r="95" fill="none" stroke="#00f5ff" stroke-width="6"/>
+                <!-- Rocket -->
+                <path d="M70 160 L70 90 Q70 70 85 70 L95 70 Q110 70 110 90 L110 160" fill="#00f5ff" stroke="#7b68ee" stroke-width="2"/>
+                <!-- Fins -->
+                <path d="M70 130 L55 140 L70 150" fill="#7b68ee"/>
+                <path d="M110 130 L125 140 L110 150" fill="#7b68ee"/>
+                <!-- Nose cone -->
+                <path d="M85 70 L90 50 L95 70" fill="#ffd700"/>
+                
+                <!-- Launch Tower -->
+                <rect x="130" y="60" width="8" height="100" fill="#00f5ff"/>
+                <!-- Tower structure -->
+                <path d="M130 70 L150 70" stroke="#00f5ff" stroke-width="2"/>
+                <path d="M130 85 L150 85" stroke="#00f5ff" stroke-width="2"/>
+                <path d="M130 100 L150 100" stroke="#00f5ff" stroke-width="2"/>
+                <path d="M130 115 L150 115" stroke="#00f5ff" stroke-width="2"/>
+                <path d="M130 130 L150 130" stroke="#00f5ff" stroke-width="2"/>
+                <path d="M130 145 L150 145" stroke="#00f5ff" stroke-width="2"/>
+                
+                <!-- Cross bracing -->
+                <path d="M138 70 L142 85" stroke="#00f5ff" stroke-width="1.5"/>
+                <path d="M142 70 L138 85" stroke="#00f5ff" stroke-width="1.5"/>
+                <path d="M138 85 L142 100" stroke="#00f5ff" stroke-width="1.5"/>
+                <path d="M142 85 L138 100" stroke="#00f5ff" stroke-width="1.5"/>
+                <path d="M138 100 L142 115" stroke="#00f5ff" stroke-width="1.5"/>
+                <path d="M142 100 L138 115" stroke="#00f5ff" stroke-width="1.5"/>
+                <path d="M138 115 L142 130" stroke="#00f5ff" stroke-width="1.5"/>
+                <path d="M142 115 L138 130" stroke="#00f5ff" stroke-width="1.5"/>
+                <path d="M138 130 L142 145" stroke="#00f5ff" stroke-width="1.5"/>
+                <path d="M142 130 L138 145" stroke="#00f5ff" stroke-width="1.5"/>
+                
+                <!-- Base -->
+                <rect x="60" y="155" width="90" height="10" fill="#2c2f33"/>
+              </svg>
+            </div>
+            <div class="company-info">
+              <h3 class="company-name">OLIT</h3>
+              <p class="company-subtitle">TECHNOLOGIES</p>
+            </div>
+          </div>
           <ul>
             <li><a href="#features">Features</a></li>
             <li><a href="#games">Games</a></li>
