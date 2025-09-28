@@ -3,102 +3,616 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Official page of Olit Discord Bot">
-  <title>Olit Discord Bot</title>
+  <meta name="description" content="Launch Tower - The ultimate Discord bot for gaming, exploration, and space-themed adventures">
+  <title>🚀 Launch Tower - Discord Bot</title>
   <style>
-    body {
+    * {
       margin: 0;
-      font-family: "Segoe UI", Tahoma, sans-serif;
-      background: linear-gradient(145deg, #0f172a, #1e293b);
-      color: #f1f5f9;
-      text-align: center;
+      padding: 0;
+      box-sizing: border-box;
     }
+
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0a0015, #1a1a2e, #16213e, #0f3460);
+      background-size: 400% 400%;
+      animation: nebula 20s ease-in-out infinite;
+      color: #e0e6ed;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    @keyframes nebula {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 2s infinite alternate;
+    }
+
+    @keyframes twinkle {
+      0% { opacity: 0.3; }
+      100% { opacity: 1; }
+    }
+
     header {
-      padding: 3rem 1rem;
+      padding: 4rem 2rem 2rem;
+      text-align: center;
+      position: relative;
     }
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 0.5rem;
+
+    .hero-title {
+      font-size: 4.5rem;
+      font-weight: 900;
+      background: linear-gradient(45deg, #00f5ff, #ff00ff, #ffd700);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 30px rgba(0, 245, 255, 0.5);
+      animation: glow 3s ease-in-out infinite alternate;
     }
-    p {
-      font-size: 1.2rem;
-      max-width: 600px;
-      margin: 0 auto;
+
+    @keyframes glow {
+      0% { text-shadow: 0 0 30px rgba(0, 245, 255, 0.5); }
+      100% { text-shadow: 0 0 50px rgba(255, 0, 255, 0.8); }
+    }
+
+    .hero-subtitle {
+      font-size: 1.4rem;
+      color: #b4c6e7;
+      max-width: 800px;
+      margin: 0 auto 2rem;
       opacity: 0.9;
     }
-    .button {
+
+    .cta-buttons {
+      margin-top: 3rem;
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
       display: inline-block;
-      margin: 1rem;
-      padding: 1rem 2rem;
-      background: #5865F2;
-      color: white;
-      text-decoration: none;
+      padding: 1rem 2.5rem;
       font-size: 1.1rem;
-      border-radius: 8px;
-      transition: background 0.3s ease;
+      text-decoration: none;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      position: relative;
+      overflow: hidden;
     }
-    .button:hover {
-      background: #4752C4;
+
+    .btn-primary {
+      background: linear-gradient(135deg, #5865f2, #7983f5);
+      color: white;
+      box-shadow: 0 10px 30px rgba(88, 101, 242, 0.4);
     }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(88, 101, 242, 0.6);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, #23272a, #2c2f33);
+      color: #ffffff;
+      border: 2px solid #7983f5;
+      box-shadow: 0 10px 30px rgba(121, 131, 245, 0.2);
+    }
+
+    .btn-secondary:hover {
+      background: linear-gradient(135deg, #7983f5, #5865f2);
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(121, 131, 245, 0.4);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
     section {
-      padding: 2rem 1rem;
+      padding: 4rem 0;
+      position: relative;
     }
-    .features {
+
+    .section-title {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: #00f5ff;
+      text-shadow: 0 0 20px rgba(0, 245, 255, 0.5);
+    }
+
+    .section-subtitle {
+      text-align: center;
+      font-size: 1.2rem;
+      color: #9ca3af;
+      margin-bottom: 3rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .feature-card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 2.5rem;
+      text-align: center;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(0, 245, 255, 0.1), transparent);
+      transform: rotate(45deg);
+      transition: all 0.5s ease;
+      opacity: 0;
+    }
+
+    .feature-card:hover::before {
+      opacity: 1;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 50px rgba(0, 245, 255, 0.2);
+      border-color: rgba(0, 245, 255, 0.3);
+    }
+
+    .feature-icon {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .feature-title {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: #00f5ff;
+    }
+
+    .feature-description {
+      color: #b4c6e7;
+      line-height: 1.6;
+    }
+
+    .games-showcase {
+      background: linear-gradient(135deg, rgba(16, 18, 27, 0.8), rgba(30, 41, 59, 0.8));
+      border-radius: 20px;
+      padding: 3rem;
+      margin: 3rem 0;
+      border: 1px solid rgba(0, 245, 255, 0.2);
+    }
+
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .game-card {
+      background: linear-gradient(135deg, rgba(0, 245, 255, 0.1), rgba(255, 0, 255, 0.1));
+      border-radius: 15px;
+      padding: 1.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .game-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 30px rgba(0, 245, 255, 0.3);
+    }
+
+    .game-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #ffd700;
+    }
+
+    .game-description {
+      font-size: 0.9rem;
+      color: #b4c6e7;
+    }
+
+    .stats-section {
+      text-align: center;
+      padding: 4rem 0;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 105, 180, 0.1));
+      border-radius: 15px;
+      padding: 2rem 1rem;
+      border: 1px solid rgba(255, 215, 0, 0.2);
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: #ffd700;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      color: #b4c6e7;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 0.9rem;
+    }
+
+    footer {
+      background: linear-gradient(135deg, rgba(10, 10, 35, 0.9), rgba(26, 26, 46, 0.9));
+      padding: 3rem 0 2rem;
+      border-top: 1px solid rgba(0, 245, 255, 0.2);
+      text-align: center;
+    }
+
+    .footer-content {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.5rem;
-      max-width: 900px;
-      margin: 0 auto;
+      gap: 2rem;
+      margin-bottom: 2rem;
     }
-    .card {
-      background: rgba(255, 255, 255, 0.05);
-      padding: 1.5rem;
-      border-radius: 12px;
+
+    .footer-section h3 {
+      color: #00f5ff;
+      margin-bottom: 1rem;
     }
-    .card h3 {
-      margin-top: 0;
-      color: #93c5fd;
+
+    .footer-section ul {
+      list-style: none;
     }
-    footer {
+
+    .footer-section ul li {
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-section ul li a {
+      color: #b4c6e7;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-section ul li a:hover {
+      color: #00f5ff;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 2rem;
+      color: #9ca3af;
+    }
+
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 3rem;
+      }
+      
+      .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .features-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      
+      .feature-card {
+        padding: 2rem;
+      }
+    }
+
+    .rocket-animation {
+      position: absolute;
+      right: -100px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 4rem;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(-50%) translateX(0) rotate(0deg); }
+      50% { transform: translateY(-60%) translateX(20px) rotate(5deg); }
+    }
+
+    .command-showcase {
+      background: linear-gradient(135deg, rgba(16, 18, 27, 0.9), rgba(30, 41, 59, 0.9));
+      border-radius: 15px;
       padding: 2rem;
-      font-size: 0.9rem;
-      opacity: 0.6;
+      margin: 2rem 0;
+      font-family: 'Courier New', monospace;
+      border: 1px solid rgba(0, 245, 255, 0.3);
+    }
+
+    .command-showcase h4 {
+      color: #00f5ff;
+      margin-bottom: 1rem;
+    }
+
+    .command {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      color: #ffd700;
+      margin: 0.5rem 0;
+      border-left: 3px solid #00f5ff;
     }
   </style>
 </head>
 <body>
+  <div class="stars" id="stars"></div>
 
-  <!-- Header -->
   <header>
-    <h1>🚀 OLIT</h1>
-    <p>The all-in-one Discord bot with moderation, fun, and galaxy exploration features.</p>
-    <a class="button" href="https://discord.com/oauth2/authorize?client_id=1414168461172539454&permissions=8&integration_type=0&scope=applications.commands+bot">Invite OLIT</a>
-    <a class="button" href="https://github.com/vinayakkam/my-discord-bot">View on GitHub</a>
+    <div class="container">
+      <h1 class="hero-title">🚀 LAUNCH TOWER</h1>
+      <p class="hero-subtitle">
+        The ultimate Discord bot combining gaming, space exploration, moderation, and interactive entertainment. 
+        Command your crew, explore galaxies, and dominate leaderboards with 15+ unique gaming experiences.
+      </p>
+      <div class="cta-buttons">
+        <a href="https://discord.com/oauth2/authorize?client_id=1414168461172539454&permissions=8&integration_type=0&scope=applications.commands+bot" class="btn btn-primary">🚀 Launch Bot</a>
+        <a href="https://github.com/vinayakkam/my-discord-bot" class="btn btn-secondary">📖 View Source</a>
+      </div>
+    </div>
+    <div class="rocket-animation">🛸</div>
   </header>
 
-  <!-- Features -->
   <section>
-    <h2>✨ Features</h2>
-    <div class="features">
-      <div class="card">
-        <h3>🛠 Moderation</h3>
-        <p>AUTOMOD, timeout, and more with easy-to-use commands.</p>
-      </div>
-      <div class="card">
-        <h3>🎮 Fun Commands</h3>
-        <p>Mini-games, memes, and interactive activities for your server.</p>
-      </div>
-      <div class="card">
-        <h3>🌌 Galaxy Exploration</h3>
-        <p>Discover planets, upgrade your ship, and explore a procedural galaxy.</p>
+    <div class="container">
+      <h2 class="section-title">⚡ Core Systems</h2>
+      <p class="section-subtitle">Advanced features designed for the modern Discord community</p>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <span class="feature-icon">🌌</span>
+          <h3 class="feature-title">Galaxy Explorer</h3>
+          <p class="feature-description">
+            Embark on epic space journeys with procedurally generated star systems. Discover rare phenomena, 
+            upgrade your ship, solve ancient puzzles, and face cosmic bosses in this persistent RPG experience.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <span class="feature-icon">🎮</span>
+          <h3 class="feature-title">Gaming Hub</h3>
+          <p class="feature-description">
+            15+ interactive games including Space Trivia, Booster Catch Challenge, Word Unscramble, 
+            Rock Paper Scissors, and advanced simulations. Earn points, climb leaderboards, unlock achievements.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <span class="feature-icon">🛡️</span>
+          <h3 class="feature-title">Auto-Moderation</h3>
+          <p class="feature-description">
+            Advanced AI-powered moderation with customizable filters, automatic timeouts, and intelligent 
+            content detection. Keep your server safe with minimal configuration required.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <span class="feature-icon">🏆</span>
+          <h3 class="feature-title">Dynamic Leaderboards</h3>
+          <p class="feature-description">
+            Server-specific leaderboards with automatic role assignments. Track gaming achievements, 
+            exploration progress, and community engagement with detailed statistics.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <span class="feature-icon">🚀</span>
+          <h3 class="feature-title">Mission Control</h3>
+          <p class="feature-description">
+            Advanced Starship simulations with real-time physics, atmospheric effects, and strategic gameplay. 
+            Master the Mechzilla catching system and earn up to 300+ points per mission.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <span class="feature-icon">🔧</span>
+          <h3 class="feature-title">Smart Systems</h3>
+          <p class="feature-description">
+            Intelligent welcome messages, reaction systems, ping diagnostics, and server utilities. 
+            Everything you need to manage and enhance your Discord community.
+          </p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
+  <section class="stats-section">
+    <div class="container">
+      <h2 class="section-title">📊 Mission Statistics</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-number">15+</div>
+          <div class="stat-label">Gaming Experiences</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">1000+</div>
+          <div class="stat-label">Star Systems</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">60+</div>
+          <div class="stat-label">Trivia Questions</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">∞</div>
+          <div class="stat-label">Adventures</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="games-showcase">
+        <h2 class="section-title">🎯 Featured Games</h2>
+        <p class="section-subtitle">Experience the most advanced Discord gaming system</p>
+        
+        <div class="games-grid">
+          <div class="game-card">
+            <div class="game-title">🪝 Booster Catch Challenge</div>
+            <p class="game-description">Advanced Mechzilla-style physics simulation with real-time atmospheric effects and precision scoring system.</p>
+          </div>
+          <div class="game-card">
+            <div class="game-title">🌌 Galaxy Explorer</div>
+            <p class="game-description">Persistent RPG with ship upgrades, procedural systems, ancient puzzles, and epic boss battles.</p>
+          </div>
+          <div class="game-card">
+            <div class="game-title">🎓 Space Trivia</div>
+            <p class="game-description">60+ questions across 3 difficulty levels covering space science, astronomy, and exploration.</p>
+          </div>
+          <div class="game-card">
+            <div class="game-title">🔤 Word Unscramble</div>
+            <p class="game-description">Progressive difficulty with space-themed vocabulary and technical terminology challenges.</p>
+          </div>
+          <div class="game-card">
+            <div class="game-title">🚀 Mission Control</div>
+            <p class="game-description">Resource management simulation with fuel, research, and strategic decision-making elements.</p>
+          </div>
+          <div class="game-card">
+            <div class="game-title">🎲 Quick Games</div>
+            <p class="game-description">Rock Paper Scissors, Coin Flip, Number Guess, and Math Quiz for instant entertainment.</p>
+          </div>
+        </div>
+        
+        <div class="command-showcase">
+          <h4>🎮 Sample Commands:</h4>
+          <div class="command">!galaxy - Begin your space exploration journey</div>
+          <div class="command">!catchbooster - Experience advanced physics gameplay</div>
+          <div class="command">!trivia - Test your space knowledge</div>
+          <div class="command">!leaderboard - View server rankings</div>
+          <div class="command">!games - See all available experiences</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <footer>
-    &copy; 2025 OLIT • Made with ❤️ and discord.py
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>🚀 Launch Tower</h3>
+          <ul>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#games">Games</a></li>
+            <li><a href="#stats">Statistics</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>🔗 Links</h3>
+          <ul>
+            <li><a href="https://discord.com/oauth2/authorize?client_id=1414168461172539454&permissions=8&integration_type=0&scope=applications.commands+bot">Add to Server</a></li>
+            <li><a href="https://github.com/vinayakkam/my-discord-bot">GitHub Repository</a></li>
+            <li><a href="#support">Support</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>📊 Commands</h3>
+          <ul>
+            <li><a href="#help">!help</a></li>
+            <li><a href="#games">!games</a></li>
+            <li><a href="#galaxy">!galaxy</a></li>
+            <li><a href="#leaderboard">!leaderboard</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2025 Launch Tower Discord Bot • Built with discord.py and cosmic ambition 🌟</p>
+        <p>Powering Discord communities across the galaxy • Made with ❤️ by space enthusiasts</p>
+      </div>
+    </div>
   </footer>
 
+  <script>
+    // Create animated stars
+    function createStars() {
+      const starsContainer = document.getElementById('stars');
+      const numStars = 100;
+      
+      for (let i = 0; i < numStars; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.animationDelay = Math.random() * 2 + 's';
+        star.style.animationDuration = (Math.random() * 3 + 1) + 's';
+        starsContainer.appendChild(star);
+      }
+    }
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    // Initialize stars when page loads
+    window.addEventListener('load', createStars);
+
+    // Add parallax effect to hero section
+    window.addEventListener('scroll', () => {
+      const scrolled = window.pageYOffset;
+      const header = document.querySelector('header');
+      if (header) {
+        header.style.transform = `translateY(${scrolled * 0.5}px)`;
+      }
+    });
+  </script>
 </body>
 </html>
