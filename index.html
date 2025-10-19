@@ -529,8 +529,28 @@
       border-radius: 24px;
       width: 90%;
       max-width: 600px;
+      max-height: 85vh;
+      overflow-y: auto;
       box-shadow: 0 10px 50px rgba(0, 245, 255, 0.3);
       animation: slideDown 0.3s ease;
+    }
+
+    .modal-content::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    .modal-content::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+    }
+
+    .modal-content::-webkit-scrollbar-thumb {
+      background: linear-gradient(135deg, #00f5ff, #7b68ee);
+      border-radius: 10px;
+    }
+
+    .modal-content::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(135deg, #7b68ee, #ff1493);
     }
 
     @keyframes slideDown {
@@ -1040,7 +1060,7 @@
           <div class="support-grid">
             <div class="support-card">
               <div class="support-avatar">🌍🌙</div>
-              <h3 class="support-name">Earth and Moon</h3>
+              <h3 class="support-name">EarthandMoon</h3>
               <p class="support-role">Beta Tester</p>
               <p class="support-description">
                 Dedicated beta tester who ensures all features work flawlessly before release. 
