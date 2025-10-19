@@ -100,6 +100,19 @@
       box-shadow: 0 6px 20px rgba(88, 101, 242, 0.4);
     }
 
+    .btn-primary:disabled {
+      background: linear-gradient(135deg, #4a5568, #6b7280);
+      cursor: not-allowed;
+      opacity: 0.6;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .btn-primary:disabled:hover {
+      transform: none;
+      box-shadow: none;
+    }
+
     .btn-secondary {
       background: rgba(23, 27, 30, 0.8);
       color: #ffffff;
@@ -1438,6 +1451,8 @@
       document.body.style.overflow = 'auto';
       document.getElementById('successMessage').style.display = 'none';
       document.getElementById('errorMessage').style.display = 'none';
+      // Reset form when closing
+      document.getElementById('bugReportForm').reset();
     }
 
     window.onclick = function(event) {
@@ -1447,9 +1462,24 @@
       }
     }
 
-    // Bug report form submission
+    // Bug report form submission with cooldown
+    let submitCooldown = false;
+    const COOLDOWN_TIME = 60000; // 60 seconds cooldown
+
     document.getElementById('bugReportForm').addEventListener('submit', async function(e) {
       e.preventDefault();
+      
+      // Check if on cooldown
+      if (submitCooldown) {
+        return;
+      }
+      
+      const submitButton = e.target.querySelector('button[type="submit"]');
+      const originalButtonText = submitButton.textContent;
+      
+      // Disable button and start cooldown
+      submitButton.disabled = true;
+      submitCooldown = true;
       
       const formData = {
         username: document.getElementById('username').value,
@@ -1480,6 +1510,20 @@
         // Reset form
         document.getElementById('bugReportForm').reset();
         
+        // Start countdown timer on button
+        let remainingSeconds = COOLDOWN_TIME / 1000;
+        const countdownInterval = setInterval(() => {
+          remainingSeconds--;
+          submitButton.textContent = `Wait ${remainingSeconds}s before submitting again`;
+          
+          if (remainingSeconds <= 0) {
+            clearInterval(countdownInterval);
+            submitButton.disabled = false;
+            submitButton.textContent = originalButtonText;
+            submitCooldown = false;
+          }
+        }, 1000);
+        
         // Close modal after 3 seconds
         setTimeout(() => {
           closeBugModal();
@@ -1489,6 +1533,11 @@
         console.error('Error submitting bug report:', error);
         document.getElementById('errorMessage').style.display = 'block';
         document.getElementById('successMessage').style.display = 'none';
+        
+        // Reset button on error
+        submitButton.disabled = false;
+        submitButton.textContent = originalButtonText;
+        submitCooldown = false;
       }
     });
 
