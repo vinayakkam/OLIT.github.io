@@ -617,7 +617,6 @@
       display: none;
     }
 
-    /* Dashboard Styles */
     .dashboard-content {
       background: linear-gradient(145deg, rgba(16, 18, 27, 0.98), rgba(30, 41, 59, 0.98));
       border-radius: 30px;
@@ -1257,8 +1256,13 @@
             <br>
             <span class="status-indicator status-disconnected" id="connectionStatus"></span>
             <span id="connectionText">Testing connection...</span>
+            <br><br>
+            <strong>📡 API Endpoint:</strong> <span style="color: #ffd700" id="apiEndpoint"></span>
+            <br>
+            <strong>🔑 API Key Status:</strong> <span style="color: #00f5ff" id="apiKeyStatus"></span>
           </div>
-          <button class="btn btn-success" onclick="testConnection()" style="margin-bottom: 2rem">Test Connection</button>
+          <button class="btn btn-success" onclick="testConnection()" style="margin-bottom: 1rem">Test Connection</button>
+          <button class="btn btn-secondary" onclick="testBasicConnection()" style="margin-bottom: 2rem; margin-left: 1rem">Test Without Auth</button>
           <div id="connectionAlert" class="alert-dashboard"></div>
 
           <h2 style="color: #00f5ff; margin-bottom: 1.5rem">📊 Statistics</h2>
@@ -1279,6 +1283,14 @@
               <div class="stat-number-dashboard" id="totalUsers">-</div>
               <div class="stat-label-dashboard">Allowed Users</div>
             </div>
+            <div class="stat-card-dashboard">
+              <div class="stat-number-dashboard" id="totalAutomodEnabled">-</div>
+              <div class="stat-label-dashboard">Automod Enabled</div>
+            </div>
+            <div class="stat-card-dashboard">
+              <div class="stat-number-dashboard" id="totalWelcome">-</div>
+              <div class="stat-label-dashboard">Welcome Channels</div>
+            </div>
           </div>
           <button class="btn btn-primary" onclick="loadStats()" style="margin-bottom: 3rem">Refresh Stats</button>
 
@@ -1291,6 +1303,7 @@
             <div class="dashboard-tab active" onclick="switchDashboardTab('commands')">Commands</div>
             <div class="dashboard-tab" onclick="switchDashboardTab('automod')">Automod</div>
             <div class="dashboard-tab" onclick="switchDashboardTab('users')">Users</div>
+            <div class="dashboard-tab" onclick="switchDashboardTab('welcome')">Welcome</div>
             <div class="dashboard-tab" onclick="switchDashboardTab('logs')">Logs</div>
           </div>
 
@@ -1317,9 +1330,18 @@
           </div>
 
           <div id="automodPanel" class="dashboard-panel">
-            <h3 style="color: #00f5ff; margin-bottom: 1.5rem">Manage Automod Words</h3>
+            <h3 style="color: #00f5ff; margin-bottom: 1.5rem">Manage Automod</h3>
             <div id="automodAlert" class="alert-dashboard"></div>
             
+            <div class="info-box-dashboard" style="margin-bottom: 2rem">
+              <strong>Automod Status:</strong> 
+              <span id="automodStatusText" style="color: #ff1493">Disabled</span>
+              <br><br>
+              <button class="btn btn-success" onclick="toggleAutomod(true)" id="enableAutomodBtn">Enable Automod</button>
+              <button class="btn btn-danger" onclick="toggleAutomod(false)" id="disableAutomodBtn" style="display: none">Disable Automod</button>
+            </div>
+
+            <h4 style="color: #7b68ee; margin-bottom: 1rem">Banned Words</h4>
             <div class="form-group-dashboard">
               <label>Banned Word</label>
               <input type="text" id="automodWord" placeholder="Enter word to ban">
@@ -1342,6 +1364,27 @@
             <button class="btn btn-success" onclick="loadGuildConfig()">Load Guild Users</button>
 
             <div id="usersList" style="margin-top: 2rem"></div>
+          </div>
+
+          <div id="welcomePanel" class="dashboard-panel">
+            <h3 style="color: #00f5ff; margin-bottom: 1.5rem">Welcome Channel Configuration</h3>
+            <div id="welcomeAlert" class="alert-dashboard"></div>
+            
+            <div class="info-box-dashboard">
+              <strong>ℹ️ Info:</strong> Set the channel where the bot will send welcome messages for new members.
+            </div>
+
+            <div class="form-group-dashboard">
+              <label>Welcome Channel ID</label>
+              <input type="text" id="welcomeChannelId" placeholder="Enter Discord Channel ID (e.g., 123456789)">
+              <small style="color: #9ca3af; margin-top: 0.5rem; display: block">
+                Right-click a channel in Discord → Copy ID (Developer Mode must be enabled)
+              </small>
+            </div>
+            <button class="btn btn-primary" onclick="setWelcomeChannel()">Set Welcome Channel</button>
+            <button class="btn btn-success" onclick="loadGuildConfig()">Load Current Config</button>
+
+            <div id="welcomeCurrentChannel" style="margin-top: 2rem"></div>
           </div>
 
           <div id="logsPanel" class="dashboard-panel">
@@ -1540,6 +1583,11 @@
       document.getElementById('termsPage').classList.add('page-hidden');
       document.getElementById('privacyPage').classList.add('page-hidden');
       window.scrollTo({ top: 0, behavior: 'smooth' });
+      
+      // Display API configuration info
+      document.getElementById('apiEndpoint').textContent = API_CONFIG.baseUrl;
+      document.getElementById('apiKeyStatus').textContent = API_CONFIG.apiKey ? 'Configured ✓' : 'Missing ✗';
+      
       testConnection();
     }
 
@@ -1583,21 +1631,72 @@
 
     async function testConnection() {
       try {
+        showAlert('connectionAlert', 'success', 'Testing connection...');
+        console.log('Testing connection to:', API_CONFIG.baseUrl);
+        console.log('Using API Key:', API_CONFIG.apiKey.substring(0, 10) + '...');
+        
         const response = await fetch(`${API_CONFIG.baseUrl}/health`, {
-          headers: { 'X-API-Key': API_CONFIG.apiKey }
+          method: 'GET',
+          headers: { 
+            'X-API-Key': API_CONFIG.apiKey,
+            'Accept': 'application/json'
+          }
         });
+        
+        console.log('Response status:', response.status);
+        console.log('Response headers:', response.headers);
+        
         if (response.ok) {
           const data = await response.json();
+          console.log('Response data:', data);
           showAlert('connectionAlert', 'success', `✅ Connected! Status: ${data.status}`);
           updateConnectionStatus(true);
           loadStats();
         } else {
-          showAlert('connectionAlert', 'error', `Connection failed: ${response.status}`);
+          const errorText = await response.text();
+          console.error('Error response:', errorText);
+          showAlert('connectionAlert', 'error', `❌ Connection failed: HTTP ${response.status} - ${errorText}`);
           updateConnectionStatus(false);
         }
       } catch (error) {
-        showAlert('connectionAlert', 'error', `Connection error: ${error.message}`);
+        console.error('Connection test error:', error);
+        console.error('Error type:', error.name);
+        console.error('Error message:', error.message);
+        
+        let detailedError = '';
+        if (error.message.includes('Failed to fetch')) {
+          detailedError = 'Network error - API might be down or CORS not configured. Check browser console for details.';
+        } else {
+          detailedError = error.message;
+        }
+        
+        showAlert('connectionAlert', 'error', `❌ Cannot reach API: ${detailedError}`);
         updateConnectionStatus(false);
+      }
+    }
+
+    async function testBasicConnection() {
+      try {
+        showAlert('connectionAlert', 'success', 'Testing basic connection (no auth)...');
+        console.log('Testing basic connection to:', API_CONFIG.baseUrl + '/');
+        
+        const response = await fetch(`${API_CONFIG.baseUrl}/`, {
+          method: 'GET',
+          mode: 'cors'
+        });
+        
+        console.log('Basic response status:', response.status);
+        
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Basic response data:', data);
+          showAlert('connectionAlert', 'success', `✅ Basic connection works! API is reachable. Now try "Test Connection" with auth.`);
+        } else {
+          showAlert('connectionAlert', 'error', `⚠️ API responded but with status: ${response.status}`);
+        }
+      } catch (error) {
+        console.error('Basic connection test error:', error);
+        showAlert('connectionAlert', 'error', `❌ CRITICAL: Cannot reach API at all. Server might be down. Error: ${error.message}`);
       }
     }
 
@@ -1613,6 +1712,8 @@
           document.getElementById('totalCommands').textContent = stats.total_custom_commands;
           document.getElementById('totalAutomod').textContent = stats.total_automod_words;
           document.getElementById('totalUsers').textContent = stats.total_allowed_users;
+          document.getElementById('totalAutomodEnabled').textContent = stats.automod_enabled_guilds;
+          document.getElementById('totalWelcome').textContent = stats.welcome_channels_configured;
         }
       } catch (error) {
         console.error('Error loading stats:', error);
@@ -1705,6 +1806,9 @@
           document.getElementById('automodWord').value = '';
           loadGuildConfig();
           loadStats();
+          if (data.automod_enabled !== undefined) {
+            updateAutomodStatus(data.automod_enabled);
+          }
         } else {
           showAlert('automodAlert', 'error', data.error);
         }
@@ -1744,7 +1848,7 @@
       const userId = document.getElementById('userId').value.trim();
 
       if (!guildId || !userId) {
-        showAlert('usersAlert', 'error', 'Please fill in Guild ID and User ID');
+        showAlert('usersAlert', 'error', 'Please fill in both Guild ID and User ID');
         return;
       }
 
@@ -1814,6 +1918,8 @@
           displayCommands(data.config.commands);
           displayAutomod(data.config.automod_words);
           displayUsers(data.config.allowed_users);
+          updateAutomodStatus(data.config.automod_enabled);
+          displayWelcomeChannel(data.config.welcome_channel);
         }
       } catch (error) {
         console.error('Error loading guild config:', error);
@@ -1874,6 +1980,112 @@
           </div>
         </div>
       `).join('');
+    }
+
+    function updateAutomodStatus(enabled) {
+      const statusText = document.getElementById('automodStatusText');
+      const enableBtn = document.getElementById('enableAutomodBtn');
+      const disableBtn = document.getElementById('disableAutomodBtn');
+      
+      if (enabled) {
+        statusText.textContent = 'Enabled';
+        statusText.style.color = '#00f5ff';
+        enableBtn.style.display = 'none';
+        disableBtn.style.display = 'inline-flex';
+      } else {
+        statusText.textContent = 'Disabled';
+        statusText.style.color = '#ff1493';
+        enableBtn.style.display = 'inline-flex';
+        disableBtn.style.display = 'none';
+      }
+    }
+
+    async function toggleAutomod(enable) {
+      const guildId = document.getElementById('guildId').value.trim();
+      if (!guildId) {
+        showAlert('automodAlert', 'error', 'Please enter a Guild ID first');
+        return;
+      }
+
+      try {
+        showAlert('automodAlert', 'success', `Sending request to ${enable ? 'enable' : 'disable'} automod...`);
+        
+        const res = await fetch(`${API_CONFIG.baseUrl}/api/automod_enable`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-API-Key': API_CONFIG.apiKey
+          },
+          body: JSON.stringify({ guild_id: guildId, enabled: enable })
+        });
+        
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        
+        const data = await res.json();
+        if (data.success) {
+          showAlert('automodAlert', 'success', `✅ ${data.message}`);
+          updateAutomodStatus(enable);
+          loadStats();
+        } else {
+          showAlert('automodAlert', 'error', `❌ ${data.error || 'Unknown error'}`);
+        }
+      } catch (error) {
+        console.error('Toggle automod error:', error);
+        showAlert('automodAlert', 'error', `❌ Connection Error: ${error.message}. Check: 1) API URL is correct, 2) API is running, 3) CORS is enabled, 4) API Key is valid`);
+      }
+    }
+
+    function displayWelcomeChannel(channelId) {
+      const display = document.getElementById('welcomeCurrentChannel');
+      const input = document.getElementById('welcomeChannelId');
+      
+      if (channelId) {
+        input.value = channelId;
+        display.innerHTML = `
+          <div class="list-item-dashboard">
+            <div class="list-item-content">
+              <strong style="color: #00f5ff">Current Welcome Channel</strong>
+              <p style="margin: 5px 0; color: #b4c6e7">Channel ID: ${channelId}</p>
+            </div>
+          </div>
+        `;
+      } else {
+        input.value = '';
+        display.innerHTML = '<p style="color: #9ca3af; text-align: center; padding: 2rem">No welcome channel configured</p>';
+      }
+    }
+
+    async function setWelcomeChannel() {
+      const guildId = document.getElementById('guildId').value.trim();
+      const channelId = document.getElementById('welcomeChannelId').value.trim();
+
+      if (!guildId || !channelId) {
+        showAlert('welcomeAlert', 'error', 'Please fill in both Guild ID and Channel ID');
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_CONFIG.baseUrl}/api/welcome_channel`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-API-Key': API_CONFIG.apiKey
+          },
+          body: JSON.stringify({ guild_id: guildId, channel_id: channelId })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showAlert('welcomeAlert', 'success', data.message);
+          displayWelcomeChannel(channelId);
+          loadStats();
+        } else {
+          showAlert('welcomeAlert', 'error', data.error);
+        }
+      } catch (error) {
+        showAlert('welcomeAlert', 'error', `Error: ${error.message}`);
+      }
     }
 
     async function loadLogs() {
