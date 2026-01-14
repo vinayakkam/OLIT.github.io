@@ -1228,7 +1228,7 @@
         </div>
         
         <div class="footer-bottom">
-          <p>© 2025 OLIT Technologies. All Rights Reserved.</p>
+          <p>© <span class="auto-year"></span> OLIT Technologies. All Rights Reserved.</p>
           <p>Built with discord.py and cosmic ambition</p>
         </div>
       </div>
@@ -1399,7 +1399,7 @@
     <footer>
       <div class="container">
         <div class="footer-bottom">
-          <p>© 2025 OLIT Technologies. All Rights Reserved.</p>
+          <p>© <span class="auto-year"></span> OLIT Technologies. All Rights Reserved.</p>
         </div>
       </div>
     </footer>
@@ -1440,7 +1440,7 @@
     <footer>
       <div class="container">
         <div class="footer-bottom">
-          <p>© 2025 OLIT Technologies. All Rights Reserved.</p>
+          <p>© <span class="auto-year"></span> OLIT Technologies. All Rights Reserved.</p>
         </div>
       </div>
     </footer>
@@ -1483,7 +1483,7 @@
     <footer>
       <div class="container">
         <div class="footer-bottom">
-          <p>© 2025 OLIT Technologies. All Rights Reserved.</p>
+          <p>© <span class="auto-year"></span> OLIT Technologies. All Rights Reserved.</p>
         </div>
       </div>
     </footer>
@@ -2164,6 +2164,12 @@
 
     createStarField();
     createParticles();
+  // Auto update all copyright years
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".auto-year").forEach(el => {
+      el.textContent = new Date().getFullYear();
+    });
+  });
   </script>
 </body>
 </html>
