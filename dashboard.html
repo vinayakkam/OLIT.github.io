@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OLIT — Control Panel</title>
+  <title>📊 OLIT — Control Dashboard Console</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -15,76 +15,160 @@
       <div class="nav-links">
         <a href="index.html">Home</a>
         <a href="dashboard.html">Dashboard</a>
-        <a href="legal.html">Legal</a>
+        <a href="legal.html">Legal Policies</a>
       </div>
     </div>
   </nav>
 
-  <header class="container" style="padding: 4rem 0 2rem;">
-    <h2>Cluster Configuration Platform</h2>
-    <p style="color: var(--text-muted);">Manage real-time routing engines and rule properties.</p>
-  </header>
+  <main class="container" style="padding-top: 3rem;">
+    <div class="card" style="margin-bottom: 2rem;">
+      <h3>Ecosystem Connectivity Endpoint Data</h3>
+      <div class="info-box" style="margin: 1rem 0;">
+        <strong>📡 Routing API Base URL:</strong> <span style="color: var(--accent-gold)" id="apiEndpoint"></span><br>
+        <strong>🔑 Connection Auth Status:</strong> <span style="color: var(--accent-cyan)" id="apiKeyStatus"></span><br>
+        <div style="margin-top: 0.5rem; display: flex; align-items: center;">
+          <span class="indicator-dot disconnected" id="connectionStatus"></span>
+          <span id="connectionText">Checking cluster links...</span>
+        </div>
+      </div>
+      <div class="flex-center" style="justify-content: flex-start;">
+        <button class="btn btn-success" onclick="testConnection()">Test Connection</button>
+        <button class="btn btn-secondary" onclick="testBasicConnection()">Test Without Auth</button>
+      </div>
+      <div id="connectionAlert" class="alert"></div>
+    </div>
 
-  <main class="container">
-    <div class="status-banner">
-      <span class="indicator disconnected" id="connectionStatus"></span>
-      <span id="connectionText">Resolving endpoint status...</span>
-      <div style="margin-top: 1rem;" class="flex-center">
-        <button class="btn btn-success" onclick="testConnection()">Verify Session Credentials</button>
-        <button class="btn btn-secondary" onclick="testBasicConnection()">Ping Base URL</button>
+    <!-- Cluster Performance Stats Strip -->
+    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-bottom: 2rem;">
+      <div class="card" style="text-align: center; padding: 1.5rem;"><h2 id="totalGuilds" style="color:var(--accent-gold)">-</h2><p style="font-size:0.8rem; text-transform:uppercase;">Total Guilds</p></div>
+      <div class="card" style="text-align: center; padding: 1.5rem;"><h2 id="totalCommands" style="color:var(--accent-cyan)">-</h2><p style="font-size:0.8rem; text-transform:uppercase;">Commands</p></div>
+      <div class="card" style="text-align: center; padding: 1.5rem;"><h2 id="totalAutomod" style="color:var(--accent-pink)">-</h2><p style="font-size:0.8rem; text-transform:uppercase;">Automod Words</p></div>
+      <div class="card" style="text-align: center; padding: 1.5rem;"><h2 id="totalUsers" style="color:#fff">-</h2><p style="font-size:0.8rem; text-transform:uppercase;">Allowed Users</p></div>
+      <div class="card" style="text-align: center; padding: 1.5rem;"><h2 id="totalAutomodEnabled" style="color:var(--accent-cyan)">-</h2><p style="font-size:0.8rem; text-transform:uppercase;">Automod Active</p></div>
+      <div class="card" style="text-align: center; padding: 1.5rem;"><h2 id="totalWelcome" style="color:var(--accent-purple)">-</h2><p style="font-size:0.8rem; text-transform:uppercase;">Welcome Targets</p></div>
+    </div>
+    <button class="btn btn-secondary" onclick="refreshDashboardStats()" style="margin-bottom: 2rem;">🔄 Hard Refresh Global Metrics</button>
+
+    <!-- Context Identifier Property Selection -->
+    <div class="card" style="margin-bottom: 2rem; max-width: 500px;">
+      <div class="form-group" style="margin: 0;">
+        <label>Discord Guild ID (Target Context Server) *</label>
+        <input type="text" id="guildId" placeholder="Insert server snowflake key (e.g., 1234567890)">
       </div>
     </div>
 
-    <div class="stats-strip">
-      <div class="stat-item"><div class="stat-num" id="totalGuilds">-</div><div class="stat-lbl">Active Guilds</div></div>
-      <div class="stat-item"><div class="stat-num" id="totalCommands">-</div><div class="stat-lbl">Registered Commands</div></div>
-      <div class="stat-item"><div class="stat-num" id="totalAutomod">-</div><div class="stat-lbl">Monitored Items</div></div>
+    <!-- The 5 Completed Configuration Selector Buttons -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab(event, 'commands')">Commands</button>
+      <button class="tab-btn" onclick="switchTab(event, 'automod')">Automod</button>
+      <button class="tab-btn" onclick="switchTab(event, 'users')">Allowed Users</button>
+      <button class="tab-btn" onclick="switchTab(event, 'welcome')">Welcome Channel</button>
+      <button class="tab-btn" onclick="switchTab(event, 'logs')">API Request Logs</button>
     </div>
 
-    <div class="form-group" style="max-width: 400px; margin-bottom: 3rem;">
-      <label>Target Guild ID Context</label>
-      <input type="text" id="guildId" placeholder="Insert numeric identification data">
-    </div>
-
-    <div class="tab-container">
-      <div class="tab active" onclick="switchDashboardTab(event, 'commands')">Custom Routers</div>
-      <div class="tab" onclick="switchDashboardTab(event, 'automod')">Security Engine</div>
-      <div class="tab" onclick="switchDashboardTab(event, 'welcome')">Onboarding Actions</div>
-    </div>
-
-    <div id="commandsPanel" class="dashboard-panel" style="display: block;">
-      <div class="form-group"><label>Router Event String Trigger</label><input type="text" id="commandName" placeholder="welcome"></div>
-      <div class="form-group"><label>String Array Payload Response</label><textarea id="commandResponse"></textarea></div>
-      <button class="btn btn-primary" onclick="addCommand()">Register Action Route</button>
-      <div id="commandsList" style="margin-top: 2rem;"></div>
-    </div>
-
-    <div id="automodPanel" class="dashboard-panel" style="display: none;">
-      <p style="margin-bottom: 1rem;">Security Rule Status: <span id="automodStatusText" style="font-weight: bold;">Unknown</span></p>
-      <div class="flex-center" style="justify-content: flex-start; margin-bottom: 2rem;">
-        <button class="btn btn-success" onclick="toggleAutomod(true)">Enable Filter Processing</button>
-        <button class="btn btn-danger" onclick="toggleAutomod(false)">Terminate Protection Execution</button>
+    <!-- TAB PANEL 1: COMMAND MANAGEMENT -->
+    <div id="commandsPanel" class="panel" style="display: block;">
+      <div class="card">
+        <h3>Configure Custom Prefix Commands</h3>
+        <div id="commandAlert" class="alert"></div>
+        <div class="form-group" style="margin-top: 1rem;">
+          <label>Trigger Name Key (Exclude prefix symbol)</label>
+          <input type="text" id="commandName" placeholder="e.g. statusinfo">
+        </div>
+        <div class="form-group">
+          <label>Command Content String Payload Response</label>
+          <textarea id="commandResponse" placeholder="Enter target bot message response content data"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Description Parameter Context (Optional)</label>
+          <input type="text" id="commandDescription" placeholder="Short internal documentation text">
+        </div>
+        <div class="flex-center" style="justify-content: flex-start;">
+          <button class="btn btn-primary" onclick="addCommand()">Add Command</button>
+          <button class="btn btn-secondary" onclick="loadGuildConfig()">Load Server Config</button>
+        </div>
+        <div id="commandsList" style="margin-top: 1.5rem;"></div>
       </div>
-      <div class="form-group"><label>Banned Phrase Verification String</label><input type="text" id="automodWord"></div>
-      <button class="btn btn-primary" onclick="addAutomodWord()">Append Blocked Metric</button>
-      <div id="automodList" style="margin-top: 2rem;"></div>
     </div>
 
-    <div id="welcomePanel" class="dashboard-panel" style="display: none;">
-      <div class="form-group"><label>Onboarding Transmission Target Channel ID</label><input type="text" id="welcomeChannelId"></div>
-      <button class="btn btn-primary" onclick="setWelcomeChannel()">Update Context Rules</button>
-      <div id="welcomeCurrentChannel" style="margin-top: 2rem;"></div>
+    <!-- TAB PANEL 2: AUTOMOD ENGINE -->
+    <div id="automodPanel" class="panel">
+      <div class="card">
+        <h3>Ecosystem Protection Rulesets</h3>
+        <div id="automodAlert" class="alert"></div>
+        <div class="info-box" style="margin: 1rem 0;">
+          State Status: <span id="automodStatusText" style="color: var(--accent-pink); font-weight: 700;">Disabled</span><br><br>
+          <div class="flex-center" style="justify-content: flex-start;">
+            <button class="btn btn-success" onclick="toggleAutomod(true)">Enable Automod Processing</button>
+            <button class="btn btn-danger" onclick="toggleAutomod(false)">Disable Automod Processing</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Banned Term Pattern Entry</label>
+          <input type="text" id="automodWord" placeholder="Insert plain text string expression">
+        </div>
+        <div class="flex-center" style="justify-content: flex-start;">
+          <button class="btn btn-primary" onclick="addAutomodWord()">Add Word</button>
+          <button class="btn btn-secondary" onclick="loadGuildConfig()">Load Server Config</button>
+        </div>
+        <div id="automodList" style="margin-top: 1.5rem;"></div>
+      </div>
+    </div>
+
+    <!-- TAB PANEL 3: ALLOWED SYSTEM USERS -->
+    <div id="usersPanel" class="panel">
+      <div class="card">
+        <h3>Administrative Allowed Privilege Indices</h3>
+        <div id="usersAlert" class="alert"></div>
+        <div class="form-group">
+          <label>Discord Target User SnowFlake Identification Token</label>
+          <input type="text" id="userId" placeholder="e.g. 9876543210123456">
+        </div>
+        <div class="flex-center" style="justify-content: flex-start;">
+          <button class="btn btn-primary" onclick="addAllowedUser()">Authorize User Access</button>
+          <button class="btn btn-secondary" onclick="loadGuildConfig()">Load Server Config</button>
+        </div>
+        <div id="usersList" style="margin-top: 1.5rem;"></div>
+      </div>
+    </div>
+
+    <!-- TAB PANEL 4: WELCOME SYSTEM CONFIG -->
+    <div id="welcomePanel" class="panel">
+      <div class="card">
+        <h3>Ecosystem System Onboarding Parameters</h3>
+        <div id="welcomeAlert" class="alert"></div>
+        <div class="form-group">
+          <label>Welcome Broadcast Transmission Target Channel ID</label>
+          <input type="text" id="welcomeChannelId" placeholder="e.g. 4569892609091234">
+        </div>
+        <div class="flex-center" style="justify-content: flex-start;">
+          <button class="btn btn-primary" onclick="setWelcomeChannel()">Update Target Location</button>
+          <button class="btn btn-secondary" onclick="loadGuildConfig()">Load Server Config</button>
+        </div>
+        <div id="welcomeCurrentChannel" style="margin-top: 1.5rem;"></div>
+      </div>
+    </div>
+
+    <!-- TAB PANEL 5: SERVER LOG ENTRIES -->
+    <div id="logsPanel" class="panel">
+      <div class="card">
+        <h3>API Router Interaction Historical Traces</h3>
+        <button class="btn btn-primary" onclick="loadLogs()">Fetch Historical Logs (Limit 20)</button>
+        <div id="logsList" style="margin-top: 1.5rem;"></div>
+      </div>
     </div>
   </main>
 
   <footer class="container">
-    <p>&copy; OLIT Technologies Dashboard Engine.</p>
+    <p>&copy; <span class="auto-year"></span> OLIT Management Interfaces.</p>
   </footer>
 
   <script src="js/app.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      if(API_CONFIG.baseUrl) { testConnection(); }
+      document.getElementById('apiEndpoint').textContent = API_CONFIG.baseUrl;
+      document.getElementById('apiKeyStatus').textContent = API_CONFIG.apiKey ? 'Validated Configuration ✓' : 'Missing Credentials ✗';
+      testConnection();
     });
   </script>
 </body>
