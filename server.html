@@ -56,7 +56,45 @@
       border-radius: var(--radius-md); padding: 16px 20px; margin-bottom: 20px;
     }
 
-    /* Welcome channel preview */
+    /* Welcome channel picker */
+    .channel-category {
+      font-size: 0.7rem; font-weight: 700; color: var(--text-3);
+      text-transform: uppercase; letter-spacing: 0.08em;
+      padding: 10px 4px 4px; margin-top: 4px;
+    }
+    .channel-option {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 12px; border-radius: var(--radius-md);
+      cursor: pointer; transition: background var(--transition);
+      border: 1px solid transparent;
+    }
+    .channel-option:hover { background: var(--bg-hover); }
+    .channel-option.selected {
+      background: var(--accent-dim); border-color: rgba(88,101,242,0.3);
+    }
+    .channel-option-hash { color: var(--text-3); font-size: 1.1rem; line-height:1; flex-shrink:0; }
+    .channel-option-name { font-size: 0.875rem; font-weight: 500; flex: 1; }
+    .channel-option.selected .channel-option-name { color: var(--text-1); }
+    .channel-option .check-icon {
+      width: 18px; height: 18px; border-radius: 50%;
+      background: var(--accent); display: flex; align-items: center; justify-content: center;
+      font-size: 10px; color: #fff; flex-shrink: 0;
+    }
+    .channels-loading {
+      display: flex; align-items: center; gap: 10px;
+      padding: 24px; color: var(--text-3); font-size: 0.875rem;
+    }
+    .channels-loading .spin {
+      width: 16px; height: 16px; border: 2px solid var(--border-strong);
+      border-top-color: var(--accent); border-radius: 50%;
+      animation: spin 0.7s linear infinite; flex-shrink: 0;
+    }
+    .channel-not-logged {
+      padding: 24px; text-align: center;
+    }
+    .channel-not-logged p { font-size: 0.875rem; margin-bottom: 12px; }
+
+    /* Welcome channel display */
     .channel-preview {
       background: var(--bg-1); border: 1px solid var(--border);
       border-radius: var(--radius-md); padding: 16px 20px;
@@ -275,20 +313,43 @@
         <div class="content-panel" id="panel-welcome">
           <div class="panel-header">
             <h2>Welcome Channel</h2>
-            <p class="text-sm">Where new member greetings are posted</p>
+            <p class="text-sm">Send a greeting when new members join your server</p>
           </div>
-          <div class="card">
-            <div class="form-group">
-              <label>Channel ID</label>
-              <input type="text" id="welcome-channel-input" placeholder="e.g. 123456789012345678">
-              <p class="text-xs mt-sm">Right-click a channel in Discord → Copy Channel ID (requires Developer Mode)</p>
+
+          <!-- Current channel display -->
+          <div id="welcome-current" class="hidden" style="margin-bottom:20px">
+            <div class="card" style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+              <div>
+                <div class="text-xs" style="color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Current welcome channel</div>
+                <div style="display:flex;align-items:center;gap:6px;font-weight:600;font-size:0.95rem">
+                  <span style="color:var(--text-2)">#</span>
+                  <span id="welcome-current-name" style="color:var(--text-1)"></span>
+                </div>
+              </div>
+              <button class="btn btn-danger btn-sm" onclick="removeWelcome()">Remove</button>
             </div>
-            <button class="btn btn-primary btn-sm" onclick="setWelcome()">Save Channel</button>
           </div>
-          <div id="welcome-preview" class="hidden channel-preview" style="margin-top:16px">
-            <div class="text-xs" style="margin-bottom:4px;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em">Current welcome channel</div>
-            <div class="channel-name"># <span id="welcome-channel-name"></span></div>
-            <div class="channel-id" id="welcome-channel-id-display"></div>
+
+          <!-- Channel picker -->
+          <div class="card" id="welcome-picker-card">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+              <h3 style="font-size:0.9rem">Select a channel</h3>
+              <button class="btn btn-secondary btn-sm" onclick="loadChannels()" id="refresh-channels-btn">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
+                Refresh
+              </button>
+            </div>
+
+            <!-- Search within channels -->
+            <div style="margin-bottom:12px">
+              <input type="text" id="channel-search" placeholder="Search channels…"
+                oninput="filterChannels(this.value)"
+                style="width:100%;padding:8px 12px;background:var(--bg-0);border:1px solid var(--border-strong);border-radius:var(--radius-md);color:var(--text-1);font-size:0.875rem;font-family:inherit">
+            </div>
+
+            <div id="channel-list-container">
+              <!-- populated by JS -->
+            </div>
           </div>
         </div>
 
@@ -332,6 +393,7 @@
     document.querySelectorAll('.content-panel').forEach(p => p.classList.remove('active'));
     document.getElementById(`panel-${name}`).classList.add('active');
     if (name === 'logs') loadLogs();
+    if (name === 'welcome') loadChannels();
   }
 
   // ── Server header ────────────────────────────────────────────────────────
@@ -565,24 +627,144 @@
   }
 
   // ── Welcome ──────────────────────────────────────────────────────────────
+  let allChannels = [];   // [{id, name, type, parent_id, position}]
+  let channelsFetched = false;
+
   function renderWelcome() {
     const ch = config?.welcome_channel;
+    const currentEl = document.getElementById('welcome-current');
     if (ch) {
-      document.getElementById('welcome-channel-input').value = ch;
-      document.getElementById('welcome-channel-name').textContent = ch;
-      document.getElementById('welcome-channel-id-display').textContent = ch;
-      document.getElementById('welcome-preview').classList.remove('hidden');
+      // Try to find the name from already-fetched channels
+      const found = allChannels.find(c => String(c.id) === String(ch));
+      document.getElementById('welcome-current-name').textContent = found ? found.name : ch;
+      currentEl.classList.remove('hidden');
+    } else {
+      currentEl.classList.add('hidden');
     }
   }
 
-  async function setWelcome() {
-    const ch = document.getElementById('welcome-channel-input').value.trim();
-    if (!ch || !/^\d+$/.test(ch)) { UI.toast('Enter a valid Channel ID', 'error'); return; }
+  async function loadChannels() {
+    const container = document.getElementById('channel-list-container');
+    const token = Auth.getToken();
+
+    if (!token) {
+      container.innerHTML = `
+        <div class="channel-not-logged">
+          <p>Log in with Discord to browse channels.</p>
+          <button class="btn btn-discord btn-sm" onclick="Auth.login()">Login with Discord</button>
+        </div>`;
+      return;
+    }
+
+    container.innerHTML = `<div class="channels-loading"><div class="spin"></div> Fetching channels…</div>`;
+    document.getElementById('refresh-channels-btn').disabled = true;
+
     try {
-      await API.setWelcomeChannel(guildId, ch);
-      config.welcome_channel = ch;
-      renderWelcome(); renderOverview();
-      UI.toast('Welcome channel saved');
+      const res = await fetch(`https://discord.com/api/v10/guilds/${guildId}/channels`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      if (res.status === 403 || res.status === 401) {
+        // Bot token needed for this — fall back to manual input
+        container.innerHTML = buildManualFallback();
+        return;
+      }
+
+      const data = await res.json();
+      if (!Array.isArray(data)) throw new Error(data.message || 'Failed to load channels');
+
+      // Type 0 = text channel, type 5 = announcement
+      allChannels = data
+        .filter(c => c.type === 0 || c.type === 5)
+        .sort((a, b) => (a.position ?? 0) - (b.position ?? 0));
+
+      channelsFetched = true;
+      renderChannelList(allChannels);
+      renderWelcome(); // update name now we have it
+    } catch (e) {
+      // Discord guilds endpoint requires the bot to be in the server and user to be admin
+      // If it fails, show manual fallback
+      container.innerHTML = buildManualFallback();
+    } finally {
+      document.getElementById('refresh-channels-btn').disabled = false;
+    }
+  }
+
+  function buildManualFallback() {
+    const current = config?.welcome_channel || '';
+    return `
+      <div style="padding:4px 0">
+        <p class="text-sm" style="color:var(--text-2);margin-bottom:14px">
+          Channel list requires the bot to be in this server. Enter a Channel ID directly:
+        </p>
+        <div style="display:flex;gap:8px">
+          <input type="text" id="manual-ch-input" value="${current}" placeholder="Channel ID e.g. 123456789"
+            style="flex:1;padding:8px 12px;background:var(--bg-0);border:1px solid var(--border-strong);border-radius:var(--radius-md);color:var(--text-1);font-size:0.875rem;font-family:inherit">
+          <button class="btn btn-primary btn-sm" onclick="saveManualChannel()">Save</button>
+        </div>
+        <p class="text-xs mt-sm" style="color:var(--text-3)">Right-click a channel in Discord → Copy Channel ID (Developer Mode)</p>
+      </div>`;
+  }
+
+  async function saveManualChannel() {
+    const ch = document.getElementById('manual-ch-input').value.trim();
+    if (!ch || !/^\d+$/.test(ch)) { UI.toast('Enter a valid Channel ID', 'error'); return; }
+    await _saveWelcomeChannel(ch, ch);
+  }
+
+  function renderChannelList(channels) {
+    const container = document.getElementById('channel-list-container');
+    if (!channels.length) {
+      container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">💬</div><p>No text channels found.</p></div>`;
+      return;
+    }
+
+    const currentId = String(config?.welcome_channel || '');
+
+    container.innerHTML = channels.map(ch => {
+      const selected = String(ch.id) === currentId;
+      return `
+        <div class="channel-option ${selected ? 'selected' : ''}"
+             onclick="selectChannel('${ch.id}', '${ch.name.replace(/'/g,"\\'")}')">
+          <span class="channel-option-hash">#</span>
+          <span class="channel-option-name">${ch.name}</span>
+          ${selected ? '<span class="check-icon">✓</span>' : ''}
+        </div>`;
+    }).join('');
+  }
+
+  function filterChannels(q) {
+    const lower = q.toLowerCase();
+    const filtered = allChannels.filter(c => c.name.toLowerCase().includes(lower));
+    renderChannelList(filtered);
+  }
+
+  async function selectChannel(id, name) {
+    await _saveWelcomeChannel(id, name);
+  }
+
+  async function _saveWelcomeChannel(id, name) {
+    try {
+      await API.setWelcomeChannel(guildId, id);
+      config.welcome_channel = id;
+      renderWelcome();
+      renderOverview();
+      // Re-render the list to show new selection
+      if (channelsFetched) renderChannelList(allChannels);
+      UI.toast(`Welcome channel set to #${name}`);
+    } catch (e) { UI.toast(e.message, 'error'); }
+  }
+
+  async function removeWelcome() {
+    if (!await UI.confirm('Remove welcome channel? New members won\'t get a greeting.')) return;
+    try {
+      // Save empty — API will handle it
+      await API.setWelcomeChannel(guildId, '0');
+      config.welcome_channel = null;
+      renderWelcome();
+      renderOverview();
+      if (channelsFetched) renderChannelList(allChannels);
+      UI.toast('Welcome channel removed');
     } catch (e) { UI.toast(e.message, 'error'); }
   }
 
