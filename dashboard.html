@@ -1,1 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OLIT — Control Panel</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="ambient-glow"></div>
 
+  <nav>
+    <div class="container nav-container">
+      <a href="index.html" class="brand">🚀 OLIT</a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="legal.html">Legal</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="container" style="padding: 4rem 0 2rem;">
+    <h2>Cluster Configuration Platform</h2>
+    <p style="color: var(--text-muted);">Manage real-time routing engines and rule properties.</p>
+  </header>
+
+  <main class="container">
+    <div class="status-banner">
+      <span class="indicator disconnected" id="connectionStatus"></span>
+      <span id="connectionText">Resolving endpoint status...</span>
+      <div style="margin-top: 1rem;" class="flex-center">
+        <button class="btn btn-success" onclick="testConnection()">Verify Session Credentials</button>
+        <button class="btn btn-secondary" onclick="testBasicConnection()">Ping Base URL</button>
+      </div>
+    </div>
+
+    <div class="stats-strip">
+      <div class="stat-item"><div class="stat-num" id="totalGuilds">-</div><div class="stat-lbl">Active Guilds</div></div>
+      <div class="stat-item"><div class="stat-num" id="totalCommands">-</div><div class="stat-lbl">Registered Commands</div></div>
+      <div class="stat-item"><div class="stat-num" id="totalAutomod">-</div><div class="stat-lbl">Monitored Items</div></div>
+    </div>
+
+    <div class="form-group" style="max-width: 400px; margin-bottom: 3rem;">
+      <label>Target Guild ID Context</label>
+      <input type="text" id="guildId" placeholder="Insert numeric identification data">
+    </div>
+
+    <div class="tab-container">
+      <div class="tab active" onclick="switchDashboardTab(event, 'commands')">Custom Routers</div>
+      <div class="tab" onclick="switchDashboardTab(event, 'automod')">Security Engine</div>
+      <div class="tab" onclick="switchDashboardTab(event, 'welcome')">Onboarding Actions</div>
+    </div>
+
+    <div id="commandsPanel" class="dashboard-panel" style="display: block;">
+      <div class="form-group"><label>Router Event String Trigger</label><input type="text" id="commandName" placeholder="welcome"></div>
+      <div class="form-group"><label>String Array Payload Response</label><textarea id="commandResponse"></textarea></div>
+      <button class="btn btn-primary" onclick="addCommand()">Register Action Route</button>
+      <div id="commandsList" style="margin-top: 2rem;"></div>
+    </div>
+
+    <div id="automodPanel" class="dashboard-panel" style="display: none;">
+      <p style="margin-bottom: 1rem;">Security Rule Status: <span id="automodStatusText" style="font-weight: bold;">Unknown</span></p>
+      <div class="flex-center" style="justify-content: flex-start; margin-bottom: 2rem;">
+        <button class="btn btn-success" onclick="toggleAutomod(true)">Enable Filter Processing</button>
+        <button class="btn btn-danger" onclick="toggleAutomod(false)">Terminate Protection Execution</button>
+      </div>
+      <div class="form-group"><label>Banned Phrase Verification String</label><input type="text" id="automodWord"></div>
+      <button class="btn btn-primary" onclick="addAutomodWord()">Append Blocked Metric</button>
+      <div id="automodList" style="margin-top: 2rem;"></div>
+    </div>
+
+    <div id="welcomePanel" class="dashboard-panel" style="display: none;">
+      <div class="form-group"><label>Onboarding Transmission Target Channel ID</label><input type="text" id="welcomeChannelId"></div>
+      <button class="btn btn-primary" onclick="setWelcomeChannel()">Update Context Rules</button>
+      <div id="welcomeCurrentChannel" style="margin-top: 2rem;"></div>
+    </div>
+  </main>
+
+  <footer class="container">
+    <p>&copy; OLIT Technologies Dashboard Engine.</p>
+  </footer>
+
+  <script src="js/app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      if(API_CONFIG.baseUrl) { testConnection(); }
+    });
+  </script>
+</body>
+</html>
