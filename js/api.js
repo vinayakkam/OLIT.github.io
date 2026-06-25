@@ -1,6 +1,6 @@
 // api.js — OLIT Bot API client
 
-const API_BASE = 'https://discord-bot-ftbe.onrender.com';
+const API_BASE = 'http://vega.ender.co.in:5023';
 const API_KEY  = 'Olittech447443456989260909-087';
 
 async function apiFetch(path, options = {}) {
