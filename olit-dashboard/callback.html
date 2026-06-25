@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logging in… — OLIT</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    body { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    .callback-card {
+      text-align: center; padding: 48px 40px;
+      background: var(--bg-1); border: 1px solid var(--border);
+      border-radius: var(--radius-xl); max-width: 360px; width: 100%;
+    }
+    .spinner {
+      width: 40px; height: 40px;
+      border: 3px solid var(--border-strong);
+      border-top-color: var(--accent);
+      border-radius: 50%; animation: spin 0.7s linear infinite;
+      margin: 0 auto 20px;
+    }
+  </style>
+</head>
+<body>
+<div class="callback-card">
+  <div id="state-loading">
+    <div class="spinner"></div>
+    <h3>Logging you in…</h3>
+    <p class="text-sm mt-sm">Connecting your Discord account</p>
+  </div>
+  <div id="state-error" class="hidden">
+    <div style="font-size:2rem;margin-bottom:16px">⚠️</div>
+    <h3>Login failed</h3>
+    <p class="text-sm mt-sm" id="err-msg">Something went wrong.</p>
+    <a href="index.html" class="btn btn-secondary mt-md">Back to Home</a>
+  </div>
+</div>
+
+<script>
+  const DISCORD_CLIENT_ID = '1414168461172539454';
+
+  (async () => {
+    const hash = window.location.hash.substring(1);
+    const params = new URLSearchParams(hash);
+    const token = params.get('access_token');
+
+    if (!token) {
+      showError('No access token found. Try logging in again.');
+      return;
+    }
+
+    try {
+      const [userRes, guildsRes] = await Promise.all([
+        fetch('https://discord.com/api/v10/users/@me',        { headers: { Authorization: `Bearer ${token}` } }),
+        fetch('https://discord.com/api/v10/users/@me/guilds', { headers: { Authorization: `Bearer ${token}` } }),
+      ]);
+      if (!userRes.ok) throw new Error('Failed to fetch user');
+      const user   = await userRes.json();
+      const guilds = await guildsRes.json();
+
+      sessionStorage.setItem('discord_token',  token);
+      sessionStorage.setItem('discord_user',   JSON.stringify(user));
+      sessionStorage.setItem('discord_guilds', JSON.stringify(guilds));
+
+      window.location.href = 'dashboard.html';
+    } catch (e) {
+      showError(e.message);
+    }
+  })();
+
+  function showError(msg) {
+    document.getElementById('state-loading').classList.add('hidden');
+    document.getElementById('state-error').classList.remove('hidden');
+    document.getElementById('err-msg').textContent = msg;
+  }
+</script>
+</body>
+</html>
