@@ -135,7 +135,12 @@
 
 <nav class="nav">
   <div class="nav-inner">
-    <a href="index.html" class="nav-brand"><div class="nav-logo">🚀</div> OLIT</a>
+    <a href="index.html" class="nav-brand">
+      <div class="nav-logo">
+        <img src="logo.png" alt="OLIT" onerror="this.style.display='none';this.parentElement.textContent='🚀'" style="width:20px;height:20px;border-radius:4px;object-fit:contain">
+      </div>
+      OLIT
+    </a>
     <div class="nav-actions">
       <a href="dashboard.html" class="btn btn-ghost btn-sm">← All Servers</a>
       <div id="nav-user"></div>
@@ -645,64 +650,49 @@
 
   async function loadChannels() {
     const container = document.getElementById('channel-list-container');
-    const token = Auth.getToken();
-
-    if (!token) {
-      container.innerHTML = `
-        <div class="channel-not-logged">
-          <p>Log in with Discord to browse channels.</p>
-          <button class="btn btn-discord btn-sm" onclick="Auth.login()">Login with Discord</button>
-        </div>`;
-      return;
-    }
 
     container.innerHTML = `<div class="channels-loading"><div class="spin"></div> Fetching channels…</div>`;
     document.getElementById('refresh-channels-btn').disabled = true;
 
     try {
-      const res = await fetch(`https://discord.com/api/v10/guilds/${guildId}/channels`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      // Use the bot API — bot must be in the server
+      const data = await API.getChannels(guildId);
 
-      if (res.status === 403 || res.status === 401) {
-        // Bot token needed for this — fall back to manual input
-        container.innerHTML = buildManualFallback();
-        return;
+      if (!data.success || !Array.isArray(data.channels)) {
+        throw new Error(data.error || 'Failed to load channels');
       }
 
-      const data = await res.json();
-      if (!Array.isArray(data)) throw new Error(data.message || 'Failed to load channels');
-
-      // Type 0 = text channel, type 5 = announcement
-      allChannels = data
+      // Type 0 = text, type 5 = announcement — already filtered server-side but guard anyway
+      allChannels = data.channels
         .filter(c => c.type === 0 || c.type === 5)
         .sort((a, b) => (a.position ?? 0) - (b.position ?? 0));
 
       channelsFetched = true;
       renderChannelList(allChannels);
-      renderWelcome(); // update name now we have it
+      renderWelcome(); // update name now we have channel list
     } catch (e) {
-      // Discord guilds endpoint requires the bot to be in the server and user to be admin
-      // If it fails, show manual fallback
-      container.innerHTML = buildManualFallback();
+      // Bot not in server or API down — show manual ID fallback
+      container.innerHTML = buildManualFallback(e.message);
     } finally {
       document.getElementById('refresh-channels-btn').disabled = false;
     }
   }
 
-  function buildManualFallback() {
+  function buildManualFallback(reason) {
     const current = config?.welcome_channel || '';
     return `
       <div style="padding:4px 0">
-        <p class="text-sm" style="color:var(--text-2);margin-bottom:14px">
-          Channel list requires the bot to be in this server. Enter a Channel ID directly:
-        </p>
+        <div class="alert alert-warn" style="margin-bottom:14px">
+          <span>⚠️</span>
+          <span>Couldn't load channels automatically${reason ? ': ' + reason : ''}. Make sure the bot is in this server, then <button onclick="loadChannels()" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:inherit;padding:0;text-decoration:underline">try again</button>.</span>
+        </div>
+        <p class="text-sm" style="color:var(--text-2);margin-bottom:14px">Or enter a Channel ID directly:</p>
         <div style="display:flex;gap:8px">
-          <input type="text" id="manual-ch-input" value="${current}" placeholder="Channel ID e.g. 123456789"
+          <input type="text" id="manual-ch-input" value="${current}" placeholder="e.g. 1234567890123456"
             style="flex:1;padding:8px 12px;background:var(--bg-0);border:1px solid var(--border-strong);border-radius:var(--radius-md);color:var(--text-1);font-size:0.875rem;font-family:inherit">
           <button class="btn btn-primary btn-sm" onclick="saveManualChannel()">Save</button>
         </div>
-        <p class="text-xs mt-sm" style="color:var(--text-3)">Right-click a channel in Discord → Copy Channel ID (Developer Mode)</p>
+        <p class="text-xs mt-sm" style="color:var(--text-3)">Right-click a channel in Discord → Copy Channel ID (requires Developer Mode)</p>
       </div>`;
   }
 
@@ -721,16 +711,30 @@
 
     const currentId = String(config?.welcome_channel || '');
 
-    container.innerHTML = channels.map(ch => {
-      const selected = String(ch.id) === currentId;
-      return `
-        <div class="channel-option ${selected ? 'selected' : ''}"
-             onclick="selectChannel('${ch.id}', '${ch.name.replace(/'/g,"\\'")}')">
-          <span class="channel-option-hash">#</span>
-          <span class="channel-option-name">${ch.name}</span>
-          ${selected ? '<span class="check-icon">✓</span>' : ''}
-        </div>`;
-    }).join('');
+    // Group by parent category name
+    const groups = {};
+    channels.forEach(ch => {
+      const key = ch.parent_name || '—';
+      if (!groups[key]) groups[key] = [];
+      groups[key].push(ch);
+    });
+
+    let html = '';
+    for (const [cat, chs] of Object.entries(groups)) {
+      html += `<div class="channel-category">${cat}</div>`;
+      html += chs.map(ch => {
+        const selected = String(ch.id) === currentId;
+        return `
+          <div class="channel-option ${selected ? 'selected' : ''}"
+               onclick="selectChannel('${ch.id}', '${ch.name.replace(/'/g,"\\'")}')">
+            <span class="channel-option-hash">#</span>
+            <span class="channel-option-name">${ch.name}</span>
+            ${selected ? '<span class="check-icon">✓</span>' : ''}
+          </div>`;
+      }).join('');
+    }
+
+    container.innerHTML = html;
   }
 
   function filterChannels(q) {

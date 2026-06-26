@@ -72,7 +72,10 @@
 <nav class="nav">
   <div class="nav-inner">
     <a href="index.html" class="nav-brand">
-      <div class="nav-logo">🚀</div> OLIT
+      <div class="nav-logo">
+        <img src="logo.png" alt="OLIT" onerror="this.style.display='none';this.parentElement.textContent='🚀'" style="width:20px;height:20px;border-radius:4px;object-fit:contain">
+      </div>
+      OLIT
     </a>
     <div class="nav-actions" id="nav-user"></div>
   </div>
@@ -193,7 +196,13 @@
 
   function renderServers(guilds) {
     const grid = document.getElementById('servers-grid');
-    const managed = guilds.filter(g => (g.permissions & 0x20) === 0x20 || g.owner);
+    // Discord returns permissions as a decimal string — use BigInt for safe bitwise ops
+    const MANAGE_GUILD = BigInt(0x20);
+    const managed = guilds.filter(g => {
+      if (g.owner) return true;
+      try { return (BigInt(g.permissions || '0') & MANAGE_GUILD) !== 0n; }
+      catch { return false; }
+    });
     allServers = managed;
 
     document.getElementById('server-count').textContent = `${managed.length} server${managed.length!==1?'s':''}`;
