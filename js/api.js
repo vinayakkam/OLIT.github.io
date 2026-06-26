@@ -1,8 +1,7 @@
 // api.js — OLIT Bot API client
 
-const API_BASE = 'http://vega.ender.co.in:5023';
+const API_BASE = 'https://api.olittechnologies.co.in:5023';
 const API_KEY  = 'Olittech447443456989260909-087';
-
 
 async function apiFetch(path, options = {}) {
   const url = `${API_BASE}${path}`;
@@ -47,6 +46,9 @@ const API = {
 
   setWelcomeChannel: (guildId, channelId) =>
     apiFetch('/api/welcome_channel', { method: 'POST', body: JSON.stringify({ guild_id: guildId, channel_id: channelId }) }),
+
+  // Fetch text channels for a guild via the bot (bot must be in the server)
+  getChannels: (guildId) => apiFetch(`/api/channels/${guildId}`),
 };
 
 window.API = API;
