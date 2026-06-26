@@ -1,6 +1,6 @@
 // api.js — OLIT Bot API client
 
-const API_BASE = 'https://api.olittechnologies.co.in:5023';
+const API_BASE = 'https://api.olittechnologies.co.in';
 const API_KEY  = 'Olittech447443456989260909-087';
 
 async function apiFetch(path, options = {}) {
