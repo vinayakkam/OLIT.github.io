@@ -242,7 +242,7 @@
         <div class="stat-card"><div class="stat-number">${stats.automod_enabled_guilds}</div><div class="stat-label">Automod Active</div></div>
       `;
     } catch {
-      document.getElementById('global-stats').innerHTML = `<p class="text-xs" style="color:var(--text-3)">Could not load stats</p>`;
+      document.querySelector('.global-stats').style.display = 'none';
     }
   }
 
