@@ -4,10 +4,7 @@
 // Replace CLIENT_ID with your Discord application client ID
 // Redirect URI must match what's registered in the Discord developer portal
 const DISCORD_CLIENT_ID = '1414168461172539454';
-const REDIRECT_URI      = (() => {
-  const base = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '');
-  return `${base}/callback.html`;
-})();
+const REDIRECT_URI = window.location.origin + '/callback.html';
 
 const DISCORD_SCOPES = ['identify', 'guilds'].join('%20');
 const DISCORD_AUTH_URL =
