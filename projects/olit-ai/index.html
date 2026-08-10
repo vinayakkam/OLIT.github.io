@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OLIT AI — Document Summarizer</title>
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --card-bg: #121212;
+      --border: #262626;
+      --border-focus: #525252;
+      --text: #ededed;
+      --text-muted: #888888;
+      --accent: #ffffff;
+      --accent-invert: #000000;
+      --mono-font: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 4rem 1.5rem;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    header {
+      width: 100%;
+      max-width: 680px;
+      margin-bottom: 3rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.5rem;
+    }
+
+    .brand-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    header h1 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .tag {
+      font-family: var(--mono-font);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    main {
+      width: 100%;
+      max-width: 680px;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .input-block {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    label {
+      font-family: var(--mono-font);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    input[type="text"] {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text);
+      padding: 0.75rem 1rem;
+      font-family: var(--mono-font);
+      font-size: 0.85rem;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--border-focus);
+    }
+
+    .dropzone {
+      border: 1px dashed var(--border);
+      border-radius: 4px;
+      padding: 2.5rem 1rem;
+      text-align: center;
+      cursor: pointer;
+      background: var(--card-bg);
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .dropzone:hover, .dropzone.dragover {
+      border-color: var(--border-focus);
+      background: #171717;
+    }
+
+    .dropzone p {
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+
+    .dropzone span {
+      font-family: var(--mono-font);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: block;
+      margin-top: 0.4rem;
+    }
+
+    textarea {
+      width: 100%;
+      height: 110px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text);
+      padding: 0.8rem 1rem;
+      font-size: 0.9rem;
+      resize: vertical;
+      outline: none;
+      font-family: inherit;
+    }
+
+    textarea:focus {
+      border-color: var(--border-focus);
+    }
+
+    button.btn-submit {
+      background: var(--accent);
+      color: var(--accent-invert);
+      border: none;
+      padding: 0.85rem 1rem;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: opacity 0.15s ease;
+      font-family: var(--mono-font);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    button.btn-submit:hover {
+      opacity: 0.9;
+    }
+
+    button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    /* Output Area */
+    .output-section {
+      border-top: 1px solid var(--border);
+      padding-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .metrics-bar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: var(--card-bg);
+    }
+
+    .metric-item {
+      padding: 1rem;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+
+    .metric-item:last-child {
+      border-right: none;
+    }
+
+    .metric-value {
+      font-family: var(--mono-font);
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .metric-label {
+      font-family: var(--mono-font);
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0.25rem;
+    }
+
+    .output-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .output-title {
+      font-family: var(--mono-font);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    .btn-copy {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.4rem 0.75rem;
+      border-radius: 4px;
+      font-family: var(--mono-font);
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .btn-copy:hover {
+      color: var(--text);
+      border-color: var(--border-focus);
+    }
+
+    ul.summary-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    ul.summary-list li {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #d4d4d4;
+      padding-left: 1.25rem;
+      position: relative;
+    }
+
+    ul.summary-list li::before {
+      content: "—";
+      position: absolute;
+      left: 0;
+      color: var(--text-muted);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand-row">
+      <h1>OLIT AI</h1>
+      <span class="tag">Local Engine</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="input-block">
+      <div class="field-group">
+        <label for="serverUrl">Backend URL (HTTPS Tunnel)</label>
+        <input type="text" id="serverUrl" placeholder="https://your-tunnel-url.ngrok-free.app">
+      </div>
+
+      <div class="dropzone" id="dropzone" onclick="document.getElementById('fileInput').click()">
+        <p id="file-label">Click or drop document here</p>
+        <span>Supports PDF, TXT</span>
+        <input type="file" id="fileInput" accept=".txt,.pdf" style="display:none">
+      </div>
+
+      <textarea id="textInput" placeholder="Or paste document text here..."></textarea>
+
+      <button class="btn-submit" id="submitBtn">Summarize</button>
+    </div>
+
+    <!-- Output Section -->
+    <div class="output-section hidden" id="resultCard">
+      <div class="metrics-bar">
+        <div class="metric-item">
+          <div class="metric-value" id="statWords">0</div>
+          <div class="metric-label">Words</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-value" id="statRed">0%</div>
+          <div class="metric-label">Reduced</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-value" id="statTime">0m</div>
+          <div class="metric-label">Read Time</div>
+        </div>
+      </div>
+
+      <div class="output-header">
+        <span class="output-title">Key Takeaways</span>
+        <button class="btn-copy" id="copyBtn">Copy</button>
+      </div>
+
+      <ul class="summary-list" id="pointsList"></ul>
+    </div>
+  </main>
+
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const fileLabel = document.getElementById('file-label');
+    const textInput = document.getElementById('textInput');
+    const submitBtn = document.getElementById('submitBtn');
+    const resultCard = document.getElementById('resultCard');
+    const serverUrlInput = document.getElementById('serverUrl');
+    const pointsList = document.getElementById('pointsList');
+    const copyBtn = document.getElementById('copyBtn');
+
+    if (localStorage.getItem('olit_backend_url')) {
+      serverUrlInput.value = localStorage.getItem('olit_backend_url');
+    }
+
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files.length) {
+        fileLabel.textContent = e.target.files[0].name;
+      }
+    });
+
+    submitBtn.addEventListener('click', async () => {
+      let baseUrl = serverUrlInput.value.trim().replace(/\/+$/, "");
+      if (!baseUrl) {
+        alert("Enter your backend URL.");
+        return;
+      }
+
+      localStorage.setItem('olit_backend_url', baseUrl);
+
+      const formData = new FormData();
+      if (fileInput.files.length) {
+        formData.append('file', fileInput.files[0]);
+      } else {
+        formData.append('text', textInput.value);
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Processing...';
+
+      try {
+        const response = await fetch(`${baseUrl}/api/summarize`, {
+          method: 'POST',
+          body: formData
+        });
+        const data = await response.json();
+
+        if (data.success) {
+          document.getElementById('statWords').textContent = data.stats.total_words;
+          document.getElementById('statRed').textContent = `${data.stats.reduction}%`;
+          document.getElementById('statTime').textContent = `${data.stats.read_time}m`;
+
+          pointsList.innerHTML = data.summary.map(p => `<li>${p}</li>`).join('');
+          resultCard.classList.remove('hidden');
+        } else {
+          alert('Error: ' + data.error);
+        }
+      } catch (err) {
+        alert('Could not reach backend.');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Summarize';
+      }
+    });
+
+    copyBtn.addEventListener('click', () => {
+      const text = Array.from(pointsList.querySelectorAll('li')).map(li => "• " + li.innerText).join('\n');
+      navigator.clipboard.writeText(text);
+      copyBtn.textContent = 'Copied';
+      setTimeout(() => copyBtn.textContent = 'Copy', 2000);
+    });
+  </script>
+</body>
+</html>
