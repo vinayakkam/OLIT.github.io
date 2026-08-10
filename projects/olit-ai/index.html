@@ -231,16 +231,16 @@
   <header>
     <div class="brand-row">
       <h1>OLIT AI</h1>
-      <span class="tag">Localhost</span>
+      <span class="tag">Localhost Engine</span>
     </div>
   </header>
 
   <main>
     <div class="input-block">
       <div class="dropzone" id="dropzone" onclick="document.getElementById('fileInput').click()">
-        <p id="file-label">Click or drop document here</p>
-        <span>Supports PDF, TXT</span>
-        <input type="file" id="fileInput" accept=".txt,.pdf" style="display:none">
+        <p id="file-label">Click or drop document/image here</p>
+        <span>Supports PDF, TXT, PNG, JPG, WEBP</span>
+        <input type="file" id="fileInput" accept=".txt,.pdf,.png,.jpg,.jpeg,.webp,.bmp" style="display:none">
       </div>
 
       <textarea id="textInput" placeholder="Or paste document text here..."></textarea>
@@ -300,7 +300,8 @@
       submitBtn.textContent = 'Processing...';
 
       try {
-        const response = await fetch('/api/summarize', {
+        // Pointing to your active localhost.run tunnel
+        const response = await fetch('https://d689b3d492a032.lhr.life/api/summarize', {
           method: 'POST',
           body: formData
         });
