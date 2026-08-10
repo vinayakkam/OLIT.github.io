@@ -1,0 +1,20 @@
+[
+  {
+    "slug": "olit",
+    "name": "OLIT",
+    "icon": "🚀",
+    "tagline": "Discord bot for space explorers — games, moderation, leaderboards.",
+    "tags": ["Discord Bot", "Flask", "Live"],
+    "link": "../index.html",
+    "external": false
+  },
+  {
+    "slug": "olit-ai",
+    "name": "OLIT AI",
+    "icon": "🤖",
+    "tagline": "Short one-line description of what OLIT AI does.",
+    "tags": ["In Development"],
+    "link": "olit-ai/",
+    "external": false
+  }
+]
