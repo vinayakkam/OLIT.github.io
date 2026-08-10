@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects — OLIT Technologies</title>
+  <link rel="icon" type="image/png" href="../logo.png">
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    .page-header { padding: 64px 24px 40px; text-align: center; }
+    .page-header p { max-width: 480px; margin: 10px auto 0; }
+    .projects-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px; padding-bottom: 80px;
+    }
+    .project-card {
+      display: flex; flex-direction: column; gap: 12px;
+      text-decoration: none; color: inherit;
+      transition: border-color 150ms ease, transform 150ms ease;
+    }
+    .project-card:hover { border-color: rgba(88,101,242,0.3); transform: translateY(-2px); }
+    .project-card .feature-icon-wrap {
+      width: 40px; height: 40px; border-radius: var(--radius-md);
+      background: var(--accent-dim); display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    .project-card h3 { font-size: 1rem; }
+    .project-card p.tagline { font-size: 0.875rem; line-height: 1.6; }
+    .project-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-brand">
+      <div class="nav-logo">
+        <img src="../logo.png" alt="OLIT" onerror="this.style.display='none';this.parentElement.textContent='🚀'" style="width:20px;height:20px;border-radius:4px;object-fit:contain">
+      </div>
+      OLIT
+    </a>
+    <div class="nav-actions">
+      <a href="../index.html" class="btn btn-ghost btn-sm">Home</a>
+      <a href="../dashboard.html" class="btn btn-secondary btn-sm">Dashboard</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="page-header">
+    <h1>Projects</h1>
+    <p>Everything we're building, in one place.</p>
+  </div>
+
+  <div id="projects-grid" class="projects-grid">
+    <div class="empty-state" style="grid-column:1/-1">
+      <div class="skeleton" style="height:120px;border-radius:var(--radius-lg)"></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <p>© <span class="year"></span> OLIT Technologies.</p>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.year').forEach(el => el.textContent = new Date().getFullYear());
+
+  fetch('projects.json')
+    .then(r => r.json())
+    .then(projects => {
+      const grid = document.getElementById('projects-grid');
+      if (!projects.length) {
+        grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-state-icon">📁</div><p>No projects yet — check back soon.</p></div>';
+        return;
+      }
+      grid.innerHTML = projects.map(p => `
+        <a class="project-card card" href="${p.link}" ${p.external ? 'target="_blank"' : ''}>
+          <div class="feature-icon-wrap">${p.icon || '📦'}</div>
+          <h3>${p.name}</h3>
+          <p class="tagline">${p.tagline || ''}</p>
+          <div class="project-tags">
+            ${(p.tags || []).map(t => `<span class="badge badge-neutral">${t}</span>`).join('')}
+          </div>
+        </a>
+      `).join('');
+    })
+    .catch(() => {
+      document.getElementById('projects-grid').innerHTML =
+        '<div class="empty-state" style="grid-column:1/-1"><p>Could not load projects.</p></div>';
+    });
+</script>
+</body>
+</html>
