@@ -3,14 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OLIT AI — Local Engine Hub</title>
+  <title>OLIT AI — Ultimate Local Engine</title>
   
-  <!-- Favicon linked to your GitHub repo logo -->
+  <!-- GitHub Repo Logo Favicon -->
   <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/vinayakkam/OLIT-AI/main/logo.png">
   
   <style>
     :root {
       --bg: #09090b;
+      --sidebar-bg: #0d0d10;
       --card-bg: #121215;
       --card-hover: #18181b;
       --border: #27272a;
@@ -19,7 +20,6 @@
       --text-muted: #a1a1aa;
       --accent: #ffffff;
       --accent-invert: #09090b;
-      --accent-glow: rgba(255, 255, 255, 0.08);
       --mono-font: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     }
 
@@ -31,155 +31,239 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 4rem 1.5rem;
+      height: 100vh;
+      overflow: hidden;
       -webkit-font-smoothing: antialiased;
-      background-image: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.03) 0%, transparent 50%);
     }
 
-    header {
-      width: 100%;
-      max-width: 680px;
-      margin-bottom: 2rem;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 1.25rem;
+    aside {
+      width: 260px;
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 1.25rem 1rem;
+      gap: 1.25rem;
+      flex-shrink: 0;
     }
 
     .brand-row {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
     }
 
     .brand-title {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 0.6rem;
     }
 
     .brand-title img {
-      width: 24px;
-      height: 24px;
+      width: 22px;
+      height: 22px;
       border-radius: 4px;
       object-fit: contain;
     }
 
-    header h1 {
-      font-size: 1.15rem;
+    .brand-title h1 {
+      font-size: 1rem;
       font-weight: 600;
       letter-spacing: -0.02em;
     }
 
     .tag {
       font-family: var(--mono-font);
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.08em;
       background: rgba(255, 255, 255, 0.04);
-      padding: 0.25rem 0.6rem;
+      padding: 0.2rem 0.5rem;
       border-radius: 999px;
       border: 1px solid var(--border);
     }
 
-    .nav-tabs {
-      display: flex;
-      gap: 0.5rem;
-      width: 100%;
-      max-width: 680px;
-      margin-bottom: 2rem;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 0.5rem;
-    }
-
-    .tab-btn {
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
+    .btn-new-chat {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.6rem;
+      border-radius: 6px;
       font-family: var(--mono-font);
       font-size: 0.75rem;
-      padding: 0.5rem 0.85rem;
-      border-radius: 6px;
       cursor: pointer;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
       transition: all 0.2s ease;
     }
 
-    .tab-btn:hover { color: var(--text); background: rgba(255, 255, 255, 0.03); }
-    .tab-btn.active { color: var(--accent); background: var(--card-bg); border: 1px solid var(--border); }
+    .btn-new-chat:hover { background: var(--card-hover); border-color: var(--border-focus); }
 
-    main {
-      width: 100%;
-      max-width: 680px;
+    .history-list {
       display: flex;
       flex-direction: column;
-      gap: 2rem;
+      gap: 0.4rem;
+      overflow-y: auto;
+      flex-grow: 1;
     }
 
-    .view-panel { display: flex; flex-direction: column; gap: 1.25rem; }
-
-    .dropzone {
-      border: 1px dashed var(--border);
-      border-radius: 8px;
-      padding: 2.5rem 1.5rem;
-      text-align: center;
-      cursor: pointer;
-      background: var(--card-bg);
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .dropzone:hover, .dropzone.dragover {
-      border-color: var(--border-focus);
-      background: var(--card-hover);
-      box-shadow: 0 0 20px var(--accent-glow);
-    }
-
-    .dropzone p { font-size: 0.9rem; color: var(--text); font-weight: 500; }
-    .dropzone span {
-      font-family: var(--mono-font);
-      font-size: 0.72rem;
+    .history-item {
+      padding: 0.6rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
       color: var(--text-muted);
-      display: block;
-      margin-top: 0.5rem;
-    }
-
-    textarea, input[type="text"] {
-      width: 100%;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      color: var(--text);
-      padding: 1rem;
-      font-size: 0.9rem;
-      outline: none;
-      font-family: inherit;
-      line-height: 1.5;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    textarea { height: 130px; resize: vertical; }
-
-    textarea:focus, input[type="text"]:focus {
-      border-color: var(--border-focus);
-      box-shadow: 0 0 0 1px var(--border-focus);
-    }
-
-    .controls-row {
+      cursor: pointer;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: all 0.15s ease;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 1rem;
+    }
+
+    .history-item:hover, .history-item.active { background: var(--card-bg); color: var(--text); }
+    .history-item .delete-btn { display: none; color: #ef4444; font-size: 0.75rem; }
+    .history-item:hover .delete-btn { display: inline; }
+
+    main {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      max-width: 800px;
+      margin: 0 auto;
+      width: 100%;
+      height: 100vh;
+      padding: 2rem 1.5rem;
+    }
+
+    .chat-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      overflow-y: auto;
+      flex-grow: 1;
+      padding-right: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .message {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .message.user .msg-header { color: var(--text-muted); }
+    .message.bot .msg-header { color: var(--accent); }
+
+    .msg-header {
+      font-family: var(--mono-font);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .msg-body {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      color: #d4d4d8;
+    }
+
+    .metrics-bar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--bg);
+      margin-bottom: 0.75rem;
+    }
+
+    .metric-item { padding: 0.6rem; text-align: center; border-right: 1px solid var(--border); }
+    .metric-item:last-child { border-right: none; }
+    .metric-value { font-family: var(--mono-font); font-size: 1rem; font-weight: 600; }
+    .metric-label { font-family: var(--mono-font); font-size: 0.6rem; color: var(--text-muted); text-transform: uppercase; }
+
+    .sources-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      margin-top: 0.75rem;
+      list-style: none;
+    }
+
+    .sources-list a { color: var(--text-muted); font-family: var(--mono-font); font-size: 0.72rem; text-decoration: none; }
+    .sources-list a:hover { color: var(--text); text-decoration: underline; }
+
+    .input-dock {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem;
+    }
+
+    .dropzone-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5rem 0.75rem;
+      background: var(--bg);
+      border: 1px dashed var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .dropzone-bar:hover { border-color: var(--border-focus); color: var(--text); }
+
+    textarea {
+      width: 100%;
+      height: 70px;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-size: 0.9rem;
+      outline: none;
+      font-family: inherit;
+      resize: none;
+      line-height: 1.5;
+    }
+
+    .dock-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--border);
+      padding-top: 0.75rem;
     }
 
     .checkbox-label {
       font-family: var(--mono-font);
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       color: var(--text-muted);
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.4rem;
       cursor: pointer;
     }
 
@@ -187,237 +271,64 @@
       background: var(--accent);
       color: var(--accent-invert);
       border: none;
-      padding: 0.9rem 1.25rem;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 0.8rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      font-family: var(--mono-font);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    button.btn-submit:hover {
-      opacity: 0.92;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
-    }
-
-    button:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
-
-    .output-section {
-      border-top: 1px solid var(--border);
-      padding-top: 1.75rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-      animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .metrics-bar {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: var(--card-bg);
-      overflow: hidden;
-    }
-
-    .metric-item {
-      padding: 1.1rem 0.8rem;
-      text-align: center;
-      border-right: 1px solid var(--border);
-    }
-
-    .metric-item:last-child { border-right: none; }
-
-    .metric-value {
-      font-family: var(--mono-font);
-      font-size: 1.2rem;
-      font-weight: 600;
-    }
-
-    .metric-label {
-      font-family: var(--mono-font);
-      font-size: 0.65rem;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-top: 0.35rem;
-    }
-
-    .output-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .output-title {
-      font-family: var(--mono-font);
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      letter-spacing: 0.08em;
-    }
-
-    .btn-copy {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-      padding: 0.45rem 0.85rem;
+      padding: 0.6rem 1.25rem;
       border-radius: 6px;
-      font-family: var(--mono-font);
-      font-size: 0.72rem;
+      font-weight: 600;
+      font-size: 0.75rem;
       cursor: pointer;
+      font-family: var(--mono-font);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
       transition: all 0.2s ease;
     }
 
-    .btn-copy:hover {
-      color: var(--text);
-      border-color: var(--border-focus);
-      background: rgba(255, 255, 255, 0.03);
-    }
+    button.btn-submit:hover { opacity: 0.9; }
+    button:disabled { opacity: 0.4; cursor: not-allowed; }
 
-    ul.summary-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    ul.summary-list li {
-      font-size: 0.92rem;
-      line-height: 1.65;
-      color: #d4d4d8;
-      padding-left: 1.5rem;
-      position: relative;
-    }
-
-    ul.summary-list li::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 0.65em;
-      width: 5px;
-      height: 5px;
-      background-color: var(--text-muted);
-      border-radius: 50%;
-    }
-
-    .chat-box {
-      background: var(--card-bg);
+    canvas.local-img {
+      border-radius: 6px;
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1.25rem;
-      white-space: pre-wrap;
-      font-size: 0.9rem;
-      line-height: 1.6;
-      color: #d4d4d8;
+      margin-top: 0.5rem;
+      max-width: 100%;
     }
-
-    .sources-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      list-style: none;
-    }
-
-    .sources-list a {
-      color: var(--text-muted);
-      font-family: var(--mono-font);
-      font-size: 0.75rem;
-      text-decoration: none;
-      transition: color 0.15s ease;
-    }
-
-    .sources-list a:hover { color: var(--text); text-decoration: underline; }
-
-    .hidden { display: none !important; }
   </style>
 </head>
 <body>
 
-  <header>
+  <aside>
     <div class="brand-row">
       <div class="brand-title">
-        <img src="https://raw.githubusercontent.com/vinayakkam/OLIT-AI/main/logo.png" alt="OLIT Logo">
+        <img src="https://raw.githubusercontent.com/vinayakkam/OLIT-AI/main/logo.png" alt="Logo">
         <h1>OLIT AI</h1>
       </div>
-      <span class="tag">Localhost Engine</span>
+      <span class="tag">Local</span>
     </div>
-  </header>
 
-  <div class="nav-tabs">
-    <button class="tab-btn active" onclick="switchTab('summarize')">Summarize</button>
-    <button class="tab-btn" onclick="switchTab('chat')">Chat & Code</button>
-  </div>
+    <button class="btn-new-chat" id="newChatBtn">┼ New Chat</button>
+    <div class="history-list" id="historyList"></div>
+  </aside>
 
   <main>
-    <!-- Summarizer View -->
-    <div id="summarizeView" class="view-panel">
-      <div class="dropzone" id="dropzone" onclick="document.getElementById('fileInput').click()">
-        <p id="file-label">Click or drop document/image here</p>
-        <span>Supports PDF, TXT, PNG, JPG, WEBP</span>
+    <div class="chat-container" id="chatContainer">
+      <div class="message bot">
+        <span class="msg-header">OLIT Engine</span>
+        <div class="msg-body">Hello! Paste text, attach a document/image to summarize, ask a question, request code, or enable web search below.</div>
+      </div>
+    </div>
+
+    <div class="input-dock">
+      <div class="dropzone-bar" onclick="document.getElementById('fileInput').click()">
+        <span id="fileLabel">📎 Attach PDF, Image, or Text file...</span>
         <input type="file" id="fileInput" accept=".txt,.pdf,.png,.jpg,.jpeg,.webp,.bmp" style="display:none">
       </div>
 
-      <textarea id="textInput" placeholder="Or paste document text here..."></textarea>
+      <textarea id="promptInput" placeholder="Ask anything, summarize text, generate code... (Enter to send, Shift+Enter for new line)"></textarea>
 
-      <button class="btn-submit" id="submitBtn">Summarize</button>
-
-      <div class="output-section hidden" id="resultCard">
-        <div class="metrics-bar">
-          <div class="metric-item">
-            <div class="metric-value" id="statWords">0</div>
-            <div class="metric-label">Words</div>
-          </div>
-          <div class="metric-item">
-            <div class="metric-value" id="statRed">0%</div>
-            <div class="metric-label">Reduced</div>
-          </div>
-          <div class="metric-item">
-            <div class="metric-value" id="statTime">0m</div>
-            <div class="metric-label">Read Time</div>
-          </div>
-        </div>
-
-        <div class="output-header">
-          <span class="output-title">Key Takeaways</span>
-          <button class="btn-copy" id="copyBtn">Copy</button>
-        </div>
-
-        <ul class="summary-list" id="pointsList"></ul>
-      </div>
-    </div>
-
-    <!-- Chat & Search View -->
-    <div id="chatView" class="view-panel hidden">
-      <input type="text" id="chatInput" placeholder="Ask a question, generate code, or search the web...">
-      
-      <div class="controls-row">
+      <div class="dock-footer">
         <label class="checkbox-label">
-          <input type="checkbox" id="enableSearch"> Enable Web Search
+          <input type="checkbox" id="enableSearch"> Web Search
         </label>
-        <button class="btn-submit" id="chatBtn">Send</button>
-      </div>
-
-      <div class="output-section hidden" id="chatResultCard">
-        <div class="output-header">
-          <span class="output-title">Response</span>
-          <button class="btn-copy" id="copyChatBtn">Copy</button>
-        </div>
-        <div class="chat-box" id="chatReply"></div>
-
-        <div id="sourcesContainer" class="hidden">
-          <span class="output-title" style="display:block; margin-bottom: 0.5rem;">Web Sources</span>
-          <ul class="sources-list" id="sourcesList"></ul>
-        </div>
+        <button class="btn-submit" id="sendBtn">Send</button>
       </div>
     </div>
   </main>
@@ -425,131 +336,208 @@
   <script>
     const API_BASE = 'https://olitapi.olittechnologies.co.in';
 
-    function switchTab(tab) {
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      document.getElementById('summarizeView').classList.add('hidden');
-      document.getElementById('chatView').classList.add('hidden');
+    const chatContainer = document.getElementById('chatContainer');
+    const promptInput = document.getElementById('promptInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const fileInput = document.getElementById('fileInput');
+    const fileLabel = document.getElementById('fileLabel');
+    const enableSearch = document.getElementById('enableSearch');
+    const newChatBtn = document.getElementById('newChatBtn');
+    const historyList = document.getElementById('historyList');
 
-      if (tab === 'summarize') {
-        event.target.classList.add('active');
-        document.getElementById('summarizeView').classList.remove('hidden');
-      } else {
-        event.target.classList.add('active');
-        document.getElementById('chatView').classList.remove('hidden');
+    let chats = JSON.parse(localStorage.getItem('olit_chats') || '[]');
+    let currentChatId = null;
+
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files.length) fileLabel.textContent = `📄 ${e.target.files[0].name}`;
+    });
+
+    promptInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        handleSend();
+      }
+    });
+
+    sendBtn.addEventListener('click', handleSend);
+    newChatBtn.addEventListener('click', createNewChat);
+
+    function createNewChat() {
+      currentChatId = Date.now();
+      chatContainer.innerHTML = `
+        <div class="message bot">
+          <span class="msg-header">OLIT Engine</span>
+          <div class="msg-body">New session initialized. How can I assist you?</div>
+        </div>
+      `;
+      renderHistory();
+    }
+
+    async function handleSend() {
+      const text = promptInput.value.trim();
+      const hasFile = fileInput.files.length > 0;
+
+      if (!text && !hasFile) return;
+      if (!currentChatId) currentChatId = Date.now();
+
+      appendMessage('user', text || `Uploaded file: ${fileInput.files[0].name}`);
+
+      sendBtn.disabled = true;
+      promptInput.value = '';
+
+      try {
+        if (hasFile) {
+          const formData = new FormData();
+          formData.append('file', fileInput.files[0]);
+          if (text) formData.append('text', text);
+
+          const res = await fetch(`${API_BASE}/api/summarize`, { method: 'POST', body: formData });
+          const data = await res.json();
+
+          if (data.success) {
+            renderSummaryResponse(data);
+          } else {
+            appendMessage('bot', `Error: ${data.error}`);
+          }
+          fileInput.value = '';
+          fileLabel.textContent = '📎 Attach PDF, Image, or Text file...';
+        } else {
+          const res = await fetch(`${API_BASE}/api/chat`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: text, enable_search: enableSearch.checked })
+          });
+          const data = await res.json();
+
+          if (data.success) {
+            if (data.type === 'image') {
+              renderLocalImageResponse(data.prompt || text);
+            } else {
+              appendMessage('bot', data.reply, data.sources);
+            }
+          } else {
+            appendMessage('bot', `Error: ${data.error}`);
+          }
+        }
+      } catch (err) {
+        appendMessage('bot', 'Could not connect to backend server.');
+      } finally {
+        sendBtn.disabled = false;
+        saveChatHistory(text || 'File Processing');
       }
     }
 
-    // Summarizer Logic
-    const fileInput = document.getElementById('fileInput');
-    const fileLabel = document.getElementById('file-label');
-    const textInput = document.getElementById('textInput');
-    const submitBtn = document.getElementById('submitBtn');
-    const resultCard = document.getElementById('resultCard');
-    const pointsList = document.getElementById('pointsList');
-    const copyBtn = document.getElementById('copyBtn');
+    function appendMessage(role, content, sources = []) {
+      const msgDiv = document.createElement('div');
+      msgDiv.className = `message ${role}`;
+      
+      let sourcesHtml = '';
+      if (sources && sources.length) {
+        sourcesHtml = `<ul class="sources-list">` + 
+          sources.map(s => `<li><a href="${s.url}" target="_blank">🔗 ${s.title}</a></li>`).join('') + 
+          `</ul>`;
+      }
 
-    fileInput.addEventListener('change', (e) => {
-      if (e.target.files.length) fileLabel.textContent = e.target.files[0].name;
-    });
+      msgDiv.innerHTML = `
+        <span class="msg-header">${role === 'user' ? 'You' : 'OLIT Engine'}</span>
+        <div class="msg-body">${escapeHtml(content)}${sourcesHtml}</div>
+      `;
+      chatContainer.appendChild(msgDiv);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
 
-    submitBtn.addEventListener('click', async () => {
-      const formData = new FormData();
-      if (fileInput.files.length) {
-        formData.append('file', fileInput.files[0]);
+    function renderSummaryResponse(data) {
+      const msgDiv = document.createElement('div');
+      msgDiv.className = 'message bot';
+      const points = data.summary.map(pt => `• ${pt}`).join('\n');
+      
+      msgDiv.innerHTML = `
+        <span class="msg-header">OLIT Engine</span>
+        <div class="msg-body">
+          <div class="metrics-bar">
+            <div class="metric-item"><div class="metric-value">${data.stats.total_words}</div><div class="metric-label">Words</div></div>
+            <div class="metric-item"><div class="metric-value">${data.stats.reduction}%</div><div class="metric-label">Reduced</div></div>
+            <div class="metric-item"><div class="metric-value">${data.stats.read_time}m</div><div class="metric-label">Read Time</div></div>
+          </div>
+          <strong>Key Takeaways:</strong>\n${escapeHtml(points)}
+        </div>
+      `;
+      chatContainer.appendChild(msgDiv);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    function renderLocalImageResponse(prompt) {
+      const msgDiv = document.createElement('div');
+      msgDiv.className = 'message bot';
+      
+      msgDiv.innerHTML = `
+        <span class="msg-header">OLIT Engine</span>
+        <div class="msg-body">
+          Generated local visual artwork for: <em>"${escapeHtml(prompt)}"</em>
+          <br>
+          <canvas class="local-img" width="400" height="200"></canvas>
+        </div>
+      `;
+      chatContainer.appendChild(msgDiv);
+
+      const canvas = msgDiv.querySelector('canvas');
+      const ctx = canvas.getContext('2d');
+      const grad = ctx.createLinearGradient(0, 0, 400, 200);
+      grad.addColorStop(0, '#18181b');
+      grad.addColorStop(1, '#27272a');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 400, 200);
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '12px monospace';
+      ctx.fillText(`[LOCAL RENDER]: ${prompt.substring(0, 35)}...`, 20, 105);
+
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    function saveChatHistory(preview) {
+      const existing = chats.find(c => c.id === currentChatId);
+      if (existing) {
+        existing.preview = preview;
+        existing.html = chatContainer.innerHTML;
       } else {
-        formData.append('text', textInput.value);
+        chats.unshift({ id: currentChatId, preview: preview, html: chatContainer.innerHTML });
       }
+      localStorage.setItem('olit_chats', JSON.stringify(chats));
+      renderHistory();
+    }
 
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Processing...';
+    function renderHistory() {
+      historyList.innerHTML = chats.map(c => `
+        <div class="history-item ${c.id === currentChatId ? 'active' : ''}" onclick="loadChat(${c.id})">
+          <span>${escapeHtml(c.preview.substring(0, 22))}</span>
+          <span class="delete-btn" onclick="deleteChat(event, ${c.id})">✕</span>
+        </div>
+      `).join('');
+    }
 
-      try {
-        const response = await fetch(`${API_BASE}/api/summarize`, {
-          method: 'POST',
-          body: formData
-        });
-        const data = await response.json();
-
-        if (data.success) {
-          document.getElementById('statWords').textContent = data.stats.total_words;
-          document.getElementById('statRed').textContent = `${data.stats.reduction}%`;
-          document.getElementById('statTime').textContent = `${data.stats.read_time}m`;
-
-          pointsList.innerHTML = data.summary.map(p => `<li>${p}</li>`).join('');
-          resultCard.classList.remove('hidden');
-        } else {
-          alert('Error: ' + data.error);
-        }
-      } catch (err) {
-        alert('Could not reach backend.');
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Summarize';
+    window.loadChat = (id) => {
+      currentChatId = id;
+      const chat = chats.find(c => c.id === id);
+      if (chat) {
+        chatContainer.innerHTML = chat.html;
+        renderHistory();
       }
-    });
+    };
 
-    copyBtn.addEventListener('click', () => {
-      const text = Array.from(pointsList.querySelectorAll('li')).map(li => "• " + li.innerText).join('\n');
-      navigator.clipboard.writeText(text);
-      copyBtn.textContent = 'Copied';
-      setTimeout(() => copyBtn.textContent = 'Copy', 2000);
-    });
+    window.deleteChat = (e, id) => {
+      e.stopPropagation();
+      chats = chats.filter(c => c.id !== id);
+      localStorage.setItem('olit_chats', JSON.stringify(chats));
+      if (currentChatId === id) createNewChat();
+      else renderHistory();
+    };
 
-    // Chat / Code / Search Logic
-    const chatInput = document.getElementById('chatInput');
-    const chatBtn = document.getElementById('chatBtn');
-    const enableSearch = document.getElementById('enableSearch');
-    const chatResultCard = document.getElementById('chatResultCard');
-    const chatReply = document.getElementById('chatReply');
-    const copyChatBtn = document.getElementById('copyChatBtn');
-    const sourcesContainer = document.getElementById('sourcesContainer');
-    const sourcesList = document.getElementById('sourcesList');
-
-    chatBtn.addEventListener('click', async () => {
-      const message = chatInput.value.trim();
-      if (!message) return;
-
-      chatBtn.disabled = true;
-      chatBtn.textContent = 'Generating...';
-
-      try {
-        const response = await fetch(`${API_BASE}/api/chat`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            message: message,
-            enable_search: enableSearch.checked
-          })
-        });
-        const data = await response.json();
-
-        if (data.success) {
-          chatReply.textContent = data.reply;
-          
-          if (data.sources && data.sources.length) {
-            sourcesList.innerHTML = data.sources.map(s => `<li><a href="${s.url}" target="_blank">🔗 ${s.title}</a></li>`).join('');
-            sourcesContainer.classList.remove('hidden');
-          } else {
-            sourcesContainer.classList.add('hidden');
-          }
-
-          chatResultCard.classList.remove('hidden');
-        } else {
-          alert('Error: ' + data.error);
-        }
-      } catch (err) {
-        alert('Could not reach backend API.');
-      } finally {
-        chatBtn.disabled = false;
-        chatBtn.textContent = 'Send';
-      }
-    });
-
-    copyChatBtn.addEventListener('click', () => {
-      navigator.clipboard.writeText(chatReply.textContent);
-      copyChatBtn.textContent = 'Copied';
-      setTimeout(() => copyChatBtn.textContent = 'Copy', 2000);
-    });
+    renderHistory();
   </script>
 </body>
 </html>
