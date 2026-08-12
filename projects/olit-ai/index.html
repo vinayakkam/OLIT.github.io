@@ -25,12 +25,12 @@
       --text-muted: #8c8c93;
       
       /* Accents */
-      --accent-bright: #2563eb; /* Updated to Blue for Send button */
+      --accent-bright: #2563eb; 
       --accent-invert: #ffffff;
-      --accent-bot-header: #22d3ee; /* Bright Cyan header for bot messages */
+      --accent-bot-header: #22d3ee; 
       
-      --color-pulse-glow: rgba(220, 230, 255, 0.45); /* Pale blue glow for pulse */
-      --color-tag-nexus-green: #10b981; /* Emerald Green for the 'Nexus' tag */
+      --color-pulse-glow: rgba(220, 230, 255, 0.45); 
+      --color-tag-nexus-green: #10b981; 
       --color-summary-words: #e2e8f0;
 
       --mono-font: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -58,7 +58,7 @@
       display: flex;
       flex-direction: column;
       padding: 1.5rem 1.1rem;
-      gap: 1.5rem;
+      gap: 1.2rem;
       flex-shrink: 0;
     }
 
@@ -119,31 +119,40 @@
         border-color: var(--color-tag-nexus-green);
     }
 
+    /* Minimalist "New chat" button matching reference design */
     .btn-new-chat {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
+      background: transparent;
+      border: none;
       color: var(--text);
-      padding: 0.65rem;
-      border-radius: 7px;
-      font-family: var(--mono-font);
-      font-size: 0.75rem;
+      padding: 0.5rem 0.4rem;
+      border-radius: 8px;
+      font-size: 0.92rem;
+      font-weight: 500;
       cursor: pointer;
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 0.6rem;
+      gap: 0.7rem;
       transition: all 0.15s ease;
     }
 
     .btn-new-chat:hover {
-      background: var(--card-hover);
-      border-color: var(--border-focus);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .btn-new-chat svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--text);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
 
     .history-list {
       display: flex;
       flex-direction: column;
-      gap: 0.45rem;
+      gap: 0.25rem;
       overflow-y: auto;
       flex-grow: 1;
       padding-right: 0.2rem;
@@ -151,8 +160,8 @@
 
     .history-item {
       padding: 0.6rem 0.8rem;
-      border-radius: 7px;
-      font-size: 0.8rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
       color: var(--text-muted);
       cursor: pointer;
       white-space: nowrap;
@@ -165,7 +174,7 @@
     }
 
     .history-item:hover, .history-item.active {
-      background: var(--card-bg);
+      background: rgba(255, 255, 255, 0.05);
       color: var(--text);
     }
 
@@ -387,7 +396,7 @@
       padding-top: 0.9rem;
     }
 
-    /* Updated Blue Send Button */
+    /* Blue Send Button */
     button.btn-submit {
       background: #2563eb;
       color: #ffffff;
@@ -435,16 +444,21 @@
       <span class="tag nexus-tag">Nexus</span>
     </div>
 
-    <button class="btn-new-chat" id="newChatBtn">┼ New Nexus Session</button>
+    <!-- Redesigned "New chat" button matching reference design -->
+    <button class="btn-new-chat" id="newChatBtn">
+      <svg viewBox="0 0 24 24">
+        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+      </svg>
+      New chat
+    </button>
 
     <div class="history-list" id="historyList"></div>
   </aside>
 
   <!-- Main Chat Flow -->
   <main>
-    <div class="chat-container" id="chatContainer">
-      <!-- Welcome text removed -->
-    </div>
+    <div class="chat-container" id="chatContainer"></div>
 
     <!-- Input Control Dock -->
     <div class="input-dock">
@@ -456,7 +470,6 @@
       <textarea id="promptInput" placeholder="Analyze data, summarize text, synthesize code... (Enter to send, Shift+Enter for newline)"></textarea>
 
       <div class="dock-footer">
-        <!-- Changed to Send with up arrow icon -->
         <button class="btn-submit" id="sendBtn">
           Send <span>↑</span>
         </button>
@@ -500,11 +513,41 @@
       renderHistory();
     }
 
+    // Dynamic Title Generation based on initial user query intent
+    function generateDynamicTitle(promptText) {
+      if (!promptText) return "New Conversation";
+
+      let text = promptText.trim().replace(/^hey\s+|^please\s+|^can\s+you\s+/i, '');
+      
+      // Code generation intent
+      if (/python|code|script|function|print|factorial|html|js/i.test(text)) {
+        let match = text.match(/print\s*\(?["']?([^"'\)]+)["']?\)?/i) || text.match(/(python|code|script|function|factorial|html|js)/i);
+        if (match) return `Python: ${match[1].substring(0, 15)}`;
+        return "Code Generation";
+      }
+
+      // Search / Entity intent
+      if (/search|find|lookup|about|vande bharat|who is|what is/i.test(text)) {
+        let clean = text.replace(/search\s+about\s+|search\s+|find\s+|lookup\s+/i, '');
+        return clean.substring(0, 22).replace(/^\w/, c => c.toUpperCase());
+      }
+
+      // Image intent
+      if (/image|draw|generate image|visual/i.test(text)) {
+        return "Image Generation";
+      }
+
+      // Default sentence case dynamic title
+      return text.substring(0, 22).replace(/^\w/, c => c.toUpperCase());
+    }
+
     async function handleSend() {
       const text = promptInput.value.trim();
       const hasFile = fileInput.files.length > 0;
 
       if (!text && !hasFile) return;
+
+      const isFirstMessage = !currentChatId || !chats.some(c => c.id === currentChatId);
 
       if (!currentChatId) currentChatId = Date.now();
 
@@ -553,7 +596,9 @@
       } finally {
         sendBtn.disabled = false;
         sendBtn.innerHTML = 'Send <span>↑</span>';
-        saveChatHistory(text || 'Synthesis Operation');
+        
+        // Save chat history keeping the generated title fixed per session
+        saveChatHistory(text || 'Document Analysis', isFirstMessage);
       }
     }
 
@@ -579,7 +624,6 @@
     function formatBotResponse(text) {
         let formatted = escapeHtml(text);
 
-        formatted = formatted.replace(/-&gt;/g, '→');
         formatted = formatted.replace(/-&gt;/g, '→');
         
         formatted = formatted.replace(/```python\n([\s\S]*?)```/g, '<pre><code class="python">$1</code></pre>');
@@ -678,13 +722,14 @@
       return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/'/g, "&#x27;").replace(/"/g, "&quot;");
     }
 
-    function saveChatHistory(preview) {
+    function saveChatHistory(promptText, isFirstMessage) {
       const existing = chats.find(c => c.id === currentChatId);
       if (existing) {
-        existing.preview = preview;
         existing.html = chatContainer.innerHTML;
+        // Keep initial generated dynamic title intact rather than overwriting with latest message
       } else {
-        chats.unshift({ id: currentChatId, preview: preview, html: chatContainer.innerHTML });
+        const dynamicTitle = generateDynamicTitle(promptText);
+        chats.unshift({ id: currentChatId, title: dynamicTitle, html: chatContainer.innerHTML });
       }
       localStorage.setItem('olit_nexus_chats', JSON.stringify(chats));
       renderHistory();
@@ -693,7 +738,7 @@
     function renderHistory() {
       historyList.innerHTML = chats.map(c => `
         <div class="history-item ${c.id === currentChatId ? 'active' : ''}" onclick="loadChat(${c.id})">
-          <span>${escapeHtml(c.preview.substring(0, 22))}</span>
+          <span>${escapeHtml(c.title || "New Conversation")}</span>
           <span class="delete-btn" onclick="deleteChat(event, ${c.id})">✕</span>
         </div>
       `).join('');
