@@ -3,23 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OLIT AI — Ultimate Local Engine</title>
+  <title>OLIT AI — Nexus Engine</title>
   
-  <!-- GitHub Repo Logo Favicon -->
-  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/vinayakkam/OLIT-AI/main/logo.png">
+  <!-- Browser Favicon - Linked from the root of your GitHub repo -->
+  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/vinayakkam/OLIT.github.io/main/Logo.png">
   
   <style>
     :root {
       --bg: #09090b;
-      --sidebar-bg: #0d0d10;
-      --card-bg: #121215;
-      --card-hover: #18181b;
-      --border: #27272a;
-      --border-focus: #52525b;
-      --text: #f4f4f5;
-      --text-muted: #a1a1aa;
+      --sidebar-bg: #0c0c0f;
+      --card-bg: #111114;
+      --card-hover: #161619;
+      --border: #242427;
+      --border-focus: #4a4a4f;
+      --text: #f1f1f3;
+      --text-muted: #8c8c93;
       --accent: #ffffff;
       --accent-invert: #09090b;
+      
+      /* Mild Color Palette for Minimalist Approach */
+      --color-pulse: rgba(220, 230, 255, 0.15); /* Soft, pale blue glow */
+      --color-tag-bg: rgba(255, 255, 255, 0.04);
+      --color-summary-words: #e2e8f0;
+
       --mono-font: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     }
 
@@ -34,16 +40,18 @@
       height: 100vh;
       overflow: hidden;
       -webkit-font-smoothing: antialiased;
+      background-image: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.02) 0%, transparent 55%);
     }
 
+    /* Sidebar Styling */
     aside {
-      width: 260px;
+      width: 270px;
       background: var(--sidebar-bg);
       border-right: 1px solid var(--border);
       display: flex;
       flex-direction: column;
-      padding: 1.25rem 1rem;
-      gap: 1.25rem;
+      padding: 1.5rem 1.1rem;
+      gap: 1.5rem;
       flex-shrink: 0;
     }
 
@@ -51,27 +59,36 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding-bottom: 0.75rem;
+      padding-bottom: 0.9rem;
       border-bottom: 1px solid var(--border);
     }
 
     .brand-title {
       display: flex;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.7rem;
     }
 
-    .brand-title img {
-      width: 22px;
-      height: 22px;
-      border-radius: 4px;
+    /* Logo linked from the root of your GitHub repo */
+    .brand-title img.logo-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 5px;
       object-fit: contain;
+      /* Soft pulse animation on logo */
+      animation: nexusPulse 4s infinite cubic-bezier(0.4, 0, 0.6, 1);
+    }
+
+    @keyframes nexusPulse {
+      0%, 100% { box-shadow: 0 0 5px transparent; }
+      50% { box-shadow: 0 0 10px var(--color-pulse); }
     }
 
     .brand-title h1 {
-      font-size: 1rem;
+      font-size: 1.05rem;
       font-weight: 600;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.025em;
+      color: var(--text);
     }
 
     .tag {
@@ -80,8 +97,8 @@
       color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      background: rgba(255, 255, 255, 0.04);
-      padding: 0.2rem 0.5rem;
+      background: var(--color-tag-bg);
+      padding: 0.2rem 0.55rem;
       border-radius: 999px;
       border: 1px solid var(--border);
     }
@@ -90,31 +107,35 @@
       background: var(--card-bg);
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 0.6rem;
-      border-radius: 6px;
+      padding: 0.65rem;
+      border-radius: 7px;
       font-family: var(--mono-font);
       font-size: 0.75rem;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.5rem;
-      transition: all 0.2s ease;
+      gap: 0.6rem;
+      transition: all 0.15s ease;
     }
 
-    .btn-new-chat:hover { background: var(--card-hover); border-color: var(--border-focus); }
+    .btn-new-chat:hover {
+      background: var(--card-hover);
+      border-color: var(--border-focus);
+    }
 
     .history-list {
       display: flex;
       flex-direction: column;
-      gap: 0.4rem;
+      gap: 0.45rem;
       overflow-y: auto;
       flex-grow: 1;
+      padding-right: 0.2rem;
     }
 
     .history-item {
-      padding: 0.6rem 0.75rem;
-      border-radius: 6px;
+      padding: 0.6rem 0.8rem;
+      border-radius: 7px;
       font-size: 0.8rem;
       color: var(--text-muted);
       cursor: pointer;
@@ -127,41 +148,52 @@
       align-items: center;
     }
 
-    .history-item:hover, .history-item.active { background: var(--card-bg); color: var(--text); }
-    .history-item .delete-btn { display: none; color: #ef4444; font-size: 0.75rem; }
+    .history-item:hover, .history-item.active {
+      background: var(--card-bg);
+      color: var(--text);
+    }
+
+    .history-item .delete-btn {
+      display: none;
+      color: #ee4444;
+      font-size: 0.8rem;
+      margin-left: 0.5rem;
+    }
+
     .history-item:hover .delete-btn { display: inline; }
 
+    /* Main Container */
     main {
       flex-grow: 1;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      max-width: 800px;
+      max-width: 820px;
       margin: 0 auto;
       width: 100%;
       height: 100vh;
-      padding: 2rem 1.5rem;
+      padding: 2.5rem 1.75rem;
     }
 
     .chat-container {
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
+      gap: 1.75rem;
       overflow-y: auto;
       flex-grow: 1;
-      padding-right: 0.5rem;
-      margin-bottom: 1.5rem;
+      padding-right: 0.6rem;
+      margin-bottom: 2rem;
     }
 
     .message {
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 0.6rem;
       animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px); }
+      from { opacity: 0; transform: translateY(5px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
@@ -178,71 +210,86 @@
     .msg-body {
       background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1rem 1.25rem;
+      border-radius: 9px;
+      padding: 1.1rem 1.4rem;
       font-size: 0.9rem;
       line-height: 1.6;
       white-space: pre-wrap;
-      color: #d4d4d8;
+      color: var(--color-summary-words);
     }
 
     .metrics-bar {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       border: 1px solid var(--border);
-      border-radius: 6px;
+      border-radius: 7px;
       background: var(--bg);
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.9rem;
+      overflow: hidden;
     }
 
-    .metric-item { padding: 0.6rem; text-align: center; border-right: 1px solid var(--border); }
+    .metric-item {
+      padding: 0.7rem;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+
     .metric-item:last-child { border-right: none; }
-    .metric-value { font-family: var(--mono-font); font-size: 1rem; font-weight: 600; }
-    .metric-label { font-family: var(--mono-font); font-size: 0.6rem; color: var(--text-muted); text-transform: uppercase; }
+    .metric-value { font-family: var(--mono-font); font-size: 1.1rem; font-weight: 600; }
+    .metric-label { font-family: var(--mono-font); font-size: 0.6rem; color: var(--text-muted); text-transform: uppercase; margin-top: 0.2rem; }
 
     .sources-list {
       display: flex;
       flex-direction: column;
-      gap: 0.3rem;
-      margin-top: 0.75rem;
+      gap: 0.35rem;
+      margin-top: 0.9rem;
       list-style: none;
     }
 
-    .sources-list a { color: var(--text-muted); font-family: var(--mono-font); font-size: 0.72rem; text-decoration: none; }
+    .sources-list a {
+      color: var(--text-muted);
+      font-family: var(--mono-font);
+      font-size: 0.72rem;
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
     .sources-list a:hover { color: var(--text); text-decoration: underline; }
 
+    /* Input Dock */
     .input-dock {
       display: flex;
       flex-direction: column;
-      gap: 0.75rem;
+      gap: 0.9rem;
       background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1rem;
+      border-radius: 12px;
+      padding: 1.2rem;
     }
 
     .dropzone-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0.5rem 0.75rem;
+      padding: 0.6rem 0.9rem;
       background: var(--bg);
       border: 1px dashed var(--border);
-      border-radius: 6px;
+      border-radius: 7px;
       cursor: pointer;
       font-size: 0.8rem;
       color: var(--text-muted);
+      transition: all 0.15s ease;
     }
 
     .dropzone-bar:hover { border-color: var(--border-focus); color: var(--text); }
 
     textarea {
       width: 100%;
-      height: 70px;
+      height: 75px;
       background: transparent;
       border: none;
       color: var(--text);
-      font-size: 0.9rem;
+      font-size: 0.92rem;
       outline: none;
       font-family: inherit;
       resize: none;
@@ -251,84 +298,91 @@
 
     .dock-footer {
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-end; /* Send Button is shifted to the right */
       align-items: center;
       border-top: 1px solid var(--border);
-      padding-top: 0.75rem;
-    }
-
-    .checkbox-label {
-      font-family: var(--mono-font);
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      cursor: pointer;
+      padding-top: 0.9rem;
     }
 
     button.btn-submit {
       background: var(--accent);
       color: var(--accent-invert);
       border: none;
-      padding: 0.6rem 1.25rem;
-      border-radius: 6px;
+      padding: 0.7rem 1.4rem;
+      border-radius: 7px;
       font-weight: 600;
-      font-size: 0.75rem;
+      font-size: 0.78rem;
       cursor: pointer;
       font-family: var(--mono-font);
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      transition: all 0.2s ease;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    button.btn-submit:hover { opacity: 0.9; }
-    button:disabled { opacity: 0.4; cursor: not-allowed; }
+    button.btn-submit:hover { opacity: 0.88; transform: translateY(-1px); }
+    button:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 
-    canvas.local-img {
-      border-radius: 6px;
+    canvas.nexus-img {
+      border-radius: 7px;
       border: 1px solid var(--border);
-      margin-top: 0.5rem;
+      margin-top: 0.6rem;
       max-width: 100%;
+    }
+    
+    /* Code block formatting inside bot response */
+    .msg-body pre {
+        background: rgba(0,0,0,0.2);
+        padding: 0.8rem;
+        border-radius: 6px;
+        margin-top: 0.5rem;
+        overflow-x: auto;
+    }
+    .msg-body code {
+        font-family: var(--mono-font);
+        font-size: 0.8rem;
+        color: #e6edf3;
     }
   </style>
 </head>
 <body>
 
+  <!-- Sidebar -->
   <aside>
     <div class="brand-row">
       <div class="brand-title">
-        <img src="https://raw.githubusercontent.com/vinayakkam/OLIT-AI/main/logo.png" alt="Logo">
-        <h1>OLIT AI</h1>
+        <!-- OLIT Nexus Logo linked from the root of your GitHub repo -->
+        <img src="https://raw.githubusercontent.com/vinayakkam/OLIT.github.io/main/Logo.png" alt="OLIT Nexus Logo" class="logo-icon">
+        <h1>OLIT Nexus</h1>
       </div>
-      <span class="tag">Local</span>
+      <span class="tag">Core</span>
     </div>
 
-    <button class="btn-new-chat" id="newChatBtn">┼ New Chat</button>
+    <button class="btn-new-chat" id="newChatBtn">┼ New Nexus Session</button>
+
     <div class="history-list" id="historyList"></div>
   </aside>
 
+  <!-- Main Chat Flow -->
   <main>
     <div class="chat-container" id="chatContainer">
       <div class="message bot">
-        <span class="msg-header">OLIT Engine</span>
-        <div class="msg-body">Hello! Paste text, attach a document/image to summarize, ask a question, request code, or enable web search below.</div>
+        <span class="msg-header">Nexus Engine</span>
+        <div class="msg-body">Synthesis Engine Ready. Paste document text, attach files, generate code tasks, or ask a question. Complex queries will automatically trigger web search grounding.</div>
       </div>
     </div>
 
+    <!-- Input Control Dock -->
     <div class="input-dock">
       <div class="dropzone-bar" onclick="document.getElementById('fileInput').click()">
         <span id="fileLabel">📎 Attach PDF, Image, or Text file...</span>
         <input type="file" id="fileInput" accept=".txt,.pdf,.png,.jpg,.jpeg,.webp,.bmp" style="display:none">
       </div>
 
-      <textarea id="promptInput" placeholder="Ask anything, summarize text, generate code... (Enter to send, Shift+Enter for new line)"></textarea>
+      <textarea id="promptInput" placeholder="Analyze data, summarize text, synthesize code... (Enter to send, Shift+Enter for newline)"></textarea>
 
       <div class="dock-footer">
-        <label class="checkbox-label">
-          <input type="checkbox" id="enableSearch"> Web Search
-        </label>
-        <button class="btn-submit" id="sendBtn">Send</button>
+        <!-- Button shifted right. -->
+        <button class="btn-submit" id="sendBtn">Synthesize</button>
       </div>
     </div>
   </main>
@@ -336,22 +390,24 @@
   <script>
     const API_BASE = 'https://olitapi.olittechnologies.co.in';
 
+    // Elements
     const chatContainer = document.getElementById('chatContainer');
     const promptInput = document.getElementById('promptInput');
     const sendBtn = document.getElementById('sendBtn');
     const fileInput = document.getElementById('fileInput');
     const fileLabel = document.getElementById('fileLabel');
-    const enableSearch = document.getElementById('enableSearch');
     const newChatBtn = document.getElementById('newChatBtn');
     const historyList = document.getElementById('historyList');
 
-    let chats = JSON.parse(localStorage.getItem('olit_chats') || '[]');
+    // Chat History Array
+    let chats = JSON.parse(localStorage.getItem('olit_nexus_chats') || '[]');
     let currentChatId = null;
 
     fileInput.addEventListener('change', (e) => {
       if (e.target.files.length) fileLabel.textContent = `📄 ${e.target.files[0].name}`;
     });
 
+    // Handle Keyboard Flow: Enter = Send, Shift+Enter = New Line in Textarea
     promptInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
@@ -366,8 +422,8 @@
       currentChatId = Date.now();
       chatContainer.innerHTML = `
         <div class="message bot">
-          <span class="msg-header">OLIT Engine</span>
-          <div class="msg-body">New session initialized. How can I assist you?</div>
+          <span class="msg-header">Nexus Engine</span>
+          <div class="msg-body">New Nexus session synthesized. How can I assist with your data synthesis today?</div>
         </div>
       `;
       renderHistory();
@@ -378,15 +434,19 @@
       const hasFile = fileInput.files.length > 0;
 
       if (!text && !hasFile) return;
+
       if (!currentChatId) currentChatId = Date.now();
 
-      appendMessage('user', text || `Uploaded file: ${fileInput.files[0].name}`);
+      // Render User Message
+      appendMessage('user', text || `Attached asset: ${fileInput.files[0].name}`);
 
       sendBtn.disabled = true;
+      sendBtn.textContent = 'Synthesizing...';
       promptInput.value = '';
 
       try {
         if (hasFile) {
+          // Send to /api/summarize endpoint (retains summarization logic)
           const formData = new FormData();
           formData.append('file', fileInput.files[0]);
           if (text) formData.append('text', text);
@@ -397,33 +457,35 @@
           if (data.success) {
             renderSummaryResponse(data);
           } else {
-            appendMessage('bot', `Error: ${data.error}`);
+            appendMessage('bot', `Nexus Synthesis Error: ${data.error}`);
           }
           fileInput.value = '';
           fileLabel.textContent = '📎 Attach PDF, Image, or Text file...';
         } else {
+          // Send to /api/chat endpoint (handles conversion, code, grounding locally)
           const res = await fetch(`${API_BASE}/api/chat`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: text, enable_search: enableSearch.checked })
+            body: JSON.stringify({ message: text }) // Web search is automated on backend
           });
           const data = await res.json();
 
           if (data.success) {
             if (data.type === 'image') {
-              renderLocalImageResponse(data.prompt || text);
+              renderNexusImageResponse(data.prompt || text);
             } else {
               appendMessage('bot', data.reply, data.sources);
             }
           } else {
-            appendMessage('bot', `Error: ${data.error}`);
+            appendMessage('bot', `Nexus Synthesis Error: ${data.error}`);
           }
         }
       } catch (err) {
-        appendMessage('bot', 'Could not connect to backend server.');
+        appendMessage('bot', 'Could not connect to OLIT Nexus backend.');
       } finally {
         sendBtn.disabled = false;
-        saveChatHistory(text || 'File Processing');
+        sendBtn.textContent = 'Synthesize';
+        saveChatHistory(text || 'Synthesis Operation');
       }
     }
 
@@ -439,7 +501,7 @@
       }
 
       msgDiv.innerHTML = `
-        <span class="msg-header">${role === 'user' ? 'You' : 'OLIT Engine'}</span>
+        <span class="msg-header">${role === 'user' ? 'You' : 'Nexus Engine'}</span>
         <div class="msg-body">${escapeHtml(content)}${sourcesHtml}</div>
       `;
       chatContainer.appendChild(msgDiv);
@@ -449,48 +511,60 @@
     function renderSummaryResponse(data) {
       const msgDiv = document.createElement('div');
       msgDiv.className = 'message bot';
+      
       const points = data.summary.map(pt => `• ${pt}`).join('\n');
       
       msgDiv.innerHTML = `
-        <span class="msg-header">OLIT Engine</span>
+        <span class="msg-header">Nexus Engine</span>
         <div class="msg-body">
           <div class="metrics-bar">
             <div class="metric-item"><div class="metric-value">${data.stats.total_words}</div><div class="metric-label">Words</div></div>
-            <div class="metric-item"><div class="metric-value">${data.stats.reduction}%</div><div class="metric-label">Reduced</div></div>
+            <div class="metric-item"><div class="metric-value">${data.stats.reduction}%</div><div class="metric-label">Reduction</div></div>
             <div class="metric-item"><div class="metric-value">${data.stats.read_time}m</div><div class="metric-label">Read Time</div></div>
           </div>
-          <strong>Key Takeaways:</strong>\n${escapeHtml(points)}
+          <strong>Nexus Synthesis Key Takeaways:</strong>\n${escapeHtml(points)}
         </div>
       `;
       chatContainer.appendChild(msgDiv);
       chatContainer.scrollTop = chatContainer.scrollHeight;
     }
 
-    function renderLocalImageResponse(prompt) {
+    function renderNexusImageResponse(prompt) {
       const msgDiv = document.createElement('div');
       msgDiv.className = 'message bot';
       
       msgDiv.innerHTML = `
-        <span class="msg-header">OLIT Engine</span>
+        <span class="msg-header">Nexus Engine</span>
         <div class="msg-body">
-          Generated local visual artwork for: <em>"${escapeHtml(prompt)}"</em>
+          Generated Nexus visual artwork for: <em>"${escapeHtml(prompt)}"</em>
           <br>
-          <canvas class="local-img" width="400" height="200"></canvas>
+          <canvas class="nexus-img" width="400" height="220"></canvas>
         </div>
       `;
       chatContainer.appendChild(msgDiv);
 
+      // Procedural canvas image rendering
       const canvas = msgDiv.querySelector('canvas');
       const ctx = canvas.getContext('2d');
-      const grad = ctx.createLinearGradient(0, 0, 400, 200);
-      grad.addColorStop(0, '#18181b');
-      grad.addColorStop(1, '#27272a');
+      const grad = ctx.createLinearGradient(0, 0, 400, 220);
+      grad.addColorStop(0, '#0c0c0f');
+      grad.addColorStop(1, '#161619');
       ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, 400, 200);
+      ctx.fillRect(0, 0, 400, 220);
+
+      // Abstract procedural design
+      ctx.strokeStyle = 'rgba(220, 230, 255, 0.08)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i < 15; i++) {
+          ctx.beginPath();
+          ctx.moveTo(Math.random() * 400, Math.random() * 220);
+          ctx.lineTo(Math.random() * 400, Math.random() * 220);
+          ctx.stroke();
+      }
 
       ctx.fillStyle = '#ffffff';
       ctx.font = '12px monospace';
-      ctx.fillText(`[LOCAL RENDER]: ${prompt.substring(0, 35)}...`, 20, 105);
+      ctx.fillText(`[NEXUS RENDER]: ${prompt.substring(0, 35)}...`, 20, 115);
 
       chatContainer.scrollTop = chatContainer.scrollHeight;
     }
@@ -507,7 +581,7 @@
       } else {
         chats.unshift({ id: currentChatId, preview: preview, html: chatContainer.innerHTML });
       }
-      localStorage.setItem('olit_chats', JSON.stringify(chats));
+      localStorage.setItem('olit_nexus_chats', JSON.stringify(chats));
       renderHistory();
     }
 
@@ -532,11 +606,12 @@
     window.deleteChat = (e, id) => {
       e.stopPropagation();
       chats = chats.filter(c => c.id !== id);
-      localStorage.setItem('olit_chats', JSON.stringify(chats));
+      localStorage.setItem('olit_nexus_chats', JSON.stringify(chats));
       if (currentChatId === id) createNewChat();
       else renderHistory();
     };
 
+    // Init Session
     renderHistory();
   </script>
 </body>
