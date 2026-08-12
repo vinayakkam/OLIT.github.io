@@ -119,7 +119,7 @@
         border-color: var(--color-tag-nexus-green);
     }
 
-    /* Minimalist "New chat" button matching reference design */
+    /* Minimalist "New chat" button */
     .btn-new-chat {
       background: transparent;
       border: none;
@@ -444,7 +444,7 @@
       <span class="tag nexus-tag">Nexus</span>
     </div>
 
-    <!-- Redesigned "New chat" button matching reference design -->
+    <!-- New chat button -->
     <button class="btn-new-chat" id="newChatBtn">
       <svg viewBox="0 0 24 24">
         <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
@@ -513,32 +513,37 @@
       renderHistory();
     }
 
-    // Dynamic Title Generation based on initial user query intent
-    function generateDynamicTitle(promptText) {
-      if (!promptText) return "New Conversation";
+    // Dynamic Title Generation: Filters out simple greetings and waits for actual context
+    function extractDynamicTitle(promptText) {
+      if (!promptText) return null;
 
-      let text = promptText.trim().replace(/^hey\s+|^please\s+|^can\s+you\s+/i, '');
+      let cleanText = promptText.trim().replace(/^hey\s+|^hello\s+|^hi\s+|^please\s+|^can\s+you\s+/i, '');
       
+      // If prompt was just "Hi", "Hello", "Hey" or under 3 chars, return null (waiting for next prompt)
+      if (cleanText.length < 3 || /^(hi|hello|hey|greetings|help|sup)$/i.test(promptText.trim())) {
+        return null;
+      }
+
       // Code generation intent
-      if (/python|code|script|function|print|factorial|html|js/i.test(text)) {
-        let match = text.match(/print\s*\(?["']?([^"'\)]+)["']?\)?/i) || text.match(/(python|code|script|function|factorial|html|js)/i);
-        if (match) return `Python: ${match[1].substring(0, 15)}`;
+      if (/python|code|script|function|print|factorial|html|js|css/i.test(cleanText)) {
+        let match = cleanText.match(/print\s*\(?["']?([^"'\)]+)["']?\)?/i) || cleanText.match(/(python|code|script|function|factorial|html|js)/i);
+        if (match && match[1]) return `Python: ${match[1].substring(0, 15)}`;
         return "Code Generation";
       }
 
       // Search / Entity intent
-      if (/search|find|lookup|about|vande bharat|who is|what is/i.test(text)) {
-        let clean = text.replace(/search\s+about\s+|search\s+|find\s+|lookup\s+/i, '');
+      if (/search|find|lookup|about|who is|what is/i.test(cleanText)) {
+        let clean = cleanText.replace(/search\s+about\s+|search\s+|find\s+|lookup\s+/i, '');
         return clean.substring(0, 22).replace(/^\w/, c => c.toUpperCase());
       }
 
       // Image intent
-      if (/image|draw|generate image|visual/i.test(text)) {
+      if (/image|draw|generate image|visual/i.test(cleanText)) {
         return "Image Generation";
       }
 
-      // Default sentence case dynamic title
-      return text.substring(0, 22).replace(/^\w/, c => c.toUpperCase());
+      // Default meaningful title
+      return cleanText.substring(0, 22).replace(/^\w/, c => c.toUpperCase());
     }
 
     async function handleSend() {
@@ -546,8 +551,6 @@
       const hasFile = fileInput.files.length > 0;
 
       if (!text && !hasFile) return;
-
-      const isFirstMessage = !currentChatId || !chats.some(c => c.id === currentChatId);
 
       if (!currentChatId) currentChatId = Date.now();
 
@@ -597,8 +600,7 @@
         sendBtn.disabled = false;
         sendBtn.innerHTML = 'Send <span>↑</span>';
         
-        // Save chat history keeping the generated title fixed per session
-        saveChatHistory(text || 'Document Analysis', isFirstMessage);
+        saveChatHistory(text);
       }
     }
 
@@ -722,14 +724,22 @@
       return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/'/g, "&#x27;").replace(/"/g, "&quot;");
     }
 
-    function saveChatHistory(promptText, isFirstMessage) {
+    function saveChatHistory(promptText) {
       const existing = chats.find(c => c.id === currentChatId);
+      const generatedTitle = extractDynamicTitle(promptText);
+
       if (existing) {
         existing.html = chatContainer.innerHTML;
-        // Keep initial generated dynamic title intact rather than overwriting with latest message
+        // If the current title is default ("New chat") or unassigned, try updating with the new prompt
+        if ((!existing.title || existing.title === "New chat") && generatedTitle) {
+          existing.title = generatedTitle;
+        }
       } else {
-        const dynamicTitle = generateDynamicTitle(promptText);
-        chats.unshift({ id: currentChatId, title: dynamicTitle, html: chatContainer.innerHTML });
+        chats.unshift({
+          id: currentChatId,
+          title: generatedTitle || "New chat",
+          html: chatContainer.innerHTML
+        });
       }
       localStorage.setItem('olit_nexus_chats', JSON.stringify(chats));
       renderHistory();
@@ -738,7 +748,7 @@
     function renderHistory() {
       historyList.innerHTML = chats.map(c => `
         <div class="history-item ${c.id === currentChatId ? 'active' : ''}" onclick="loadChat(${c.id})">
-          <span>${escapeHtml(c.title || "New Conversation")}</span>
+          <span>${escapeHtml(c.title || "New chat")}</span>
           <span class="delete-btn" onclick="deleteChat(event, ${c.id})">✕</span>
         </div>
       `).join('');
