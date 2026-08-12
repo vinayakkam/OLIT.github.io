@@ -15,23 +15,25 @@
       --card-bg: #111114;
       --card-hover: #161619;
       
-      /* New Unified Chat Bubble Backgrounds */
-      --user-bubble-bg: #2563eb; /* Bright Blue */
-      --bot-bubble-bg: #1e1e24; /* Dark Charcoal */
+      /* Unified Chat Bubble Backgrounds */
+      --user-bubble-bg: #2563eb; /* User: Bright Blue */
+      --bot-bubble-bg: #1f1f23;  /* Bot: Dark Charcoal */
       
       --border: #242427;
       --border-focus: #4a4a4f;
       --text: #f1f1f3;
       --text-muted: #8c8c93;
       
-      /* Color Accents */
+      /* Accents */
       --accent-bright: #ffffff;
       --accent-invert: #09090b;
-      --accent-bot-header: #22d3ee; /* Bright Cyan */
+      --accent-bot-header: #22d3ee; /* Bright Cyan header for bot messages */
       
-      /* Visible Pulse Effect Palette */
-      --color-pulse-glow: rgba(220, 230, 255, 0.45); /* Intense, pale blue glow */
-      
+      /* FIXED: Mild Colors palette for minimal approach */
+      --color-pulse-glow: rgba(220, 230, 255, 0.45); /* Intense, pale blue glow for pulse */
+      --color-tag-nexus-green: #10b981; /* Emeral Green for the 'Nexus' tag */
+      --color-summary-words: #e2e8f0;
+
       --mono-font: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     }
 
@@ -75,14 +77,13 @@
       gap: 0.7rem;
     }
 
-    /* Logo linked from the root of your repo with visible pulse effect */
+    /* FIX: Logo doesn't show up. Ensuring case matches the provided 'Logo.png' in root repo. */
     .brand-title img.logo-icon {
       width: 24px;
       height: 24px;
       border-radius: 5px;
       object-fit: contain;
-      
-      /* FIX: Enhanced Pulse Animation on logo is now clearly visible */
+      /* FIX: Pulsating glow animation is now intense and visible on logo */
       animation: nexusPulseVisible 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
     }
 
@@ -93,7 +94,7 @@
       }
       50% { 
           box-shadow: 0 0 15px var(--color-pulse-glow); 
-          transform: scale(1.03); /* Subtle size increase to make it pop */
+          transform: scale(1.03); /* Subtle scale pops the effect */
       }
     }
 
@@ -107,13 +108,19 @@
     .tag {
       font-family: var(--mono-font);
       font-size: 0.65rem;
-      color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.08em;
       background: rgba(255, 255, 255, 0.04);
       padding: 0.2rem 0.55rem;
       border-radius: 999px;
       border: 1px solid var(--border);
+      transition: all 0.2s ease;
+    }
+
+    /* FIX: Dont keep Core, Instead write Nexus in green there */
+    .tag.nexus-tag {
+        color: var(--color-tag-nexus-green);
+        border-color: var(--color-tag-nexus-green);
     }
 
     .btn-new-chat {
@@ -188,11 +195,11 @@
       padding: 2.5rem 1.75rem;
     }
 
-    /* --- Chat Container Unified Styles --- */
+    /* --- Chat Container Bubble Style --- */
     .chat-container {
       display: flex;
       flex-direction: column;
-      gap: 1.25rem; /* Tighter gap for unified look */
+      gap: 1.25rem; /* Tighter gap for aligned bubbles */
       overflow-y: auto;
       flex-grow: 1;
       padding-right: 0.6rem;
@@ -234,7 +241,7 @@
       margin-bottom: 0.25rem;
     }
     
-    /* Hide User headers for minimalistic look - bubbles define role */
+    /* User headers hidden for minimal look, bubbles define role */
     .message.user .msg-header { display: none; }
 
     /* FIX: Unified Bubble Styles (replacing boxes) */
@@ -264,7 +271,7 @@
       text-align: left;
     }
 
-    /* Bot Text Formatting Improvements (Bullet points, etc.) */
+    /* Bot Text Formatting Improvements (Bullet points, grounded terms) */
     .message.bot .msg-body strong {
       color: var(--accent-bot-header); /* Key terms use Cyan accent */
     }
@@ -308,6 +315,46 @@
         border-radius: 0;
     }
 
+    /* Metrics Bar Styling in synthesis response */
+    .metrics-bar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: rgba(0,0,0,0.2);
+      margin-top: 0.75rem;
+      margin-bottom: 0.9rem;
+      overflow: hidden;
+    }
+
+    .metric-item {
+      padding: 0.7rem;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+
+    .metric-item:last-child { border-right: none; }
+    .metric-value { font-family: var(--mono-font); font-size: 1.1rem; font-weight: 600; color: var(--text); }
+    .metric-label { font-family: var(--mono-font); font-size: 0.6rem; color: var(--text-muted); text-transform: uppercase; margin-top: 0.2rem; }
+
+    .sources-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      margin-top: 0.9rem;
+      list-style: none;
+    }
+
+    .sources-list a {
+      color: var(--text-muted);
+      font-family: var(--mono-font);
+      font-size: 0.72rem;
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .sources-list a:hover { color: var(--text); text-decoration: underline; }
+
     /* Input Dock */
     .input-dock {
       display: flex;
@@ -350,7 +397,7 @@
 
     .dock-footer {
       display: flex;
-      justify-content: flex-end; /* Send Button right-aligned */
+      justify-content: flex-end; /* Send Button is right-aligned */
       align-items: center;
       border-top: 1px solid var(--border);
       padding-top: 0.9rem;
@@ -374,7 +421,14 @@
     button.btn-submit:hover { opacity: 0.88; transform: translateY(-1px); }
     button:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 
-    /* Init Message formatting */
+    canvas.nexus-img {
+      border-radius: 7px;
+      border: 1px solid var(--border);
+      margin-top: 0.6rem;
+      max-width: 100%;
+    }
+    
+    /* Init message formatting */
     .init-message {
       text-align: center;
       color: var(--text-muted);
@@ -390,11 +444,12 @@
   <aside>
     <div class="brand-row">
       <div class="brand-title">
-        <!-- OLIT Nexus Logo linked from the root of your repo, fixed case to 'Logo.png' -->
+        <!-- OLIT Nexus Logo linked from the root of your repo, case fixed to 'Logo.png' -->
         <img src="https://raw.githubusercontent.com/vinayakkam/OLIT.github.io/main/Logo.png" alt="OLIT Nexus Logo" class="logo-icon">
         <h1>OLIT Nexus</h1>
       </div>
-      <span class="tag">Core</span>
+      <!-- FIX: Dont keep core Instead write Nexus in green there -->
+      <span class="tag nexus-tag">Nexus</span>
     </div>
 
     <button class="btn-new-chat" id="newChatBtn">┼ New Nexus Session</button>
@@ -446,7 +501,7 @@
       if (e.target.files.length) fileLabel.textContent = `📄 ${e.target.files[0].name}`;
     });
 
-    // Handle Keyboard Flow: Enter = Send, Shift+Enter = New Line in Textarea
+    // FIX: Enter sends, Shift+Enter adds newline in textarea
     promptInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
@@ -490,6 +545,7 @@
 
       try {
         if (hasFile) {
+          // File + Optional text: Send to summarization endpoint
           const formData = new FormData();
           formData.append('file', fileInput.files[0]);
           if (text) formData.append('text', text);
@@ -498,13 +554,14 @@
           const data = await res.json();
 
           if (data.success) {
-            renderSummaryResponse(data);
+            renderSummaryBubbleResponse(data);
           } else {
             appendMessageBubble('bot', `Nexus Synthesis Error: ${data.error}`);
           }
           fileInput.value = '';
           fileLabel.textContent = '📎 Attach PDF, Image, or Text file...';
         } else {
+          // Pure text: Send to main chat endpoint (handling coding, grounding locally)
           const res = await fetch(`${API_BASE}/api/chat`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -513,7 +570,11 @@
           const data = await res.json();
 
           if (data.success) {
-            appendMessageBubble('bot', data.reply, data.sources);
+            if (data.type === 'image') {
+              renderNexusImageBubbleResponse(data.prompt || text);
+            } else {
+              appendMessageBubble('bot', data.reply, data.sources);
+            }
           } else {
             appendMessageBubble('bot', `Nexus Synthesis Error: ${data.error}`);
           }
@@ -527,7 +588,7 @@
       }
     }
 
-    // FIX: Standard appendMessage implementation, role specific bubbles, aligned correctly
+    // Standard bubble append implementation
     function appendMessageBubble(role, content, sources = []) {
       const msgDiv = document.createElement('div');
       msgDiv.className = `message ${role}`;
@@ -539,8 +600,7 @@
           `</ul>`;
       }
 
-      // FIX: User messages align-self: flex-end in CSS, and text-align right in CSS
-
+      // User headers hidden, Bot header 'Nexus Engine' in Cyan accent
       msgDiv.innerHTML = `
         <span class="msg-header">${role === 'user' ? '' : 'Nexus Engine'}</span>
         <div class="msg-body">${formatBotResponse(content)}${sourcesHtml}</div>
@@ -549,16 +609,21 @@
       chatContainer.scrollTop = chatContainer.scrollHeight;
     }
 
-    // New helper to format bot responses like bullet points, key terms, etc.
+    // New helper to format bot responses like bullets, key terms, arrows
     function formatBotResponse(text) {
-        // Simple replacements to mock standard formatting without a full Markdown parser
+        // First escape HTML to prevent accidental rendering, then selectively add allowed formatting.
+        let formatted = escapeHtml(text);
+
+        // Synthesis Arrows: -> to →
+        formatted = formatted.replace(/-&gt;/g, '→');
+        formatted = formatted.replace(/-&gt;/g, '→'); // Double replace to ensure edge cases
         
-        // Key takeaway arrows: -> to →
-        let formatted = text.replace(/->/g, '→');
-        
-        // Key terms in quotes to bold with cyan accent: 'term' to <strong>term</strong>
-        formatted = formatted.replace(/'([^']+)'/g, '<strong>$1</strong>');
-        
+        // Code Block detection (mocks full parser, assumes standard triple backticks)
+        // Wraps triple backticks in pre/code, single backticks in code tag.
+        formatted = formatted.replace(/```python\n([\s\S]*?)```/g, '<pre><code class="python">$1</code></pre>'); // Named language
+        formatted = formatted.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>'); // Triple block
+        formatted = formatted.replace(/`([^`]+)`/g, '<code>$1</code>'); // Inline
+
         // Bullet points (leading dash or asterisk): - text to <ul><li>text</li></ul>
         const lines = formatted.split('\n');
         let insideList = false;
@@ -577,7 +642,7 @@
                     finalHtml += '</ul>';
                     insideList = false;
                 }
-                finalHtml += line + '\n'; // Preserve original line with potential line break replacements later
+                finalHtml += line + '\n'; // Preserve original newline with potential line break replacements later
             }
         });
         
@@ -585,19 +650,17 @@
             finalHtml += '</ul>';
         }
         
-        // Code Block detection (mocks full parser, assuming backticks mean monospaced code)
-        // Wraps triple backticks in professional pre/code blocks, others in standard code tag.
-        finalHtml = finalHtml.replace(/```python\n([\s\S]*?)```/g, '<pre><code class="python">$1</code></pre>'); // Named language block
-        finalHtml = finalHtml.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>'); // Triple backtick block
-        finalHtml = finalHtml.replace(/`([^`]+)`/g, '<code>$1</code>'); // Single backtick inline code
+        // Bold Key terms (already escaped, so we target original &#x27;term&#x27; logic safely)
+        // This regex looks for 'term' that was escaped to &#x27;term&#x27;
+        finalHtml = finalHtml.replace(/&amp;#x27;([^&amp;]+)&amp;#x27;/g, '<strong>$1</strong>');
 
-        return finalHtml.replace(/\n/g, '<br>'); // Simple newline formatting for non-markdown parts
+        return finalHtml.replace(/\n/g, '<br>'); // Simple newline formatting for other parts
     }
 
-    function renderSummaryResponse(data) {
+    // Standardize metrics and synthesis response inside a Bot Bubble
+    function renderSummaryBubbleResponse(data) {
       const msgDiv = document.createElement('div');
       msgDiv.className = 'message bot';
-      
       const points = data.summary.map(pt => `• ${pt}`).join('\n');
       
       msgDiv.innerHTML = `
@@ -606,17 +669,57 @@
           <div class="metrics-bar">
             <div class="metric-item"><div class="metric-value">${data.stats.total_words}</div><div class="metric-label">Words</div></div>
             <div class="metric-item"><div class="metric-value">${data.stats.reduction}%</div><div class="metric-label">Reduction</div></div>
-            <div class="metric-item"><div class="metric-value">${data.stats.read_time}m</div><div class="metric-label">Read Time</div></div>
+            <div class="metric-item"><div class="metric-value">${data.stats.read_time_reduction}m</div><div class="metric-label">Read Time</div></div>
           </div>
-          <strong>Nexus Synthesis Key Takeaways:</strong>\n${escapeHtml(points)}
+          <strong>Nexus Synthesis Key Takeaways:</strong>\n${formatBotResponse(points)}
         </div>
       `;
       chatContainer.appendChild(msgDiv);
       chatContainer.scrollTop = chatContainer.scrollHeight;
     }
 
+    function renderNexusImageBubbleResponse(prompt) {
+      const msgDiv = document.createElement('div');
+      msgDiv.className = 'message bot';
+      
+      msgDiv.innerHTML = `
+        <span class="msg-header">Nexus Engine</span>
+        <div class="msg-body">
+          Generated Nexus visual artwork for: <em>"${escapeHtml(prompt)}"</em>
+          <br>
+          <canvas class="nexus-img" width="400" height="220"></canvas>
+        </div>
+      `;
+      chatContainer.appendChild(msgDiv);
+
+      // Procedural local canvas rendering
+      const canvas = msgDiv.querySelector('canvas');
+      const ctx = canvas.getContext('2d');
+      const grad = ctx.createLinearGradient(0, 0, 400, 220);
+      grad.addColorStop(0, '#0c0c0f');
+      grad.addColorStop(1, '#161619');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 400, 220);
+
+      // Abstract procedural lines
+      ctx.strokeStyle = 'rgba(220, 230, 255, 0.08)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i < 15; i++) {
+          ctx.beginPath();
+          ctx.moveTo(Math.random() * 400, Math.random() * 220);
+          ctx.lineTo(Math.random() * 400, Math.random() * 220);
+          ctx.stroke();
+      }
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '12px monospace';
+      ctx.fillText(`[NEXUS RENDER]: ${prompt.substring(0, 35)}...`, 20, 115);
+
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
     function escapeHtml(str) {
-      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/'/g, "&#x27;").replace(/"/g, "&quot;");
     }
 
     function saveChatHistory(preview) {
