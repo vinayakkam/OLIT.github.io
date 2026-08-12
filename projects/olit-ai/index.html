@@ -25,11 +25,11 @@
       --text-muted: #8c8c93;
       
       /* Accents */
-      --accent-bright: #ffffff;
-      --accent-invert: #09090b;
+      --accent-bright: #2563eb; /* Updated to Blue for Send button */
+      --accent-invert: #ffffff;
       --accent-bot-header: #22d3ee; /* Bright Cyan header for bot messages */
       
-      --color-pulse-glow: rgba(220, 230, 255, 0.45); /* Intense, pale blue glow for pulse */
+      --color-pulse-glow: rgba(220, 230, 255, 0.45); /* Pale blue glow for pulse */
       --color-tag-nexus-green: #10b981; /* Emerald Green for the 'Nexus' tag */
       --color-summary-words: #e2e8f0;
 
@@ -76,7 +76,6 @@
       gap: 0.7rem;
     }
 
-    /* Brand Logo Icon styling */
     .brand-title img.logo-icon {
       width: 24px;
       height: 24px;
@@ -192,7 +191,7 @@
       padding: 2.5rem 1.75rem;
     }
 
-    /* Chat Container Bubble Style */
+    /* Chat Container */
     .chat-container {
       display: flex;
       flex-direction: column;
@@ -203,7 +202,7 @@
       margin-bottom: 2rem;
     }
 
-    /* Standard Message Structure */
+    /* Message Bubbles */
     .message {
       display: flex;
       flex-direction: column;
@@ -216,19 +215,16 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* User Messages Aligned Right */
     .message.user {
       align-self: flex-end;
       align-items: flex-end;
     }
 
-    /* Bot Messages Aligned Left */
     .message.bot {
       align-self: flex-start;
       align-items: flex-start;
     }
 
-    /* Standard Bot Header with Cyan Accent */
     .message.bot .msg-header {
       font-family: var(--mono-font);
       font-size: 0.72rem;
@@ -240,7 +236,6 @@
     
     .message.user .msg-header { display: none; }
 
-    /* Unified Bubble Styles */
     .msg-body {
       border-radius: 12px;
       padding: 0.9rem 1.25rem;
@@ -250,7 +245,6 @@
       word-wrap: break-word;
     }
 
-    /* User Bubble */
     .message.user .msg-body {
       background-color: var(--user-bubble-bg);
       color: #ffffff;
@@ -258,7 +252,6 @@
       text-align: right;
     }
 
-    /* Bot Bubble */
     .message.bot .msg-body {
       background-color: var(--bot-bubble-bg);
       color: #e6edf3;
@@ -272,43 +265,41 @@
     }
 
     .message.bot .msg-body ul {
-        margin-top: 0.5rem;
-        margin-left: 1.25rem;
-        list-style-type: disc;
+      margin-top: 0.5rem;
+      margin-left: 1.25rem;
+      list-style-type: disc;
     }
     
     .message.bot .msg-body li {
-        margin-bottom: 0.35rem;
+      margin-bottom: 0.35rem;
     }
 
-    /* Code block formatting */
     .msg-body pre {
-        background: rgba(0,0,0,0.3);
-        padding: 1rem;
-        border-radius: 8px;
-        margin-top: 0.75rem;
-        margin-bottom: 0.75rem;
-        overflow-x: auto;
-        border: 1px solid rgba(255,255,255,0.05);
+      background: rgba(0,0,0,0.3);
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 0.75rem;
+      margin-bottom: 0.75rem;
+      overflow-x: auto;
+      border: 1px solid rgba(255,255,255,0.05);
     }
     
     .msg-body code {
-        font-family: var(--mono-font);
-        font-size: 0.82rem;
-        color: #f8fafc;
-        line-height: 1.45;
-        background: rgba(255,255,255,0.04);
-        padding: 0.1rem 0.3rem;
-        border-radius: 4px;
+      font-family: var(--mono-font);
+      font-size: 0.82rem;
+      color: #f8fafc;
+      line-height: 1.45;
+      background: rgba(255,255,255,0.04);
+      padding: 0.1rem 0.3rem;
+      border-radius: 4px;
     }
     
     .msg-body pre code {
-        background: transparent;
-        padding: 0;
-        border-radius: 0;
+      background: transparent;
+      padding: 0;
+      border-radius: 0;
     }
 
-    /* Metrics Bar Styling */
     .metrics-bar {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -396,37 +387,39 @@
       padding-top: 0.9rem;
     }
 
+    /* Updated Blue Send Button */
     button.btn-submit {
-      background: var(--accent);
-      color: var(--accent-invert);
+      background: #2563eb;
+      color: #ffffff;
       border: none;
-      padding: 0.7rem 1.4rem;
-      border-radius: 7px;
+      padding: 0.6rem 1.2rem;
+      border-radius: 20px;
       font-weight: 600;
-      font-size: 0.78rem;
+      font-size: 0.8rem;
       cursor: pointer;
-      font-family: var(--mono-font);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    button.btn-submit:hover { opacity: 0.88; transform: translateY(-1px); }
-    button:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+    button.btn-submit:hover { 
+      background: #1d4ed8; 
+      transform: translateY(-1px); 
+    }
+    
+    button:disabled { 
+      opacity: 0.4; 
+      cursor: not-allowed; 
+      transform: none; 
+    }
 
     canvas.nexus-img {
       border-radius: 7px;
       border: 1px solid var(--border);
       margin-top: 0.6rem;
       max-width: 100%;
-    }
-    
-    .init-message {
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 0.85rem;
-      margin-top: 2rem;
-      font-family: var(--mono-font);
     }
   </style>
 </head>
@@ -436,7 +429,6 @@
   <aside>
     <div class="brand-row">
       <div class="brand-title">
-        <!-- Brand logo updated to relative 'logo.png' -->
         <img src="logo.png" alt="OLIT Nexus Logo" class="logo-icon">
         <h1>OLIT Nexus</h1>
       </div>
@@ -451,9 +443,7 @@
   <!-- Main Chat Flow -->
   <main>
     <div class="chat-container" id="chatContainer">
-      <div class="init-message">
-          Synthesis Engine Ready. Paste data, summarize text, synthesis code, task operation... (Enter to send, Shift+Enter for new line)
-      </div>
+      <!-- Welcome text removed -->
     </div>
 
     <!-- Input Control Dock -->
@@ -466,7 +456,10 @@
       <textarea id="promptInput" placeholder="Analyze data, summarize text, synthesize code... (Enter to send, Shift+Enter for newline)"></textarea>
 
       <div class="dock-footer">
-        <button class="btn-submit" id="sendBtn">Synthesize</button>
+        <!-- Changed to Send with up arrow icon -->
+        <button class="btn-submit" id="sendBtn">
+          Send <span>↑</span>
+        </button>
       </div>
     </div>
   </main>
@@ -503,11 +496,7 @@
 
     function createNewChat() {
       currentChatId = Date.now();
-      chatContainer.innerHTML = `
-        <div class="init-message">
-          Synthesis Engine Ready. Paste data, summarize text, synthesis code, task operation... (Enter to send, Shift+Enter for new line)
-        </div>
-      `;
+      chatContainer.innerHTML = '';
       renderHistory();
     }
 
@@ -519,14 +508,10 @@
 
       if (!currentChatId) currentChatId = Date.now();
 
-      if(chatContainer.querySelector('.init-message')) {
-          chatContainer.innerHTML = '';
-      }
-
       appendMessageBubble('user', text || `Attached asset: ${fileInput.files[0].name}`);
 
       sendBtn.disabled = true;
-      sendBtn.textContent = 'Synthesizing...';
+      sendBtn.innerHTML = 'Sending...';
       promptInput.value = '';
 
       try {
@@ -567,7 +552,7 @@
         appendMessageBubble('bot', 'Could not connect to OLIT Nexus backend.');
       } finally {
         sendBtn.disabled = false;
-        sendBtn.textContent = 'Synthesize';
+        sendBtn.innerHTML = 'Send <span>↑</span>';
         saveChatHistory(text || 'Synthesis Operation');
       }
     }
