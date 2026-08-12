@@ -14,18 +14,24 @@
       --sidebar-bg: #0c0c0f;
       --card-bg: #111114;
       --card-hover: #161619;
+      
+      /* New Unified Chat Bubble Backgrounds */
+      --user-bubble-bg: #2563eb; /* Bright Blue */
+      --bot-bubble-bg: #1e1e24; /* Dark Charcoal */
+      
       --border: #242427;
       --border-focus: #4a4a4f;
       --text: #f1f1f3;
       --text-muted: #8c8c93;
-      --accent: #ffffff;
-      --accent-invert: #09090b;
       
-      /* Mild Color Palette for Minimalist Approach */
-      --color-pulse: rgba(220, 230, 255, 0.15); /* Soft, pale blue glow */
-      --color-tag-bg: rgba(255, 255, 255, 0.04);
-      --color-summary-words: #e2e8f0;
-
+      /* Color Accents */
+      --accent-bright: #ffffff;
+      --accent-invert: #09090b;
+      --accent-bot-header: #22d3ee; /* Bright Cyan */
+      
+      /* Visible Pulse Effect Palette */
+      --color-pulse-glow: rgba(220, 230, 255, 0.45); /* Intense, pale blue glow */
+      
       --mono-font: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     }
 
@@ -69,19 +75,26 @@
       gap: 0.7rem;
     }
 
-    /* Logo linked from the root of your GitHub repo */
+    /* Logo linked from the root of your repo with visible pulse effect */
     .brand-title img.logo-icon {
       width: 24px;
       height: 24px;
       border-radius: 5px;
       object-fit: contain;
-      /* Soft pulse animation on logo */
-      animation: nexusPulse 4s infinite cubic-bezier(0.4, 0, 0.6, 1);
+      
+      /* FIX: Enhanced Pulse Animation on logo is now clearly visible */
+      animation: nexusPulseVisible 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
     }
 
-    @keyframes nexusPulse {
-      0%, 100% { box-shadow: 0 0 5px transparent; }
-      50% { box-shadow: 0 0 10px var(--color-pulse); }
+    @keyframes nexusPulseVisible {
+      0%, 100% { 
+          box-shadow: 0 0 8px transparent; 
+          transform: scale(1);
+      }
+      50% { 
+          box-shadow: 0 0 15px var(--color-pulse-glow); 
+          transform: scale(1.03); /* Subtle size increase to make it pop */
+      }
     }
 
     .brand-title h1 {
@@ -97,7 +110,7 @@
       color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      background: var(--color-tag-bg);
+      background: rgba(255, 255, 255, 0.04);
       padding: 0.2rem 0.55rem;
       border-radius: 999px;
       border: 1px solid var(--border);
@@ -175,20 +188,22 @@
       padding: 2.5rem 1.75rem;
     }
 
+    /* --- Chat Container Unified Styles --- */
     .chat-container {
       display: flex;
       flex-direction: column;
-      gap: 1.75rem;
+      gap: 1.25rem; /* Tighter gap for unified look */
       overflow-y: auto;
       flex-grow: 1;
       padding-right: 0.6rem;
       margin-bottom: 2rem;
     }
 
+    /* Standard Message Structure */
     .message {
       display: flex;
       flex-direction: column;
-      gap: 0.6rem;
+      max-width: 85%;
       animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
@@ -197,64 +212,101 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .message.user .msg-header { color: var(--text-muted); }
-    .message.bot .msg-header { color: var(--accent); }
-
-    .msg-header {
-      font-family: var(--mono-font);
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
+    /* FIX: User Messages Aligned Right */
+    .message.user {
+      align-self: flex-end;
+      align-items: flex-end; /* Align header right too */
     }
 
-    .msg-body {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 9px;
-      padding: 1.1rem 1.4rem;
-      font-size: 0.9rem;
-      line-height: 1.6;
-      white-space: pre-wrap;
-      color: var(--color-summary-words);
+    /* FIX: Bot Messages Aligned Left */
+    .message.bot {
+      align-self: flex-start;
+      align-items: flex-start;
     }
 
-    .metrics-bar {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      border: 1px solid var(--border);
-      border-radius: 7px;
-      background: var(--bg);
-      margin-bottom: 0.9rem;
-      overflow: hidden;
-    }
-
-    .metric-item {
-      padding: 0.7rem;
-      text-align: center;
-      border-right: 1px solid var(--border);
-    }
-
-    .metric-item:last-child { border-right: none; }
-    .metric-value { font-family: var(--mono-font); font-size: 1.1rem; font-weight: 600; }
-    .metric-label { font-family: var(--mono-font); font-size: 0.6rem; color: var(--text-muted); text-transform: uppercase; margin-top: 0.2rem; }
-
-    .sources-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.35rem;
-      margin-top: 0.9rem;
-      list-style: none;
-    }
-
-    .sources-list a {
-      color: var(--text-muted);
+    /* FIX: Standard Bot Header with Cyan Accent */
+    .message.bot .msg-header {
       font-family: var(--mono-font);
       font-size: 0.72rem;
-      text-decoration: none;
-      transition: color 0.15s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent-bot-header); /* Unified Cyan header */
+      margin-bottom: 0.25rem;
+    }
+    
+    /* Hide User headers for minimalistic look - bubbles define role */
+    .message.user .msg-header { display: none; }
+
+    /* FIX: Unified Bubble Styles (replacing boxes) */
+    .msg-body {
+      border-radius: 12px;
+      padding: 0.9rem 1.25rem;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-wrap: break-word;
     }
 
-    .sources-list a:hover { color: var(--text); text-decoration: underline; }
+    /* User Bubble - Right side Blue */
+    .message.user .msg-body {
+      background-color: var(--user-bubble-bg);
+      color: #ffffff;
+      border-bottom-right-radius: 4px; /* Distinct corner */
+      text-align: right;
+    }
+
+    /* Bot Bubble - Left side Dark Charcoal */
+    .message.bot .msg-body {
+      background-color: var(--bot-bubble-bg);
+      color: #e6edf3;
+      border-top-left-radius: 4px; /* Distinct corner */
+      border: 1px solid var(--border); /* Subtle definition */
+      text-align: left;
+    }
+
+    /* Bot Text Formatting Improvements (Bullet points, etc.) */
+    .message.bot .msg-body strong {
+      color: var(--accent-bot-header); /* Key terms use Cyan accent */
+    }
+
+    .message.bot .msg-body ul {
+        margin-top: 0.5rem;
+        margin-left: 1.25rem;
+        list-style-type: disc;
+    }
+    
+    .message.bot .msg-body li {
+        margin-bottom: 0.35rem;
+    }
+
+    /* Code block formatting inside bot response */
+    .msg-body pre {
+        background: rgba(0,0,0,0.3);
+        padding: 1rem;
+        border-radius: 8px;
+        margin-top: 0.75rem;
+        margin-bottom: 0.75rem;
+        overflow-x: auto;
+        border: 1px solid rgba(255,255,255,0.05);
+    }
+    
+    /* FIX: Professional Code formatting style */
+    .msg-body code {
+        font-family: var(--mono-font);
+        font-size: 0.82rem;
+        color: #f8fafc;
+        line-height: 1.45;
+        background: rgba(255,255,255,0.04);
+        padding: 0.1rem 0.3rem;
+        border-radius: 4px;
+    }
+    
+    /* Override for pre code blocks */
+    .msg-body pre code {
+        background: transparent;
+        padding: 0;
+        border-radius: 0;
+    }
 
     /* Input Dock */
     .input-dock {
@@ -298,7 +350,7 @@
 
     .dock-footer {
       display: flex;
-      justify-content: flex-end; /* Send Button is shifted to the right */
+      justify-content: flex-end; /* Send Button right-aligned */
       align-items: center;
       border-top: 1px solid var(--border);
       padding-top: 0.9rem;
@@ -322,25 +374,13 @@
     button.btn-submit:hover { opacity: 0.88; transform: translateY(-1px); }
     button:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 
-    canvas.nexus-img {
-      border-radius: 7px;
-      border: 1px solid var(--border);
-      margin-top: 0.6rem;
-      max-width: 100%;
-    }
-    
-    /* Code block formatting inside bot response */
-    .msg-body pre {
-        background: rgba(0,0,0,0.2);
-        padding: 0.8rem;
-        border-radius: 6px;
-        margin-top: 0.5rem;
-        overflow-x: auto;
-    }
-    .msg-body code {
-        font-family: var(--mono-font);
-        font-size: 0.8rem;
-        color: #e6edf3;
+    /* Init Message formatting */
+    .init-message {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-top: 2rem;
+      font-family: var(--mono-font);
     }
   </style>
 </head>
@@ -350,7 +390,7 @@
   <aside>
     <div class="brand-row">
       <div class="brand-title">
-        <!-- OLIT Nexus Logo linked from the root of your GitHub repo -->
+        <!-- OLIT Nexus Logo linked from the root of your repo, fixed case to 'Logo.png' -->
         <img src="https://raw.githubusercontent.com/vinayakkam/OLIT.github.io/main/Logo.png" alt="OLIT Nexus Logo" class="logo-icon">
         <h1>OLIT Nexus</h1>
       </div>
@@ -365,9 +405,9 @@
   <!-- Main Chat Flow -->
   <main>
     <div class="chat-container" id="chatContainer">
-      <div class="message bot">
-        <span class="msg-header">Nexus Engine</span>
-        <div class="msg-body">Synthesis Engine Ready. Paste document text, attach files, generate code tasks, or ask a question. Complex queries will automatically trigger web search grounding.</div>
+      <!-- Init message, no bubble -->
+      <div class="init-message">
+          Synthesis Engine Ready. Paste data, summarize text, synthesis code, task operation... (Enter to send, Shift+Enter for new line)
       </div>
     </div>
 
@@ -381,7 +421,6 @@
       <textarea id="promptInput" placeholder="Analyze data, summarize text, synthesize code... (Enter to send, Shift+Enter for newline)"></textarea>
 
       <div class="dock-footer">
-        <!-- Button shifted right. -->
         <button class="btn-submit" id="sendBtn">Synthesize</button>
       </div>
     </div>
@@ -420,10 +459,10 @@
 
     function createNewChat() {
       currentChatId = Date.now();
+      // Reset container with init message, remove all bubbles
       chatContainer.innerHTML = `
-        <div class="message bot">
-          <span class="msg-header">Nexus Engine</span>
-          <div class="msg-body">New Nexus session synthesized. How can I assist with your data synthesis today?</div>
+        <div class="init-message">
+          Synthesis Engine Ready. Paste data, summarize text, synthesis code, task operation... (Enter to send, Shift+Enter for new line)
         </div>
       `;
       renderHistory();
@@ -437,8 +476,13 @@
 
       if (!currentChatId) currentChatId = Date.now();
 
-      // Render User Message
-      appendMessage('user', text || `Attached asset: ${fileInput.files[0].name}`);
+      // Clear the init message if it's the first message in the container
+      if(chatContainer.querySelector('.init-message')) {
+          chatContainer.innerHTML = '';
+      }
+
+      // Append User Message bubble
+      appendMessageBubble('user', text || `Attached asset: ${fileInput.files[0].name}`);
 
       sendBtn.disabled = true;
       sendBtn.textContent = 'Synthesizing...';
@@ -446,7 +490,6 @@
 
       try {
         if (hasFile) {
-          // Send to /api/summarize endpoint (retains summarization logic)
           const formData = new FormData();
           formData.append('file', fileInput.files[0]);
           if (text) formData.append('text', text);
@@ -457,31 +500,26 @@
           if (data.success) {
             renderSummaryResponse(data);
           } else {
-            appendMessage('bot', `Nexus Synthesis Error: ${data.error}`);
+            appendMessageBubble('bot', `Nexus Synthesis Error: ${data.error}`);
           }
           fileInput.value = '';
           fileLabel.textContent = '📎 Attach PDF, Image, or Text file...';
         } else {
-          // Send to /api/chat endpoint (handles conversion, code, grounding locally)
           const res = await fetch(`${API_BASE}/api/chat`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: text }) // Web search is automated on backend
+            body: JSON.stringify({ message: text })
           });
           const data = await res.json();
 
           if (data.success) {
-            if (data.type === 'image') {
-              renderNexusImageResponse(data.prompt || text);
-            } else {
-              appendMessage('bot', data.reply, data.sources);
-            }
+            appendMessageBubble('bot', data.reply, data.sources);
           } else {
-            appendMessage('bot', `Nexus Synthesis Error: ${data.error}`);
+            appendMessageBubble('bot', `Nexus Synthesis Error: ${data.error}`);
           }
         }
       } catch (err) {
-        appendMessage('bot', 'Could not connect to OLIT Nexus backend.');
+        appendMessageBubble('bot', 'Could not connect to OLIT Nexus backend.');
       } finally {
         sendBtn.disabled = false;
         sendBtn.textContent = 'Synthesize';
@@ -489,7 +527,8 @@
       }
     }
 
-    function appendMessage(role, content, sources = []) {
+    // FIX: Standard appendMessage implementation, role specific bubbles, aligned correctly
+    function appendMessageBubble(role, content, sources = []) {
       const msgDiv = document.createElement('div');
       msgDiv.className = `message ${role}`;
       
@@ -500,12 +539,59 @@
           `</ul>`;
       }
 
+      // FIX: User messages align-self: flex-end in CSS, and text-align right in CSS
+
       msgDiv.innerHTML = `
-        <span class="msg-header">${role === 'user' ? 'You' : 'Nexus Engine'}</span>
-        <div class="msg-body">${escapeHtml(content)}${sourcesHtml}</div>
+        <span class="msg-header">${role === 'user' ? '' : 'Nexus Engine'}</span>
+        <div class="msg-body">${formatBotResponse(content)}${sourcesHtml}</div>
       `;
       chatContainer.appendChild(msgDiv);
       chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    // New helper to format bot responses like bullet points, key terms, etc.
+    function formatBotResponse(text) {
+        // Simple replacements to mock standard formatting without a full Markdown parser
+        
+        // Key takeaway arrows: -> to →
+        let formatted = text.replace(/->/g, '→');
+        
+        // Key terms in quotes to bold with cyan accent: 'term' to <strong>term</strong>
+        formatted = formatted.replace(/'([^']+)'/g, '<strong>$1</strong>');
+        
+        // Bullet points (leading dash or asterisk): - text to <ul><li>text</li></ul>
+        const lines = formatted.split('\n');
+        let insideList = false;
+        let finalHtml = '';
+
+        lines.forEach(line => {
+            const trimmedLine = line.trim();
+            if (trimmedLine.startsWith('- ') || trimmedLine.startsWith('* ')) {
+                if (!insideList) {
+                    finalHtml += '<ul>';
+                    insideList = true;
+                }
+                finalHtml += `<li>${trimmedLine.substring(2)}</li>`;
+            } else {
+                if (insideList) {
+                    finalHtml += '</ul>';
+                    insideList = false;
+                }
+                finalHtml += line + '\n'; // Preserve original line with potential line break replacements later
+            }
+        });
+        
+        if (insideList) {
+            finalHtml += '</ul>';
+        }
+        
+        // Code Block detection (mocks full parser, assuming backticks mean monospaced code)
+        // Wraps triple backticks in professional pre/code blocks, others in standard code tag.
+        finalHtml = finalHtml.replace(/```python\n([\s\S]*?)```/g, '<pre><code class="python">$1</code></pre>'); // Named language block
+        finalHtml = finalHtml.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>'); // Triple backtick block
+        finalHtml = finalHtml.replace(/`([^`]+)`/g, '<code>$1</code>'); // Single backtick inline code
+
+        return finalHtml.replace(/\n/g, '<br>'); // Simple newline formatting for non-markdown parts
     }
 
     function renderSummaryResponse(data) {
@@ -526,46 +612,6 @@
         </div>
       `;
       chatContainer.appendChild(msgDiv);
-      chatContainer.scrollTop = chatContainer.scrollHeight;
-    }
-
-    function renderNexusImageResponse(prompt) {
-      const msgDiv = document.createElement('div');
-      msgDiv.className = 'message bot';
-      
-      msgDiv.innerHTML = `
-        <span class="msg-header">Nexus Engine</span>
-        <div class="msg-body">
-          Generated Nexus visual artwork for: <em>"${escapeHtml(prompt)}"</em>
-          <br>
-          <canvas class="nexus-img" width="400" height="220"></canvas>
-        </div>
-      `;
-      chatContainer.appendChild(msgDiv);
-
-      // Procedural canvas image rendering
-      const canvas = msgDiv.querySelector('canvas');
-      const ctx = canvas.getContext('2d');
-      const grad = ctx.createLinearGradient(0, 0, 400, 220);
-      grad.addColorStop(0, '#0c0c0f');
-      grad.addColorStop(1, '#161619');
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, 400, 220);
-
-      // Abstract procedural design
-      ctx.strokeStyle = 'rgba(220, 230, 255, 0.08)';
-      ctx.lineWidth = 1;
-      for (let i = 0; i < 15; i++) {
-          ctx.beginPath();
-          ctx.moveTo(Math.random() * 400, Math.random() * 220);
-          ctx.lineTo(Math.random() * 400, Math.random() * 220);
-          ctx.stroke();
-      }
-
-      ctx.fillStyle = '#ffffff';
-      ctx.font = '12px monospace';
-      ctx.fillText(`[NEXUS RENDER]: ${prompt.substring(0, 35)}...`, 20, 115);
-
       chatContainer.scrollTop = chatContainer.scrollHeight;
     }
 
