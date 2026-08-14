@@ -3,166 +3,163 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OLIT AI — Nexus Engine</title>
-  
-  <!-- Browser Favicon -->
+  <title>OLIT Nexus — AI Console</title>
   <link rel="icon" type="image/png" href="logo.png">
-  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
   <style>
     :root {
-      --bg: #09090b;
-      --sidebar-bg: #0c0c0f;
-      --card-bg: #111114;
-      --card-hover: #161619;
-      
-      /* Unified Chat Bubble Backgrounds */
-      --user-bubble-bg: #2563eb; /* User: Bright Blue */
-      --bot-bubble-bg: #1f1f23;  /* Bot: Dark Charcoal */
-      
-      --border: #242427;
-      --border-focus: #4a4a4f;
-      --text: #f1f1f3;
-      --text-muted: #8c8c93;
-      
-      /* Accents */
-      --accent-bright: #2563eb; 
-      --accent-invert: #ffffff;
-      --accent-bot-header: #22d3ee; 
-      
-      --color-pulse-glow: rgba(220, 230, 255, 0.45); 
-      --color-tag-nexus-green: #10b981; 
-      --color-summary-words: #e2e8f0;
+      --bg: #08090b;
+      --sidebar-bg: #0b0c0e;
+      --panel: #111216;
+      --panel-elevated: #16171c;
+      --border: #1e1f24;
+      --border-soft: #17181c;
+      --border-focus: #33353c;
 
-      --mono-font: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --text: #f2f3f5;
+      --text-dim: #8b8e97;
+      --text-faint: #55575f;
+
+      --accent: #3b6cf6;
+      --accent-hover: #2f58d6;
+      --accent-soft: rgba(59, 108, 246, 0.10);
+      --accent-cyan: #22d3ee;
+      --online: #10b981;
+      --offline: #ef4444;
+
+      --display-font: 'Space Grotesk', ui-sans-serif, sans-serif;
+      --body-font: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --mono-font: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+      --radius: 10px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
+    html { scrollbar-color: var(--border-focus) transparent; }
+
     body {
-      background-color: var(--bg);
+      background: var(--bg);
+      background-image:
+        radial-gradient(circle at 15% 0%, rgba(59, 108, 246, 0.05) 0%, transparent 45%),
+        linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
+      background-size: auto, 34px 34px, 34px 34px;
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
-      min-height: 100vh;
-      display: flex;
+      font-family: var(--body-font);
       height: 100vh;
+      display: flex;
       overflow: hidden;
       -webkit-font-smoothing: antialiased;
-      background-image: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.02) 0%, transparent 55%);
     }
 
-    /* Sidebar Styling */
+    ::selection { background: var(--accent-soft); }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    /* ---------- Sidebar ---------- */
     aside {
-      width: 270px;
+      width: 258px;
       background: var(--sidebar-bg);
-      border-right: 1px solid var(--border);
+      border-right: 1px solid var(--border-soft);
       display: flex;
       flex-direction: column;
-      padding: 1.5rem 1.1rem;
-      gap: 1.2rem;
+      padding: 1.35rem 1rem;
+      gap: 1.1rem;
       flex-shrink: 0;
     }
 
-    .brand-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-bottom: 0.9rem;
-      border-bottom: 1px solid var(--border);
-    }
+    .brand-block { padding-bottom: 1rem; border-bottom: 1px solid var(--border-soft); }
 
     .brand-title {
       display: flex;
       align-items: center;
-      gap: 0.7rem;
+      gap: 0.6rem;
+      margin-bottom: 0.55rem;
     }
 
     .brand-title img.logo-icon {
-      width: 24px;
-      height: 24px;
+      width: 22px; height: 22px;
       border-radius: 5px;
       object-fit: contain;
-      animation: nexusPulseVisible 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
-    }
-
-    @keyframes nexusPulseVisible {
-      0%, 100% { 
-          box-shadow: 0 0 8px transparent; 
-          transform: scale(1);
-      }
-      50% { 
-          box-shadow: 0 0 15px var(--color-pulse-glow); 
-          transform: scale(1.03);
-      }
     }
 
     .brand-title h1 {
-      font-size: 1.05rem;
+      font-family: var(--display-font);
+      font-size: 1.02rem;
       font-weight: 600;
-      letter-spacing: -0.025em;
-      color: var(--text);
+      letter-spacing: -0.01em;
     }
 
-    .tag {
+    /* Signature: live backend heartbeat */
+    .heartbeat {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
       font-family: var(--mono-font);
-      font-size: 0.65rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      background: rgba(255, 255, 255, 0.04);
-      padding: 0.2rem 0.55rem;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      transition: all 0.2s ease;
+      font-size: 0.68rem;
+      letter-spacing: 0.03em;
+      color: var(--text-faint);
     }
 
-    .tag.nexus-tag {
-        color: var(--color-tag-nexus-green);
-        border-color: var(--color-tag-nexus-green);
+    .heartbeat .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--text-faint);
+      flex-shrink: 0;
+      transition: background 0.3s ease;
     }
 
-    /* Minimalist "New chat" button */
+    .heartbeat.online .dot {
+      background: var(--online);
+      box-shadow: 0 0 0 0 rgba(16,185,129,0.5);
+      animation: ping 2.2s cubic-bezier(0.4,0,0.6,1) infinite;
+    }
+    .heartbeat.online { color: var(--text-dim); }
+    .heartbeat.offline .dot { background: var(--offline); }
+    .heartbeat.offline { color: var(--offline); }
+
+    @keyframes ping {
+      0% { box-shadow: 0 0 0 0 rgba(16,185,129,0.45); }
+      70% { box-shadow: 0 0 0 6px rgba(16,185,129,0); }
+      100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .heartbeat.online .dot { animation: none; }
+    }
+
     .btn-new-chat {
       background: transparent;
-      border: none;
+      border: 1px solid var(--border);
       color: var(--text);
-      padding: 0.5rem 0.4rem;
-      border-radius: 8px;
-      font-size: 0.92rem;
+      padding: 0.55rem 0.75rem;
+      border-radius: var(--radius);
+      font-size: 0.85rem;
       font-weight: 500;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 0.7rem;
+      gap: 0.6rem;
       transition: all 0.15s ease;
     }
-
-    .btn-new-chat:hover {
-      background: rgba(255, 255, 255, 0.05);
-    }
-
-    .btn-new-chat svg {
-      width: 18px;
-      height: 18px;
-      stroke: var(--text);
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
+    .btn-new-chat:hover { background: var(--panel); border-color: var(--border-focus); }
+    .btn-new-chat svg { width: 16px; height: 16px; stroke: var(--text); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
     .history-list {
       display: flex;
       flex-direction: column;
-      gap: 0.25rem;
+      gap: 0.2rem;
       overflow-y: auto;
       flex-grow: 1;
-      padding-right: 0.2rem;
     }
 
     .history-item {
-      padding: 0.6rem 0.8rem;
+      padding: 0.55rem 0.7rem;
       border-radius: 8px;
-      font-size: 0.85rem;
-      color: var(--text-muted);
+      font-size: 0.82rem;
+      color: var(--text-dim);
       cursor: pointer;
       white-space: nowrap;
       overflow: hidden;
@@ -172,279 +169,361 @@
       justify-content: space-between;
       align-items: center;
     }
-
-    .history-item:hover, .history-item.active {
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--text);
-    }
-
-    .history-item .delete-btn {
-      display: none;
-      color: #ee4444;
-      font-size: 0.8rem;
-      margin-left: 0.5rem;
-    }
-
+    .history-item:hover, .history-item.active { background: var(--panel); color: var(--text); }
+    .history-item .delete-btn { display: none; color: var(--offline); font-size: 0.78rem; margin-left: 0.5rem; }
     .history-item:hover .delete-btn { display: inline; }
 
-    /* Main Container */
+    /* ---------- Main ---------- */
     main {
       flex-grow: 1;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      max-width: 820px;
+      max-width: 780px;
       margin: 0 auto;
       width: 100%;
       height: 100vh;
-      padding: 2.5rem 1.75rem;
+      padding: 2rem 1.5rem 1.5rem;
     }
 
-    /* Chat Container */
     .chat-container {
       display: flex;
       flex-direction: column;
-      gap: 1.25rem;
+      gap: 1.1rem;
       overflow-y: auto;
       flex-grow: 1;
-      padding-right: 0.6rem;
-      margin-bottom: 2rem;
+      padding-right: 0.4rem;
+      margin-bottom: 1.5rem;
     }
 
-    /* Message Bubbles */
+    .empty-state {
+      margin: auto;
+      text-align: center;
+      color: var(--text-faint);
+    }
+    .empty-state .eyebrow {
+      font-family: var(--mono-font);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent-cyan);
+      margin-bottom: 0.6rem;
+    }
+    .empty-state h2 {
+      font-family: var(--display-font);
+      font-size: 1.3rem;
+      color: var(--text-dim);
+      font-weight: 500;
+    }
+
     .message {
       display: flex;
       flex-direction: column;
-      max-width: 85%;
-      animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      max-width: 88%;
+      animation: fadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
     }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(5px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .message.user {
-      align-self: flex-end;
-      align-items: flex-end;
-    }
-
-    .message.bot {
-      align-self: flex-start;
-      align-items: flex-start;
-    }
+    .message.user { align-self: flex-end; align-items: flex-end; }
+    .message.bot { align-self: flex-start; align-items: flex-start; }
 
     .message.bot .msg-header {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
       font-family: var(--mono-font);
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--accent-bot-header);
-      margin-bottom: 0.25rem;
+      letter-spacing: 0.07em;
+      color: var(--accent-cyan);
+      margin-bottom: 0.3rem;
     }
-    
+    .message.bot .msg-header .latency {
+      color: var(--text-faint);
+      text-transform: none;
+      letter-spacing: 0;
+    }
     .message.user .msg-header { display: none; }
 
     .msg-body {
-      border-radius: 12px;
-      padding: 0.9rem 1.25rem;
+      border-radius: var(--radius);
+      padding: 0.85rem 1.1rem;
       font-size: 0.9rem;
-      line-height: 1.5;
+      line-height: 1.55;
       white-space: pre-wrap;
       word-wrap: break-word;
     }
 
     .message.user .msg-body {
-      background-color: var(--user-bubble-bg);
-      color: #ffffff;
+      background: var(--accent);
+      color: #fff;
       border-bottom-right-radius: 4px;
-      text-align: right;
     }
 
     .message.bot .msg-body {
-      background-color: var(--bot-bubble-bg);
-      color: #e6edf3;
-      border-top-left-radius: 4px;
+      background: var(--panel);
       border: 1px solid var(--border);
-      text-align: left;
+      border-left: 2px solid var(--accent-cyan);
+      color: #e7e9ec;
+      border-top-left-radius: 4px;
     }
 
-    .message.bot .msg-body strong {
-      color: var(--accent-bot-header);
-    }
-
-    .message.bot .msg-body ul {
-      margin-top: 0.5rem;
-      margin-left: 1.25rem;
-      list-style-type: disc;
-    }
-    
-    .message.bot .msg-body li {
-      margin-bottom: 0.35rem;
-    }
+    .msg-body ul { margin-top: 0.45rem; margin-left: 1.15rem; list-style-type: disc; }
+    .msg-body li { margin-bottom: 0.3rem; }
 
     .msg-body pre {
-      background: rgba(0,0,0,0.3);
-      padding: 1rem;
+      background: rgba(0,0,0,0.35);
+      padding: 0.9rem;
       border-radius: 8px;
-      margin-top: 0.75rem;
-      margin-bottom: 0.75rem;
+      margin: 0.65rem 0;
       overflow-x: auto;
-      border: 1px solid rgba(255,255,255,0.05);
+      border: 1px solid var(--border-soft);
     }
-    
     .msg-body code {
       font-family: var(--mono-font);
-      font-size: 0.82rem;
-      color: #f8fafc;
-      line-height: 1.45;
+      font-size: 0.8rem;
       background: rgba(255,255,255,0.04);
       padding: 0.1rem 0.3rem;
       border-radius: 4px;
     }
-    
-    .msg-body pre code {
-      background: transparent;
-      padding: 0;
-      border-radius: 0;
-    }
+    .msg-body pre code { background: transparent; padding: 0; }
 
     .metrics-bar {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       border: 1px solid var(--border);
       border-radius: 7px;
-      background: rgba(0,0,0,0.2);
-      margin-top: 0.75rem;
-      margin-bottom: 0.9rem;
+      background: rgba(0,0,0,0.25);
+      margin-bottom: 0.8rem;
       overflow: hidden;
     }
-
-    .metric-item {
-      padding: 0.7rem;
-      text-align: center;
-      border-right: 1px solid var(--border);
-    }
-
+    .metric-item { padding: 0.65rem; text-align: center; border-right: 1px solid var(--border); }
     .metric-item:last-child { border-right: none; }
-    .metric-value { font-family: var(--mono-font); font-size: 1.1rem; font-weight: 600; color: var(--text); }
-    .metric-label { font-family: var(--mono-font); font-size: 0.6rem; color: var(--text-muted); text-transform: uppercase; margin-top: 0.2rem; }
+    .metric-value { font-family: var(--mono-font); font-size: 1.05rem; font-weight: 500; }
+    .metric-label { font-family: var(--mono-font); font-size: 0.58rem; color: var(--text-faint); text-transform: uppercase; margin-top: 0.15rem; }
 
-    .sources-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.35rem;
-      margin-top: 0.9rem;
-      list-style: none;
-    }
+    .sources-list { display: flex; flex-direction: column; gap: 0.3rem; margin-top: 0.75rem; list-style: none; }
+    .sources-list a { color: var(--text-faint); font-family: var(--mono-font); font-size: 0.7rem; text-decoration: none; }
+    .sources-list a:hover { color: var(--text-dim); text-decoration: underline; }
 
-    .sources-list a {
-      color: var(--text-muted);
-      font-family: var(--mono-font);
-      font-size: 0.72rem;
-      text-decoration: none;
-      transition: color 0.15s ease;
-    }
-
-    .sources-list a:hover { color: var(--text); text-decoration: underline; }
-
-    /* Input Dock */
+    /* ---------- Input dock ---------- */
     .input-dock {
       display: flex;
       flex-direction: column;
-      gap: 0.9rem;
-      background: var(--card-bg);
+      gap: 0.7rem;
+      background: var(--panel);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 1.2rem;
+      padding: 1rem 1.1rem;
     }
 
-    .dropzone-bar {
+    .dock-toprow {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0.6rem 0.9rem;
-      background: var(--bg);
-      border: 1px dashed var(--border);
-      border-radius: 7px;
-      cursor: pointer;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      transition: all 0.15s ease;
+      gap: 0.6rem;
     }
 
-    .dropzone-bar:hover { border-color: var(--border-focus); color: var(--text); }
+    .dropzone-bar {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 0.75rem;
+      background: var(--bg);
+      border: 1px dashed var(--border-focus);
+      border-radius: 7px;
+      cursor: pointer;
+      font-size: 0.76rem;
+      color: var(--text-faint);
+      transition: all 0.15s ease;
+    }
+    .dropzone-bar:hover { border-color: var(--accent); color: var(--text-dim); }
+
+    .msg-header .web-tag {
+      color: var(--accent-cyan);
+      text-transform: none;
+      letter-spacing: 0;
+    }
 
     textarea {
       width: 100%;
-      height: 75px;
+      height: 66px;
       background: transparent;
       border: none;
       color: var(--text);
-      font-size: 0.92rem;
-      outline: none;
+      font-size: 0.9rem;
       font-family: inherit;
+      outline: none;
       resize: none;
       line-height: 1.5;
     }
+    textarea::placeholder { color: var(--text-faint); }
 
     .dock-footer {
       display: flex;
       justify-content: flex-end;
       align-items: center;
-      border-top: 1px solid var(--border);
-      padding-top: 0.9rem;
+      border-top: 1px solid var(--border-soft);
+      padding-top: 0.7rem;
     }
 
-    /* Blue Send Button */
     button.btn-submit {
-      background: #2563eb;
-      color: #ffffff;
+      background: var(--accent);
+      color: #fff;
       border: none;
-      padding: 0.6rem 1.2rem;
+      padding: 0.55rem 1.15rem;
       border-radius: 20px;
       font-weight: 600;
-      font-size: 0.8rem;
+      font-size: 0.79rem;
       cursor: pointer;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      font-family: var(--body-font);
       display: flex;
       align-items: center;
       gap: 0.4rem;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.15s ease;
+    }
+    button.btn-submit:hover { background: var(--accent-hover); }
+    button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* ---------- Typing indicator ---------- */
+    .typing-dots {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 0.3rem 0;
+    }
+    .typing-dots span {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--text-faint);
+      animation: typingBounce 1.1s infinite ease-in-out;
+    }
+    .typing-dots span:nth-child(2) { animation-delay: 0.15s; }
+    .typing-dots span:nth-child(3) { animation-delay: 0.3s; }
+    @keyframes typingBounce {
+      0%, 60%, 100% { transform: translateY(0); opacity: 0.35; }
+      30% { transform: translateY(-4px); opacity: 1; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .typing-dots span { animation: none; opacity: 0.7; }
     }
 
-    button.btn-submit:hover { 
-      background: #1d4ed8; 
-      transform: translateY(-1px); 
+    /* ---------- Small polish animations ---------- */
+    .btn-new-chat, .dropzone-bar, button.btn-submit, .history-item {
+      transition: all 0.15s ease, transform 0.1s ease;
     }
-    
-    button:disabled { 
-      opacity: 0.4; 
-      cursor: not-allowed; 
-      transform: none; 
-    }
+    button.btn-submit:active { transform: scale(0.96); }
+    .btn-new-chat:active { transform: scale(0.97); }
 
-    canvas.nexus-img {
-      border-radius: 7px;
+    /* ---------- Mobile topbar (hidden on desktop) ---------- */
+    .mobile-topbar {
+      display: none;
+      align-items: center;
+      gap: 0.7rem;
+      padding: 0.7rem 1rem;
+      border-bottom: 1px solid var(--border-soft);
+      background: var(--sidebar-bg);
+      flex-shrink: 0;
+    }
+    .mobile-topbar .menu-btn {
+      background: none;
       border: 1px solid var(--border);
-      margin-top: 0.6rem;
-      max-width: 100%;
+      color: var(--text);
+      width: 34px; height: 34px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.15s ease;
+    }
+    .mobile-topbar .menu-btn:active { background: var(--panel); }
+    .mobile-topbar .mobile-brand {
+      font-family: var(--display-font);
+      font-weight: 600;
+      font-size: 0.95rem;
+      flex-grow: 1;
+    }
+    .mobile-topbar .mobile-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--text-faint);
+      flex-shrink: 0;
+    }
+    .mobile-topbar .mobile-dot.online { background: var(--online); }
+    .mobile-topbar .mobile-dot.offline { background: var(--offline); }
+
+    .sidebar-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 40;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+    .sidebar-backdrop.show { display: block; opacity: 1; }
+
+    @media (max-width: 780px) {
+      body { flex-direction: column; height: 100dvh; }
+
+      .mobile-topbar { display: flex; }
+
+      aside {
+        position: fixed;
+        top: 0; left: 0;
+        height: 100dvh;
+        width: 82vw;
+        max-width: 300px;
+        z-index: 50;
+        transform: translateX(-100%);
+        transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: 8px 0 24px rgba(0,0,0,0.4);
+      }
+      aside.open { transform: translateX(0); }
+
+      main {
+        max-width: 100%;
+        height: auto;
+        flex: 1;
+        min-height: 0;
+        padding: 1rem 0.9rem 0.9rem;
+      }
+
+      .empty-state h2 { font-size: 1.05rem; }
+      .message { max-width: 94%; }
+      .msg-body { padding: 0.75rem 0.95rem; font-size: 0.87rem; }
+      textarea { height: 56px; font-size: 0.87rem; }
+      .input-dock { padding: 0.85rem 0.9rem; }
+    }
+
+    @media (max-width: 420px) {
+      .metrics-bar { grid-template-columns: repeat(3, 1fr); }
+      .metric-value { font-size: 0.92rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Sidebar -->
-  <aside>
-    <div class="brand-row">
+  <div class="mobile-topbar">
+    <button class="menu-btn" id="menuToggle" aria-label="Toggle menu">☰</button>
+    <span class="mobile-brand">OLIT Nexus</span>
+    <span class="mobile-dot" id="mobileDot"></span>
+  </div>
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <aside id="sidebar">
+    <div class="brand-block">
       <div class="brand-title">
-        <img src="logo.png" alt="OLIT Nexus Logo" class="logo-icon">
+        <img src="logo.png" alt="OLIT Nexus" class="logo-icon">
         <h1>OLIT Nexus</h1>
       </div>
-      <span class="tag nexus-tag">Nexus</span>
+      <div class="heartbeat" id="heartbeat">
+        <span class="dot"></span>
+        <span id="heartbeatText">checking backend…</span>
+      </div>
     </div>
 
-    <!-- New chat button -->
     <button class="btn-new-chat" id="newChatBtn">
       <svg viewBox="0 0 24 24">
         <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
@@ -456,23 +535,26 @@
     <div class="history-list" id="historyList"></div>
   </aside>
 
-  <!-- Main Chat Flow -->
   <main>
-    <div class="chat-container" id="chatContainer"></div>
+    <div class="chat-container" id="chatContainer">
+      <div class="empty-state" id="emptyState">
+        <div class="eyebrow">Self-hosted · Qwen2.5-Coder</div>
+        <h2>Ask something, attach a document,<br>or toggle web search.</h2>
+      </div>
+    </div>
 
-    <!-- Input Control Dock -->
     <div class="input-dock">
-      <div class="dropzone-bar" onclick="document.getElementById('fileInput').click()">
-        <span id="fileLabel">📎 Attach PDF, Image, or Text file...</span>
-        <input type="file" id="fileInput" accept=".txt,.pdf,.png,.jpg,.jpeg,.webp,.bmp" style="display:none">
+      <div class="dock-toprow">
+        <div class="dropzone-bar" onclick="document.getElementById('fileInput').click()">
+          <span id="fileLabel">📎 Attach PDF, image, or text file…</span>
+          <input type="file" id="fileInput" accept=".txt,.pdf,.png,.jpg,.jpeg,.webp,.bmp" style="display:none">
+        </div>
       </div>
 
-      <textarea id="promptInput" placeholder="Analyze data, summarize text, synthesize code... (Enter to send, Shift+Enter for newline)"></textarea>
+      <textarea id="promptInput" placeholder="Ask a coding question, chat, or drop a file to summarize… (Enter to send, Shift+Enter for newline)"></textarea>
 
       <div class="dock-footer">
-        <button class="btn-submit" id="sendBtn">
-          Send <span>↑</span>
-        </button>
+        <button class="btn-submit" id="sendBtn">Send <span>↑</span></button>
       </div>
     </div>
   </main>
@@ -480,18 +562,50 @@
   <script>
     const API_BASE = 'https://olitapi.olittechnologies.co.in';
 
-    // Elements
     const chatContainer = document.getElementById('chatContainer');
+    const emptyState = document.getElementById('emptyState');
     const promptInput = document.getElementById('promptInput');
     const sendBtn = document.getElementById('sendBtn');
     const fileInput = document.getElementById('fileInput');
     const fileLabel = document.getElementById('fileLabel');
     const newChatBtn = document.getElementById('newChatBtn');
     const historyList = document.getElementById('historyList');
+    const heartbeat = document.getElementById('heartbeat');
+    const heartbeatText = document.getElementById('heartbeatText');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileDot = document.getElementById('mobileDot');
 
-    // Chat History Array
     let chats = JSON.parse(localStorage.getItem('olit_nexus_chats') || '[]');
     let currentChatId = null;
+
+    function openDrawer() { sidebar.classList.add('open'); sidebarBackdrop.classList.add('show'); }
+    function closeDrawer() { sidebar.classList.remove('open'); sidebarBackdrop.classList.remove('show'); }
+    menuToggle.addEventListener('click', () => {
+      sidebar.classList.contains('open') ? closeDrawer() : openDrawer();
+    });
+    sidebarBackdrop.addEventListener('click', closeDrawer);
+
+    // ---- Live backend heartbeat ----
+    async function checkHealth() {
+      try {
+        const res = await fetch(`${API_BASE}/api/health`, { signal: AbortSignal.timeout(5000) });
+        if (res.ok) {
+          heartbeat.className = 'heartbeat online';
+          heartbeatText.textContent = 'backend online';
+          mobileDot.className = 'mobile-dot online';
+          return;
+        }
+        throw new Error('bad status');
+      } catch {
+        heartbeat.className = 'heartbeat offline';
+        heartbeatText.textContent = 'backend unreachable';
+        mobileDot.className = 'mobile-dot offline';
+      }
+    }
+    checkHealth();
+    setInterval(checkHealth, 30000);
 
     fileInput.addEventListener('change', (e) => {
       if (e.target.files.length) fileLabel.textContent = `📄 ${e.target.files[0].name}`;
@@ -510,55 +624,62 @@
     function createNewChat() {
       currentChatId = Date.now();
       chatContainer.innerHTML = '';
+      chatContainer.appendChild(emptyState);
       renderHistory();
+      closeDrawer();
     }
 
-    // Dynamic Title Generation: Filters out simple greetings and waits for actual context
-    function extractDynamicTitle(promptText) {
-      if (!promptText) return null;
-
-      let cleanText = promptText.trim().replace(/^hey\s+|^hello\s+|^hi\s+|^please\s+|^can\s+you\s+/i, '');
-      
-      // If prompt was just "Hi", "Hello", "Hey" or under 3 chars, return null (waiting for next prompt)
-      if (cleanText.length < 3 || /^(hi|hello|hey|greetings|help|sup)$/i.test(promptText.trim())) {
+    // Real, model-generated chat titles — the backend reads the first
+    // exchange and writes a short summary-style title, the same way a
+    // proper assistant names a conversation, instead of a regex guess.
+    async function requestChatTitle(userMsg, botReply) {
+      try {
+        const res = await fetch(`${API_BASE}/api/title`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: userMsg, reply: botReply })
+        });
+        const data = await res.json();
+        return (data.success && data.title) ? data.title : null;
+      } catch {
         return null;
       }
+    }
 
-      // Code generation intent
-      if (/python|code|script|function|print|factorial|html|js|css/i.test(cleanText)) {
-        let match = cleanText.match(/print\s*\(?["']?([^"'\)]+)["']?\)?/i) || cleanText.match(/(python|code|script|function|factorial|html|js)/i);
-        if (match && match[1]) return `Python: ${match[1].substring(0, 15)}`;
-        return "Code Generation";
-      }
+    function showTypingIndicator() {
+      const div = document.createElement('div');
+      div.className = 'message bot';
+      div.id = 'typingIndicator';
+      div.innerHTML = `
+        <span class="msg-header">Nexus Engine</span>
+        <div class="msg-body typing-dots"><span></span><span></span><span></span></div>
+      `;
+      chatContainer.appendChild(div);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
 
-      // Search / Entity intent
-      if (/search|find|lookup|about|who is|what is/i.test(cleanText)) {
-        let clean = cleanText.replace(/search\s+about\s+|search\s+|find\s+|lookup\s+/i, '');
-        return clean.substring(0, 22).replace(/^\w/, c => c.toUpperCase());
-      }
-
-      // Image intent
-      if (/image|draw|generate image|visual/i.test(cleanText)) {
-        return "Image Generation";
-      }
-
-      // Default meaningful title
-      return cleanText.substring(0, 22).replace(/^\w/, c => c.toUpperCase());
+    function removeTypingIndicator() {
+      const el = document.getElementById('typingIndicator');
+      if (el) el.remove();
     }
 
     async function handleSend() {
       const text = promptInput.value.trim();
       const hasFile = fileInput.files.length > 0;
-
       if (!text && !hasFile) return;
 
       if (!currentChatId) currentChatId = Date.now();
+      if (emptyState.parentNode === chatContainer) emptyState.remove();
 
-      appendMessageBubble('user', text || `Attached asset: ${fileInput.files[0].name}`);
-
+      appendMessageBubble('user', text || `Attached file: ${fileInput.files[0].name}`);
       sendBtn.disabled = true;
-      sendBtn.innerHTML = 'Sending...';
+      sendBtn.textContent = 'Sending…';
       promptInput.value = '';
+      closeDrawer();
+
+      const startedAt = performance.now();
+      const isFirstExchange = !chats.find(c => c.id === currentChatId);
+      showTypingIndicator();
 
       try {
         if (hasFile) {
@@ -568,14 +689,16 @@
 
           const res = await fetch(`${API_BASE}/api/summarize`, { method: 'POST', body: formData });
           const data = await res.json();
+          removeTypingIndicator();
 
           if (data.success) {
-            renderSummaryBubbleResponse(data);
+            renderSummaryBubble(data, performance.now() - startedAt);
           } else {
-            appendMessageBubble('bot', `Nexus Synthesis Error: ${data.error}`);
+            appendMessageBubble('bot', `Error: ${data.error}`);
           }
           fileInput.value = '';
-          fileLabel.textContent = '📎 Attach PDF, Image, or Text file...';
+          fileLabel.textContent = '📎 Attach PDF, image, or text file…';
+          saveChatHistory();
         } else {
           const res = await fetch(`${API_BASE}/api/chat`, {
             method: 'POST',
@@ -583,40 +706,55 @@
             body: JSON.stringify({ message: text })
           });
           const data = await res.json();
+          removeTypingIndicator();
 
           if (data.success) {
-            if (data.type === 'image') {
-              renderNexusImageBubbleResponse(data.prompt || text);
-            } else {
-              appendMessageBubble('bot', data.reply, data.sources);
+            appendMessageBubble('bot', data.reply, data.sources, performance.now() - startedAt);
+            saveChatHistory();
+
+            // Only ask for a title on the first exchange of a new chat.
+            if (isFirstExchange) {
+              requestChatTitle(text, data.reply).then(title => {
+                if (!title) return;
+                const entry = chats.find(c => c.id === currentChatId);
+                if (entry) {
+                  entry.title = title;
+                  localStorage.setItem('olit_nexus_chats', JSON.stringify(chats));
+                  renderHistory();
+                }
+              });
             }
           } else {
-            appendMessageBubble('bot', `Nexus Synthesis Error: ${data.error}`);
+            appendMessageBubble('bot', `Error: ${data.error}`);
+            saveChatHistory();
           }
         }
       } catch (err) {
-        appendMessageBubble('bot', 'Could not connect to OLIT Nexus backend.');
+        removeTypingIndicator();
+        appendMessageBubble('bot', 'Could not reach the backend. Check the heartbeat status in the sidebar.');
+        saveChatHistory();
       } finally {
         sendBtn.disabled = false;
         sendBtn.innerHTML = 'Send <span>↑</span>';
-        
-        saveChatHistory(text);
       }
     }
 
-    function appendMessageBubble(role, content, sources = []) {
+    function appendMessageBubble(role, content, sources = [], latencyMs = null) {
       const msgDiv = document.createElement('div');
       msgDiv.className = `message ${role}`;
-      
+
       let sourcesHtml = '';
       if (sources && sources.length) {
-        sourcesHtml = `<ul class="sources-list">` + 
-          sources.map(s => `<li><a href="${s.url}" target="_blank">🔗 ${s.title}</a></li>`).join('') + 
+        sourcesHtml = `<ul class="sources-list">` +
+          sources.map(url => `<li><a href="${url}" target="_blank">🔗 ${new URL(url).hostname}</a></li>`).join('') +
           `</ul>`;
       }
 
+      const latencyTag = latencyMs !== null ? `<span class="latency">· ${Math.round(latencyMs)}ms</span>` : '';
+      const webTag = sources && sources.length ? `<span class="web-tag">· 🔎 web</span>` : '';
+
       msgDiv.innerHTML = `
-        <span class="msg-header">${role === 'user' ? '' : 'Nexus Engine'}</span>
+        <span class="msg-header">${role === 'user' ? '' : `Nexus Engine ${latencyTag}${webTag}`}</span>
         <div class="msg-body">${formatBotResponse(content)}${sourcesHtml}</div>
       `;
       chatContainer.appendChild(msgDiv);
@@ -624,99 +762,46 @@
     }
 
     function formatBotResponse(text) {
-        let formatted = escapeHtml(text);
+      let formatted = escapeHtml(text);
+      formatted = formatted.replace(/```python\n([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
+      formatted = formatted.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
+      formatted = formatted.replace(/`([^`]+)`/g, '<code>$1</code>');
 
-        formatted = formatted.replace(/-&gt;/g, '→');
-        
-        formatted = formatted.replace(/```python\n([\s\S]*?)```/g, '<pre><code class="python">$1</code></pre>');
-        formatted = formatted.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
-        formatted = formatted.replace(/`([^`]+)`/g, '<code>$1</code>');
-
-        const lines = formatted.split('\n');
-        let insideList = false;
-        let finalHtml = '';
-
-        lines.forEach(line => {
-            const trimmedLine = line.trim();
-            if (trimmedLine.startsWith('- ') || trimmedLine.startsWith('* ')) {
-                if (!insideList) {
-                    finalHtml += '<ul>';
-                    insideList = true;
-                }
-                finalHtml += `<li>${trimmedLine.substring(2)}</li>`;
-            } else {
-                if (insideList) {
-                    finalHtml += '</ul>';
-                    insideList = false;
-                }
-                finalHtml += line + '\n';
-            }
-        });
-        
-        if (insideList) {
-            finalHtml += '</ul>';
+      const lines = formatted.split('\n');
+      let insideList = false;
+      let finalHtml = '';
+      lines.forEach(line => {
+        const t = line.trim();
+        if (t.startsWith('- ') || t.startsWith('* ')) {
+          if (!insideList) { finalHtml += '<ul>'; insideList = true; }
+          finalHtml += `<li>${t.substring(2)}</li>`;
+        } else {
+          if (insideList) { finalHtml += '</ul>'; insideList = false; }
+          finalHtml += line + '\n';
         }
-        
-        finalHtml = finalHtml.replace(/&amp;#x27;([^&amp;]+)&amp;#x27;/g, '<strong>$1</strong>');
-
-        return finalHtml.replace(/\n/g, '<br>');
+      });
+      if (insideList) finalHtml += '</ul>';
+      return finalHtml.replace(/\n/g, '<br>');
     }
 
-    function renderSummaryBubbleResponse(data) {
+    function renderSummaryBubble(data, latencyMs) {
       const msgDiv = document.createElement('div');
       msgDiv.className = 'message bot';
       const points = data.summary.map(pt => `• ${pt}`).join('\n');
-      
+      const latencyTag = `<span class="latency">· ${Math.round(latencyMs)}ms</span>`;
+
       msgDiv.innerHTML = `
-        <span class="msg-header">Nexus Engine</span>
+        <span class="msg-header">Nexus Engine ${latencyTag}</span>
         <div class="msg-body">
           <div class="metrics-bar">
             <div class="metric-item"><div class="metric-value">${data.stats.total_words}</div><div class="metric-label">Words</div></div>
             <div class="metric-item"><div class="metric-value">${data.stats.reduction}%</div><div class="metric-label">Reduction</div></div>
-            <div class="metric-item"><div class="metric-value">${data.stats.read_time_reduction}m</div><div class="metric-label">Read Time</div></div>
+            <div class="metric-item"><div class="metric-value">${data.stats.read_time}m</div><div class="metric-label">Read time</div></div>
           </div>
-          <strong>Nexus Synthesis Key Takeaways:</strong>\n${formatBotResponse(points)}
+          ${formatBotResponse(points)}
         </div>
       `;
       chatContainer.appendChild(msgDiv);
-      chatContainer.scrollTop = chatContainer.scrollHeight;
-    }
-
-    function renderNexusImageBubbleResponse(prompt) {
-      const msgDiv = document.createElement('div');
-      msgDiv.className = 'message bot';
-      
-      msgDiv.innerHTML = `
-        <span class="msg-header">Nexus Engine</span>
-        <div class="msg-body">
-          Generated Nexus visual artwork for: <em>"${escapeHtml(prompt)}"</em>
-          <br>
-          <canvas class="nexus-img" width="400" height="220"></canvas>
-        </div>
-      `;
-      chatContainer.appendChild(msgDiv);
-
-      const canvas = msgDiv.querySelector('canvas');
-      const ctx = canvas.getContext('2d');
-      const grad = ctx.createLinearGradient(0, 0, 400, 220);
-      grad.addColorStop(0, '#0c0c0f');
-      grad.addColorStop(1, '#161619');
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, 400, 220);
-
-      ctx.strokeStyle = 'rgba(220, 230, 255, 0.08)';
-      ctx.lineWidth = 1;
-      for (let i = 0; i < 15; i++) {
-          ctx.beginPath();
-          ctx.moveTo(Math.random() * 400, Math.random() * 220);
-          ctx.lineTo(Math.random() * 400, Math.random() * 220);
-          ctx.stroke();
-      }
-
-      ctx.fillStyle = '#ffffff';
-      ctx.font = '12px monospace';
-      ctx.fillText(`[NEXUS RENDER]: ${prompt.substring(0, 35)}...`, 20, 115);
-
       chatContainer.scrollTop = chatContainer.scrollHeight;
     }
 
@@ -724,22 +809,12 @@
       return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/'/g, "&#x27;").replace(/"/g, "&quot;");
     }
 
-    function saveChatHistory(promptText) {
+    function saveChatHistory() {
       const existing = chats.find(c => c.id === currentChatId);
-      const generatedTitle = extractDynamicTitle(promptText);
-
       if (existing) {
         existing.html = chatContainer.innerHTML;
-        // If the current title is default ("New chat") or unassigned, try updating with the new prompt
-        if ((!existing.title || existing.title === "New chat") && generatedTitle) {
-          existing.title = generatedTitle;
-        }
       } else {
-        chats.unshift({
-          id: currentChatId,
-          title: generatedTitle || "New chat",
-          html: chatContainer.innerHTML
-        });
+        chats.unshift({ id: currentChatId, title: "New chat", html: chatContainer.innerHTML });
       }
       localStorage.setItem('olit_nexus_chats', JSON.stringify(chats));
       renderHistory();
@@ -757,10 +832,8 @@
     window.loadChat = (id) => {
       currentChatId = id;
       const chat = chats.find(c => c.id === id);
-      if (chat) {
-        chatContainer.innerHTML = chat.html;
-        renderHistory();
-      }
+      if (chat) { chatContainer.innerHTML = chat.html; renderHistory(); }
+      closeDrawer();
     };
 
     window.deleteChat = (e, id) => {
@@ -771,7 +844,6 @@
       else renderHistory();
     };
 
-    // Init Session
     renderHistory();
   </script>
 </body>
