@@ -58,7 +58,6 @@
     ::selection { background: var(--accent-soft); }
     :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-    /* ---------- Sidebar ---------- */
     aside {
       width: 258px;
       background: var(--sidebar-bg);
@@ -92,7 +91,6 @@
       letter-spacing: -0.01em;
     }
 
-    /* Signature: live backend heartbeat */
     .heartbeat {
       display: flex;
       align-items: center;
@@ -173,7 +171,6 @@
     .history-item .delete-btn { display: none; color: var(--offline); font-size: 0.78rem; margin-left: 0.5rem; }
     .history-item:hover .delete-btn { display: inline; }
 
-    /* ---------- Main ---------- */
     main {
       flex-grow: 1;
       display: flex;
@@ -270,6 +267,34 @@
     .msg-body ul { margin-top: 0.45rem; margin-left: 1.15rem; list-style-type: disc; }
     .msg-body li { margin-bottom: 0.3rem; }
 
+    .code-block-wrapper {
+      position: relative;
+      margin: 0.65rem 0;
+    }
+    .code-block-wrapper pre { margin: 0; }
+    .copy-code-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: var(--panel-elevated);
+      border: 1px solid var(--border);
+      color: var(--text-faint);
+      font-family: var(--mono-font);
+      font-size: 0.66rem;
+      padding: 0.28rem 0.55rem;
+      border-radius: 6px;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.15s ease, background 0.15s ease, color 0.15s ease;
+    }
+    .code-block-wrapper:hover .copy-code-btn { opacity: 1; }
+    .copy-code-btn:hover { background: var(--border); color: var(--text); }
+    .copy-code-btn.copied { color: var(--online); border-color: var(--online); }
+    /* No hover on touch devices, so keep it visible there */
+    @media (hover: none) {
+      .copy-code-btn { opacity: 1; }
+    }
+
     .msg-body pre {
       background: rgba(0,0,0,0.35);
       padding: 0.9rem;
@@ -305,7 +330,6 @@
     .sources-list a { color: var(--text-faint); font-family: var(--mono-font); font-size: 0.7rem; text-decoration: none; }
     .sources-list a:hover { color: var(--text-dim); text-decoration: underline; }
 
-    /* ---------- Input dock ---------- */
     .input-dock {
       display: flex;
       flex-direction: column;
@@ -385,7 +409,6 @@
     button.btn-submit:hover { background: var(--accent-hover); }
     button:disabled { opacity: 0.4; cursor: not-allowed; }
 
-    /* ---------- Typing indicator ---------- */
     .typing-dots {
       display: flex;
       align-items: center;
@@ -408,14 +431,12 @@
       .typing-dots span { animation: none; opacity: 0.7; }
     }
 
-    /* ---------- Small polish animations ---------- */
     .btn-new-chat, .dropzone-bar, button.btn-submit, .history-item {
       transition: all 0.15s ease, transform 0.1s ease;
     }
     button.btn-submit:active { transform: scale(0.96); }
     .btn-new-chat:active { transform: scale(0.97); }
 
-    /* ---------- Mobile topbar (hidden on desktop) ---------- */
     .mobile-topbar {
       display: none;
       align-items: center;
@@ -560,7 +581,7 @@
   </main>
 
   <script>
-    const API_BASE = 'https://assistant-backend-592298774596.us-central1.run.app';
+    const API_BASE = 'https://olitapi.olittechnologies.co.in';
 
     const chatContainer = document.getElementById('chatContainer');
     const emptyState = document.getElementById('emptyState');
@@ -587,7 +608,6 @@
     });
     sidebarBackdrop.addEventListener('click', closeDrawer);
 
-    // ---- Live backend heartbeat ----
     async function checkHealth() {
       try {
         const res = await fetch(`${API_BASE}/api/health`, { signal: AbortSignal.timeout(5000) });
@@ -629,9 +649,6 @@
       closeDrawer();
     }
 
-    // Real, model-generated chat titles — the backend reads the first
-    // exchange and writes a short summary-style title, the same way a
-    // proper assistant names a conversation, instead of a regex guess.
     async function requestChatTitle(userMsg, botReply) {
       try {
         const res = await fetch(`${API_BASE}/api/title`, {
@@ -712,7 +729,6 @@
             appendMessageBubble('bot', data.reply, data.sources, performance.now() - startedAt);
             saveChatHistory();
 
-            // Only ask for a title on the first exchange of a new chat.
             if (isFirstExchange) {
               requestChatTitle(text, data.reply).then(title => {
                 if (!title) return;
@@ -763,8 +779,9 @@
 
     function formatBotResponse(text) {
       let formatted = escapeHtml(text);
-      formatted = formatted.replace(/```python\n([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
-      formatted = formatted.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
+      formatted = formatted.replace(/```(?:\w+\n)?([\s\S]*?)```/g, (match, code) =>
+        `<div class="code-block-wrapper"><button class="copy-code-btn" onclick="copyCodeBlock(this)">Copy</button><pre><code>${code}</code></pre></div>`
+      );
       formatted = formatted.replace(/`([^`]+)`/g, '<code>$1</code>');
 
       const lines = formatted.split('\n');
@@ -804,6 +821,23 @@
       chatContainer.appendChild(msgDiv);
       chatContainer.scrollTop = chatContainer.scrollHeight;
     }
+
+    window.copyCodeBlock = function(btn) {
+      const codeEl = btn.parentElement.querySelector('code');
+      const text = codeEl.textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const original = btn.textContent;
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = original;
+          btn.classList.remove('copied');
+        }, 1500);
+      }).catch(() => {
+        btn.textContent = 'Failed';
+        setTimeout(() => { btn.textContent = 'Copy'; }, 1500);
+      });
+    };
 
     function escapeHtml(str) {
       return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/'/g, "&#x27;").replace(/"/g, "&quot;");
