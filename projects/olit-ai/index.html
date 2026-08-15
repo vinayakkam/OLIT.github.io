@@ -686,16 +686,27 @@
       if (!text && !hasFile) return;
 
       if (!currentChatId) currentChatId = Date.now();
+      // Snapshot which chat this send belongs to. currentChatId can change
+      // if the user switches chats while this request is in flight — every
+      // later step uses sendChatId, never the live currentChatId, so the
+      // reply always lands in the right place instead of getting lost or
+      // attached to whatever chat happens to be open when it arrives.
+      const sendChatId = currentChatId;
+      const isFirstExchange = !chats.find(c => c.id === sendChatId);
+
       if (emptyState.parentNode === chatContainer) emptyState.remove();
 
       appendMessageBubble('user', text || `Attached file: ${fileInput.files[0].name}`);
+      // Checkpoint immediately so the user's own message survives even if
+      // they switch chats before the response comes back.
+      persistChatSnapshot(sendChatId, chatContainer.innerHTML);
+
       sendBtn.disabled = true;
       sendBtn.textContent = 'Sending…';
       promptInput.value = '';
       closeDrawer();
 
       const startedAt = performance.now();
-      const isFirstExchange = !chats.find(c => c.id === currentChatId);
       showTypingIndicator();
 
       try {
@@ -706,16 +717,15 @@
 
           const res = await fetch(`${API_BASE}/api/summarize`, { method: 'POST', body: formData });
           const data = await res.json();
-          removeTypingIndicator();
+          if (currentChatId === sendChatId) removeTypingIndicator();
 
-          if (data.success) {
-            renderSummaryBubble(data, performance.now() - startedAt);
-          } else {
-            appendMessageBubble('bot', `Error: ${data.error}`);
-          }
+          const bubbleHtml = data.success
+            ? buildSummaryBubbleHtml(data, performance.now() - startedAt)
+            : buildMessageBubbleHtml('bot', `Error: ${data.error}`);
+          commitBotBubble(sendChatId, bubbleHtml);
+
           fileInput.value = '';
           fileLabel.textContent = '📎 Attach PDF, image, or text file…';
-          saveChatHistory();
         } else {
           const res = await fetch(`${API_BASE}/api/chat`, {
             method: 'POST',
@@ -723,16 +733,16 @@
             body: JSON.stringify({ message: text })
           });
           const data = await res.json();
-          removeTypingIndicator();
+          if (currentChatId === sendChatId) removeTypingIndicator();
 
           if (data.success) {
-            appendMessageBubble('bot', data.reply, data.sources, performance.now() - startedAt);
-            saveChatHistory();
+            const bubbleHtml = buildMessageBubbleHtml('bot', data.reply, data.sources, performance.now() - startedAt);
+            commitBotBubble(sendChatId, bubbleHtml);
 
             if (isFirstExchange) {
               requestChatTitle(text, data.reply).then(title => {
                 if (!title) return;
-                const entry = chats.find(c => c.id === currentChatId);
+                const entry = chats.find(c => c.id === sendChatId);
                 if (entry) {
                   entry.title = title;
                   localStorage.setItem('olit_nexus_chats', JSON.stringify(chats));
@@ -741,39 +751,51 @@
               });
             }
           } else {
-            appendMessageBubble('bot', `Error: ${data.error}`);
-            saveChatHistory();
+            commitBotBubble(sendChatId, buildMessageBubbleHtml('bot', `Error: ${data.error}`));
           }
         }
       } catch (err) {
-        removeTypingIndicator();
-        appendMessageBubble('bot', 'Could not reach the backend. Check the heartbeat status in the sidebar.');
-        saveChatHistory();
+        if (currentChatId === sendChatId) removeTypingIndicator();
+        commitBotBubble(sendChatId, buildMessageBubbleHtml('bot', 'Could not reach the backend. Check the heartbeat status in the sidebar.'));
       } finally {
         sendBtn.disabled = false;
         sendBtn.innerHTML = 'Send <span>↑</span>';
       }
     }
 
-    function appendMessageBubble(role, content, sources = [], latencyMs = null) {
-      const msgDiv = document.createElement('div');
-      msgDiv.className = `message ${role}`;
+    // Attaches a finished bot/summary bubble to wherever it actually
+    // belongs: live DOM if that chat is still on screen, or straight into
+    // storage if the user has since switched away.
+    function commitBotBubble(chatId, bubbleHtml) {
+      if (currentChatId === chatId) {
+        chatContainer.insertAdjacentHTML('beforeend', bubbleHtml);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+        persistChatSnapshot(chatId, chatContainer.innerHTML);
+      } else {
+        const existing = chats.find(c => c.id === chatId);
+        const base = existing ? existing.html : '';
+        persistChatSnapshot(chatId, base + bubbleHtml);
+      }
+    }
 
+    function buildMessageBubbleHtml(role, content, sources = [], latencyMs = null) {
       let sourcesHtml = '';
       if (sources && sources.length) {
         sourcesHtml = `<ul class="sources-list">` +
           sources.map(url => `<li><a href="${url}" target="_blank">🔗 ${new URL(url).hostname}</a></li>`).join('') +
           `</ul>`;
       }
-
       const latencyTag = latencyMs !== null ? `<span class="latency">· ${Math.round(latencyMs)}ms</span>` : '';
       const webTag = sources && sources.length ? `<span class="web-tag">· 🔎 web</span>` : '';
 
-      msgDiv.innerHTML = `
+      return `<div class="message ${role}">
         <span class="msg-header">${role === 'user' ? '' : `Nexus Engine ${latencyTag}${webTag}`}</span>
         <div class="msg-body">${formatBotResponse(content)}${sourcesHtml}</div>
-      `;
-      chatContainer.appendChild(msgDiv);
+      </div>`;
+    }
+
+    function appendMessageBubble(role, content, sources = [], latencyMs = null) {
+      chatContainer.insertAdjacentHTML('beforeend', buildMessageBubbleHtml(role, content, sources, latencyMs));
       chatContainer.scrollTop = chatContainer.scrollHeight;
     }
 
@@ -801,13 +823,11 @@
       return finalHtml.replace(/\n/g, '<br>');
     }
 
-    function renderSummaryBubble(data, latencyMs) {
-      const msgDiv = document.createElement('div');
-      msgDiv.className = 'message bot';
+    function buildSummaryBubbleHtml(data, latencyMs) {
       const points = data.summary.map(pt => `• ${pt}`).join('\n');
       const latencyTag = `<span class="latency">· ${Math.round(latencyMs)}ms</span>`;
 
-      msgDiv.innerHTML = `
+      return `<div class="message bot">
         <span class="msg-header">Nexus Engine ${latencyTag}</span>
         <div class="msg-body">
           <div class="metrics-bar">
@@ -817,9 +837,7 @@
           </div>
           ${formatBotResponse(points)}
         </div>
-      `;
-      chatContainer.appendChild(msgDiv);
-      chatContainer.scrollTop = chatContainer.scrollHeight;
+      </div>`;
     }
 
     window.copyCodeBlock = function(btn) {
@@ -843,12 +861,15 @@
       return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/'/g, "&#x27;").replace(/"/g, "&quot;");
     }
 
-    function saveChatHistory() {
-      const existing = chats.find(c => c.id === currentChatId);
+    // Creates or updates a chat's stored entry directly — used both for the
+    // "still viewing this chat" case (from live DOM) and the "switched
+    // away" case (merging a bubble string onto the stored snapshot).
+    function persistChatSnapshot(id, html) {
+      const existing = chats.find(c => c.id === id);
       if (existing) {
-        existing.html = chatContainer.innerHTML;
+        existing.html = html;
       } else {
-        chats.unshift({ id: currentChatId, title: "New chat", html: chatContainer.innerHTML });
+        chats.unshift({ id, title: "New chat", html });
       }
       localStorage.setItem('olit_nexus_chats', JSON.stringify(chats));
       renderHistory();
@@ -858,6 +879,7 @@
       historyList.innerHTML = chats.map(c => `
         <div class="history-item ${c.id === currentChatId ? 'active' : ''}" onclick="loadChat(${c.id})">
           <span>${escapeHtml(c.title || "New chat")}</span>
+
           <span class="delete-btn" onclick="deleteChat(event, ${c.id})">✕</span>
         </div>
       `).join('');
