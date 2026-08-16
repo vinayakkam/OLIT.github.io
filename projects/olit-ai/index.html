@@ -153,6 +153,169 @@
       flex-grow: 1;
     }
 
+    /* ---------- Profile footer ---------- */
+    .profile-footer {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.7rem;
+      border-top: 1px solid var(--border-soft);
+      border-radius: 8px;
+    }
+    .profile-avatar {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--display-font);
+      font-size: 0.8rem;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+    .profile-meta { flex: 1; min-width: 0; }
+    .profile-name {
+      font-size: 0.82rem;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .profile-email {
+      font-family: var(--mono-font);
+      font-size: 0.66rem;
+      color: var(--text-faint);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .profile-settings-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      width: 28px; height: 28px;
+      border-radius: 7px;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    .profile-settings-btn:hover { background: var(--panel); color: var(--text); }
+
+    /* ---------- Settings modal ---------- */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 60;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .modal-backdrop.show { display: flex; }
+    .modal-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-left: 2px solid var(--accent-cyan);
+      border-radius: 12px;
+      padding: 1.75rem;
+      max-width: 360px;
+      width: 100%;
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
+    .modal-header h3 { font-family: var(--display-font); font-size: 1.05rem; font-weight: 600; }
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--text-faint);
+      font-size: 0.9rem;
+      cursor: pointer;
+      padding: 0.2rem;
+    }
+    .modal-close:hover { color: var(--text); }
+
+    .modal-card .field { margin-bottom: 1rem; }
+    .modal-card label {
+      display: block;
+      font-family: var(--mono-font);
+      font-size: 0.66rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-faint);
+      margin-bottom: 0.35rem;
+    }
+    .modal-card input {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.6rem 0.75rem;
+      color: var(--text);
+      font-size: 0.85rem;
+      font-family: var(--body-font);
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+    .modal-card input:focus { border-color: var(--accent); }
+    .modal-card input:disabled { color: var(--text-faint); cursor: not-allowed; }
+
+    .error-msg, .success-msg {
+      font-size: 0.76rem;
+      padding: 0.55rem 0.75rem;
+      border-radius: 7px;
+      margin-bottom: 1rem;
+      display: none;
+    }
+    .error-msg {
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      color: var(--offline);
+    }
+    .success-msg {
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      color: var(--online);
+    }
+    .error-msg.show, .success-msg.show { display: block; }
+
+    .submit-btn {
+      width: 100%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 0.65rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.83rem;
+      cursor: pointer;
+      font-family: var(--body-font);
+      margin-bottom: 0.6rem;
+      transition: background 0.15s ease;
+    }
+    .submit-btn:hover { background: var(--accent-hover); }
+    .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .logout-btn {
+      width: 100%;
+      background: transparent;
+      color: var(--offline);
+      border: 1px solid var(--border);
+      padding: 0.6rem;
+      border-radius: 8px;
+      font-size: 0.83rem;
+      cursor: pointer;
+      font-family: var(--body-font);
+      transition: background 0.15s ease;
+    }
+    .logout-btn:hover { background: rgba(239, 68, 68, 0.08); }
+
     .history-item {
       padding: 0.55rem 0.7rem;
       border-radius: 8px;
@@ -168,8 +331,24 @@
       align-items: center;
     }
     .history-item:hover, .history-item.active { background: var(--panel); color: var(--text); }
-    .history-item .delete-btn { display: none; color: var(--offline); font-size: 0.78rem; margin-left: 0.5rem; }
-    .history-item:hover .delete-btn { display: inline; }
+    .history-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .history-actions { display: none; align-items: center; gap: 0.4rem; flex-shrink: 0; margin-left: 0.4rem; }
+    .history-item:hover .history-actions { display: flex; }
+    .rename-btn, .delete-btn { font-size: 0.76rem; cursor: pointer; }
+    .rename-btn { color: var(--text-faint); }
+    .rename-btn:hover { color: var(--text); }
+    .delete-btn { color: var(--offline); }
+    .rename-input {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--accent);
+      border-radius: 5px;
+      color: var(--text);
+      font-size: 0.82rem;
+      font-family: inherit;
+      padding: 0.15rem 0.4rem;
+      outline: none;
+    }
 
     main {
       flex-grow: 1;
@@ -553,8 +732,76 @@
       New chat
     </button>
 
+    <button class="btn-new-chat" id="inviteTriggerBtn">
+      <svg viewBox="0 0 24 24">
+        <path d="M22 6l-10 7L2 6"></path>
+        <path d="M2 6h20v12H2z"></path>
+      </svg>
+      Invite someone
+    </button>
+
     <div class="history-list" id="historyList"></div>
+
+    <div class="profile-footer" id="profileFooter">
+      <div class="profile-avatar" id="profileAvatar">?</div>
+      <div class="profile-meta">
+        <div class="profile-name" id="profileName">—</div>
+        <div class="profile-email" id="profileEmail">—</div>
+      </div>
+      <button class="profile-settings-btn" id="settingsBtn" aria-label="Settings">⚙</button>
+    </div>
   </aside>
+
+  <div class="modal-backdrop" id="settingsBackdrop">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Profile settings</h3>
+        <button class="modal-close" id="closeSettingsBtn" aria-label="Close">✕</button>
+      </div>
+
+      <div class="error-msg" id="settingsError"></div>
+      <div class="success-msg" id="settingsSuccess"></div>
+
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="settingsEmail" disabled>
+      </div>
+      <div class="field">
+        <label>Name</label>
+        <input type="text" id="settingsName" placeholder="Your name">
+      </div>
+      <div class="field">
+        <label>New password (optional)</label>
+        <input type="password" id="settingsPassword" placeholder="Leave blank to keep current password" autocomplete="new-password">
+      </div>
+
+      <button class="submit-btn" id="saveSettingsBtn">Save changes</button>
+      <button class="logout-btn" id="logoutBtn">Log out</button>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="inviteBackdrop">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Invite someone</h3>
+        <button class="modal-close" id="closeInviteBtn" aria-label="Close">✕</button>
+      </div>
+
+      <div class="error-msg" id="inviteError"></div>
+      <div class="success-msg" id="inviteSuccess"></div>
+
+      <div class="field">
+        <label>Their email</label>
+        <input type="email" id="inviteEmail" placeholder="friend@example.com">
+      </div>
+      <div class="field">
+        <label>Note (optional)</label>
+        <input type="text" id="inviteMessage" placeholder="Thought you'd like this">
+      </div>
+
+      <button class="submit-btn" id="sendInviteBtn">Send invite</button>
+    </div>
+  </div>
 
   <main>
     <div class="chat-container" id="chatContainer">
@@ -583,6 +830,13 @@
   <script>
     const API_BASE = 'https://olitapi.olittechnologies.co.in';
 
+    // ---- Auth guard: bounce to login if not signed in ----
+    const authRaw = localStorage.getItem('olit_nexus_auth');
+    if (!authRaw) {
+      window.location.href = 'login.html';
+    }
+    let auth = JSON.parse(authRaw || 'null');
+
     const chatContainer = document.getElementById('chatContainer');
     const emptyState = document.getElementById('emptyState');
     const promptInput = document.getElementById('promptInput');
@@ -598,8 +852,195 @@
     const menuToggle = document.getElementById('menuToggle');
     const mobileDot = document.getElementById('mobileDot');
 
-    let chats = JSON.parse(localStorage.getItem('olit_nexus_chats') || '[]');
-    let currentChatId = null;
+    const profileAvatar = document.getElementById('profileAvatar');
+    const profileName = document.getElementById('profileName');
+    const profileEmail = document.getElementById('profileEmail');
+    const settingsBtn = document.getElementById('settingsBtn');
+    const settingsBackdrop = document.getElementById('settingsBackdrop');
+    const closeSettingsBtn = document.getElementById('closeSettingsBtn');
+    const settingsEmail = document.getElementById('settingsEmail');
+    const settingsName = document.getElementById('settingsName');
+    const settingsPassword = document.getElementById('settingsPassword');
+    const settingsError = document.getElementById('settingsError');
+    const settingsSuccess = document.getElementById('settingsSuccess');
+    const saveSettingsBtn = document.getElementById('saveSettingsBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    function renderProfile() {
+      if (!auth || !auth.user) return;
+      const name = auth.user.name || auth.user.email;
+      profileAvatar.textContent = name.charAt(0).toUpperCase();
+      profileName.textContent = name;
+      profileEmail.textContent = auth.user.email;
+    }
+    renderProfile();
+
+    function openSettings() {
+      settingsEmail.value = auth.user.email;
+      settingsName.value = auth.user.name || '';
+      settingsPassword.value = '';
+      settingsError.classList.remove('show');
+      settingsSuccess.classList.remove('show');
+      settingsBackdrop.classList.add('show');
+    }
+    function closeSettings() { settingsBackdrop.classList.remove('show'); }
+
+    settingsBtn.addEventListener('click', openSettings);
+    closeSettingsBtn.addEventListener('click', closeSettings);
+    settingsBackdrop.addEventListener('click', (e) => {
+      if (e.target === settingsBackdrop) closeSettings();
+    });
+
+    saveSettingsBtn.addEventListener('click', async () => {
+      settingsError.classList.remove('show');
+      settingsSuccess.classList.remove('show');
+      const name = settingsName.value.trim();
+      const newPassword = settingsPassword.value;
+
+      if (!name && !newPassword) {
+        settingsError.textContent = 'Nothing to update.';
+        settingsError.classList.add('show');
+        return;
+      }
+      if (newPassword && newPassword.length < 8) {
+        settingsError.textContent = 'New password must be at least 8 characters.';
+        settingsError.classList.add('show');
+        return;
+      }
+
+      saveSettingsBtn.disabled = true;
+      saveSettingsBtn.textContent = 'Saving…';
+
+      try {
+        const body = {};
+        if (name) body.name = name;
+        if (newPassword) body.new_password = newPassword;
+
+        const res = await fetch(`${API_BASE}/api/profile`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${auth.token}`
+          },
+          body: JSON.stringify(body)
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          auth.user = data.user;
+          localStorage.setItem('olit_nexus_auth', JSON.stringify(auth));
+          renderProfile();
+          settingsPassword.value = '';
+          settingsSuccess.textContent = 'Saved.';
+          settingsSuccess.classList.add('show');
+        } else {
+          settingsError.textContent = data.error || 'Could not save changes.';
+          settingsError.classList.add('show');
+        }
+      } catch {
+        settingsError.textContent = 'Could not reach the backend.';
+        settingsError.classList.add('show');
+      } finally {
+        saveSettingsBtn.disabled = false;
+        saveSettingsBtn.textContent = 'Save changes';
+      }
+    });
+
+    logoutBtn.addEventListener('click', () => {
+      localStorage.removeItem('olit_nexus_auth');
+      window.location.href = 'login.html';
+    });
+
+    // ---- Invite modal ----
+    const inviteTriggerBtn = document.getElementById('inviteTriggerBtn');
+    const inviteBackdrop = document.getElementById('inviteBackdrop');
+    const closeInviteBtn = document.getElementById('closeInviteBtn');
+    const inviteEmail = document.getElementById('inviteEmail');
+    const inviteMessage = document.getElementById('inviteMessage');
+    const inviteError = document.getElementById('inviteError');
+    const inviteSuccess = document.getElementById('inviteSuccess');
+    const sendInviteBtn = document.getElementById('sendInviteBtn');
+
+    function openInvite() {
+      inviteEmail.value = '';
+      inviteMessage.value = '';
+      inviteError.classList.remove('show');
+      inviteSuccess.classList.remove('show');
+      inviteBackdrop.classList.add('show');
+      closeDrawer();
+    }
+    function closeInvite() { inviteBackdrop.classList.remove('show'); }
+
+    inviteTriggerBtn.addEventListener('click', openInvite);
+    closeInviteBtn.addEventListener('click', closeInvite);
+    inviteBackdrop.addEventListener('click', (e) => {
+      if (e.target === inviteBackdrop) closeInvite();
+    });
+
+    sendInviteBtn.addEventListener('click', async () => {
+      inviteError.classList.remove('show');
+      inviteSuccess.classList.remove('show');
+      const email = inviteEmail.value.trim();
+
+      if (!email || !email.includes('@')) {
+        inviteError.textContent = 'Enter a valid email address.';
+        inviteError.classList.add('show');
+        return;
+      }
+
+      sendInviteBtn.disabled = true;
+      sendInviteBtn.textContent = 'Sending…';
+
+      try {
+        const res = await authFetch(`${API_BASE}/api/invite`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, message: inviteMessage.value.trim() })
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          inviteSuccess.textContent = 'Invite sent.';
+          inviteSuccess.classList.add('show');
+          inviteEmail.value = '';
+          inviteMessage.value = '';
+        } else {
+          inviteError.textContent = data.error || 'Could not send the invite.';
+          inviteError.classList.add('show');
+        }
+      } catch {
+        inviteError.textContent = 'Could not reach the backend.';
+        inviteError.classList.add('show');
+      } finally {
+        sendInviteBtn.disabled = false;
+        sendInviteBtn.textContent = 'Send invite';
+      }
+    });
+
+    // ---- Authenticated fetch: attaches the JWT, and bounces to login on
+    // an expired/invalid session instead of failing silently. ----
+    async function authFetch(url, options = {}) {
+      const headers = Object.assign({}, options.headers || {}, { 'Authorization': `Bearer ${auth.token}` });
+      const res = await fetch(url, Object.assign({}, options, { headers }));
+      if (res.status === 401) {
+        localStorage.removeItem('olit_nexus_auth');
+        window.location.href = 'login.html';
+        throw new Error('Session expired');
+      }
+      return res;
+    }
+
+    // conversations: [{id, title}] — sidebar list only, fetched from the
+    // server. Full message content for a conversation is fetched on demand
+    // when opened, not cached client-side, so history is always accurate.
+    let conversations = [];
+    let currentChatId = null; // real Firestore conversation id, or null for an unsaved new chat
+
+    // Bumped on every explicit view switch (new chat / load chat). A send
+    // captures this value up front; if it's changed by the time the reply
+    // arrives, the user has moved on, so the reply is saved to the server
+    // (already handled server-side) without touching the now-irrelevant DOM.
+    let viewGeneration = 0;
 
     function openDrawer() { sidebar.classList.add('open'); sidebarBackdrop.classList.add('show'); }
     function closeDrawer() { sidebar.classList.remove('open'); sidebarBackdrop.classList.remove('show'); }
@@ -627,6 +1068,21 @@
     checkHealth();
     setInterval(checkHealth, 30000);
 
+    async function loadConversationList() {
+      try {
+        const res = await authFetch(`${API_BASE}/api/conversations`);
+        const data = await res.json();
+        if (data.success) {
+          conversations = data.conversations;
+          renderHistory();
+        }
+      } catch {
+        // Sidebar just stays empty/stale — checkHealth already surfaces
+        // backend-unreachable state, no need to duplicate that here.
+      }
+    }
+    loadConversationList();
+
     fileInput.addEventListener('change', (e) => {
       if (e.target.files.length) fileLabel.textContent = `📄 ${e.target.files[0].name}`;
     });
@@ -642,25 +1098,12 @@
     newChatBtn.addEventListener('click', createNewChat);
 
     function createNewChat() {
-      currentChatId = Date.now();
+      viewGeneration++;
+      currentChatId = null;
       chatContainer.innerHTML = '';
       chatContainer.appendChild(emptyState);
       renderHistory();
       closeDrawer();
-    }
-
-    async function requestChatTitle(userMsg, botReply) {
-      try {
-        const res = await fetch(`${API_BASE}/api/title`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: userMsg, reply: botReply })
-        });
-        const data = await res.json();
-        return (data.success && data.title) ? data.title : null;
-      } catch {
-        return null;
-      }
     }
 
     function showTypingIndicator() {
@@ -685,21 +1128,16 @@
       const hasFile = fileInput.files.length > 0;
       if (!text && !hasFile) return;
 
-      if (!currentChatId) currentChatId = Date.now();
-      // Snapshot which chat this send belongs to. currentChatId can change
-      // if the user switches chats while this request is in flight — every
-      // later step uses sendChatId, never the live currentChatId, so the
-      // reply always lands in the right place instead of getting lost or
-      // attached to whatever chat happens to be open when it arrives.
+      // sendChatId is the SERVER conversation id, or null if this is a
+      // brand-new, not-yet-created conversation. myGeneration is captured
+      // now so a later switch-away (new chat, or opening another one) is
+      // detected reliably even in the null/null case, where two different
+      // "new chats" would otherwise look identical.
       const sendChatId = currentChatId;
-      const isFirstExchange = !chats.find(c => c.id === sendChatId);
+      const myGeneration = viewGeneration;
 
       if (emptyState.parentNode === chatContainer) emptyState.remove();
-
       appendMessageBubble('user', text || `Attached file: ${fileInput.files[0].name}`);
-      // Checkpoint immediately so the user's own message survives even if
-      // they switch chats before the response comes back.
-      persistChatSnapshot(sendChatId, chatContainer.innerHTML);
 
       sendBtn.disabled = true;
       sendBtn.textContent = 'Sending…';
@@ -710,72 +1148,92 @@
       showTypingIndicator();
 
       try {
+        let data;
         if (hasFile) {
           const formData = new FormData();
           formData.append('file', fileInput.files[0]);
           if (text) formData.append('text', text);
+          if (sendChatId) formData.append('conversation_id', sendChatId);
 
-          const res = await fetch(`${API_BASE}/api/summarize`, { method: 'POST', body: formData });
-          const data = await res.json();
-          if (currentChatId === sendChatId) removeTypingIndicator();
+          const res = await authFetch(`${API_BASE}/api/summarize`, { method: 'POST', body: formData });
+          data = await res.json();
 
-          const bubbleHtml = data.success
-            ? buildSummaryBubbleHtml(data, performance.now() - startedAt)
-            : buildMessageBubbleHtml('bot', `Error: ${data.error}`);
-          commitBotBubble(sendChatId, bubbleHtml);
+          if (viewGeneration === myGeneration) removeTypingIndicator();
+
+          if (data.success) {
+            const bubbleHtml = buildSummaryBubbleHtml(data, performance.now() - startedAt);
+            if (viewGeneration === myGeneration) {
+              currentChatId = data.conversation_id;
+              chatContainer.insertAdjacentHTML('beforeend', bubbleHtml);
+              chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+          } else if (viewGeneration === myGeneration) {
+            chatContainer.insertAdjacentHTML('beforeend', buildMessageBubbleHtml('bot', `Error: ${data.error}`));
+          }
 
           fileInput.value = '';
           fileLabel.textContent = '📎 Attach PDF, image, or text file…';
         } else {
-          const res = await fetch(`${API_BASE}/api/chat`, {
+          const res = await authFetch(`${API_BASE}/api/chat`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: text })
+            body: JSON.stringify({ message: text, ...(sendChatId ? { conversation_id: sendChatId } : {}) })
           });
-          const data = await res.json();
-          if (currentChatId === sendChatId) removeTypingIndicator();
+          data = await res.json();
+
+          if (viewGeneration === myGeneration) removeTypingIndicator();
 
           if (data.success) {
-            const bubbleHtml = buildMessageBubbleHtml('bot', data.reply, data.sources, performance.now() - startedAt);
-            commitBotBubble(sendChatId, bubbleHtml);
-
-            if (isFirstExchange) {
-              requestChatTitle(text, data.reply).then(title => {
-                if (!title) return;
-                const entry = chats.find(c => c.id === sendChatId);
-                if (entry) {
-                  entry.title = title;
-                  localStorage.setItem('olit_nexus_chats', JSON.stringify(chats));
-                  renderHistory();
-                }
-              });
+            if (viewGeneration === myGeneration) {
+              currentChatId = data.conversation_id;
+              chatContainer.insertAdjacentHTML(
+                'beforeend',
+                buildMessageBubbleHtml('bot', data.reply, data.sources, performance.now() - startedAt)
+              );
+              chatContainer.scrollTop = chatContainer.scrollHeight;
             }
-          } else {
-            commitBotBubble(sendChatId, buildMessageBubbleHtml('bot', `Error: ${data.error}`));
+          } else if (viewGeneration === myGeneration) {
+            chatContainer.insertAdjacentHTML('beforeend', buildMessageBubbleHtml('bot', `Error: ${data.error}`));
+          }
+        }
+
+        // The server always returns the conversation's current title —
+        // refresh the sidebar entry whether or not this chat is still on
+        // screen, so a background reply still updates the list correctly.
+        if (data && data.success) {
+          upsertConversationInList(data.conversation_id, data.title);
+          // For a brand-new conversation, the backend returns a
+          // placeholder title and generates the real one in the
+          // background (so it doesn't add to reply latency) — refresh
+          // once shortly after to pick it up.
+          if (!sendChatId) {
+            setTimeout(loadConversationList, 3000);
           }
         }
       } catch (err) {
-        if (currentChatId === sendChatId) removeTypingIndicator();
-        commitBotBubble(sendChatId, buildMessageBubbleHtml('bot', 'Could not reach the backend. Check the heartbeat status in the sidebar.'));
+        if (viewGeneration === myGeneration) {
+          removeTypingIndicator();
+          chatContainer.insertAdjacentHTML(
+            'beforeend',
+            buildMessageBubbleHtml('bot', 'Could not reach the backend. Check the heartbeat status in the sidebar.')
+          );
+        }
       } finally {
         sendBtn.disabled = false;
         sendBtn.innerHTML = 'Send <span>↑</span>';
       }
     }
 
-    // Attaches a finished bot/summary bubble to wherever it actually
-    // belongs: live DOM if that chat is still on screen, or straight into
-    // storage if the user has since switched away.
-    function commitBotBubble(chatId, bubbleHtml) {
-      if (currentChatId === chatId) {
-        chatContainer.insertAdjacentHTML('beforeend', bubbleHtml);
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-        persistChatSnapshot(chatId, chatContainer.innerHTML);
+    function upsertConversationInList(id, title) {
+      const idx = conversations.findIndex(c => c.id === id);
+      if (idx >= 0) {
+        conversations[idx].title = title;
+        const [item] = conversations.splice(idx, 1);
+        conversations.unshift(item);
       } else {
-        const existing = chats.find(c => c.id === chatId);
-        const base = existing ? existing.html : '';
-        persistChatSnapshot(chatId, base + bubbleHtml);
+        conversations.unshift({ id, title });
       }
+      renderHistory();
     }
 
     function buildMessageBubbleHtml(role, content, sources = [], latencyMs = null) {
@@ -825,7 +1283,7 @@
 
     function buildSummaryBubbleHtml(data, latencyMs) {
       const points = data.summary.map(pt => `• ${pt}`).join('\n');
-      const latencyTag = `<span class="latency">· ${Math.round(latencyMs)}ms</span>`;
+      const latencyTag = latencyMs !== null ? `<span class="latency">· ${Math.round(latencyMs)}ms</span>` : '';
 
       return `<div class="message bot">
         <span class="msg-header">Nexus Engine ${latencyTag}</span>
@@ -861,43 +1319,93 @@
       return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/'/g, "&#x27;").replace(/"/g, "&quot;");
     }
 
-    // Creates or updates a chat's stored entry directly — used both for the
-    // "still viewing this chat" case (from live DOM) and the "switched
-    // away" case (merging a bubble string onto the stored snapshot).
-    function persistChatSnapshot(id, html) {
-      const existing = chats.find(c => c.id === id);
-      if (existing) {
-        existing.html = html;
-      } else {
-        chats.unshift({ id, title: "New chat", html });
-      }
-      localStorage.setItem('olit_nexus_chats', JSON.stringify(chats));
-      renderHistory();
-    }
-
     function renderHistory() {
-      historyList.innerHTML = chats.map(c => `
-        <div class="history-item ${c.id === currentChatId ? 'active' : ''}" onclick="loadChat(${c.id})">
-          <span>${escapeHtml(c.title || "New chat")}</span>
-
-          <span class="delete-btn" onclick="deleteChat(event, ${c.id})">✕</span>
+      historyList.innerHTML = conversations.map(c => `
+        <div class="history-item ${c.id === currentChatId ? 'active' : ''}" onclick="loadChat('${c.id}')">
+          <span class="history-title" data-id="${c.id}">${escapeHtml(c.title || "New chat")}</span>
+          <span class="history-actions">
+            <span class="rename-btn" title="Rename" onclick="startRename(event, '${c.id}')">✎</span>
+            <span class="delete-btn" onclick="deleteChat(event, '${c.id}')">✕</span>
+          </span>
         </div>
       `).join('');
     }
 
-    window.loadChat = (id) => {
+    window.loadChat = async (id) => {
+      viewGeneration++;
       currentChatId = id;
-      const chat = chats.find(c => c.id === id);
-      if (chat) { chatContainer.innerHTML = chat.html; renderHistory(); }
       closeDrawer();
+      chatContainer.innerHTML = '<div class="empty-state"><div class="eyebrow">Loading…</div></div>';
+      try {
+        const res = await authFetch(`${API_BASE}/api/conversations/${id}`);
+        const data = await res.json();
+        if (!data.success) {
+          chatContainer.innerHTML = '';
+          appendMessageBubble('bot', `Error: ${data.error || 'Could not load this conversation.'}`);
+          return;
+        }
+        chatContainer.innerHTML = '';
+        for (const msg of data.messages) {
+          if (msg.type === 'summary') {
+            chatContainer.insertAdjacentHTML('beforeend', buildSummaryBubbleHtml({ summary: msg.summary, stats: msg.stats }, null));
+          } else {
+            chatContainer.insertAdjacentHTML('beforeend', buildMessageBubbleHtml(msg.role, msg.content, msg.sources || []));
+          }
+        }
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+        renderHistory();
+      } catch {
+        chatContainer.innerHTML = '';
+        appendMessageBubble('bot', 'Could not reach the backend. Check the heartbeat status in the sidebar.');
+      }
     };
 
-    window.deleteChat = (e, id) => {
+    window.deleteChat = async (e, id) => {
       e.stopPropagation();
-      chats = chats.filter(c => c.id !== id);
-      localStorage.setItem('olit_nexus_chats', JSON.stringify(chats));
+      try {
+        await authFetch(`${API_BASE}/api/conversations/${id}`, { method: 'DELETE' });
+      } catch {
+        return;
+      }
+      conversations = conversations.filter(c => c.id !== id);
       if (currentChatId === id) createNewChat();
       else renderHistory();
+    };
+
+    window.startRename = (e, id) => {
+      e.stopPropagation();
+      const span = historyList.querySelector(`.history-title[data-id="${id}"]`);
+      if (!span) return;
+      const current = span.textContent;
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.value = current;
+      input.className = 'rename-input';
+      span.replaceWith(input);
+      input.focus();
+      input.select();
+
+      const commit = async () => {
+        const newTitle = input.value.trim();
+        if (newTitle && newTitle !== current) {
+          try {
+            await authFetch(`${API_BASE}/api/conversations/${id}`, {
+              method: 'PATCH',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ title: newTitle })
+            });
+            const entry = conversations.find(c => c.id === id);
+            if (entry) entry.title = newTitle;
+          } catch { /* fall through to re-render with prior state */ }
+        }
+        renderHistory();
+      };
+
+      input.addEventListener('blur', commit);
+      input.addEventListener('keydown', (ev) => {
+        if (ev.key === 'Enter') input.blur();
+        if (ev.key === 'Escape') { input.value = current; input.blur(); }
+      });
     };
 
     renderHistory();
