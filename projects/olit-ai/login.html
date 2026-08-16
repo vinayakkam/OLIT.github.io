@@ -75,6 +75,14 @@
     margin-bottom: 0.4rem;
   }
   .field { margin-bottom: 1.1rem; }
+  .field-hint {
+    font-size: 0.74rem;
+    margin-top: 0.35rem;
+    min-height: 1em;
+  }
+  .field-hint.invalid { color: var(--error); }
+  .field-hint.valid { color: #10b981; }
+  .field-hint.checking { color: var(--text-faint); }
   input {
     width: 100%;
     background: var(--bg);
@@ -150,6 +158,7 @@
       <div class="field">
         <label>Email</label>
         <input type="email" id="emailInput" placeholder="you@example.com" autocomplete="email" required>
+        <div class="field-hint" id="emailHint"></div>
       </div>
       <div class="field">
         <label>Password</label>
@@ -172,6 +181,7 @@
     const nameField = document.getElementById('nameField');
     const nameInput = document.getElementById('nameInput');
     const emailInput = document.getElementById('emailInput');
+    const emailHint = document.getElementById('emailHint');
     const passwordInput = document.getElementById('passwordInput');
     const submitBtn = document.getElementById('submitBtn');
     const errorMsg = document.getElementById('errorMsg');
@@ -198,6 +208,44 @@
       switchLink.textContent = isSignup ? 'Sign in' : 'Create one';
       passwordInput.setAttribute('autocomplete', isSignup ? 'new-password' : 'current-password');
       errorMsg.classList.remove('show');
+      emailHint.textContent = '';
+      emailHint.className = 'field-hint';
+    });
+
+    let lastCheckedEmail = null;
+    let lastCheckedValid = null;
+
+    emailInput.addEventListener('blur', async () => {
+      if (mode !== 'signup') return;
+      const email = emailInput.value.trim();
+      if (!email || !email.includes('@')) return;
+
+      emailHint.textContent = 'Checking…';
+      emailHint.className = 'field-hint checking';
+
+      try {
+        const res = await fetch(`${API_BASE}/api/validate-email`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+        const data = await res.json();
+        lastCheckedEmail = email;
+        lastCheckedValid = data.valid;
+
+        if (data.valid) {
+          emailHint.textContent = '';
+          emailHint.className = 'field-hint';
+        } else {
+          emailHint.textContent = "This domain doesn't appear to accept email — double-check for a typo.";
+          emailHint.className = 'field-hint invalid';
+        }
+      } catch {
+        // Validation endpoint unreachable — don't block signup over it,
+        // the server re-checks on submit anyway.
+        emailHint.textContent = '';
+        emailHint.className = 'field-hint';
+      }
     });
 
     form.addEventListener('submit', async (e) => {
@@ -210,6 +258,15 @@
         email: emailInput.value.trim(),
         password: passwordInput.value,
       };
+
+      if (mode === 'signup' && payload.email === lastCheckedEmail && lastCheckedValid === false) {
+        errorMsg.textContent = "That email address doesn't look deliverable — double-check it.";
+        errorMsg.classList.add('show');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Create account';
+        return;
+      }
+
       if (mode === 'signup') payload.name = nameInput.value.trim();
 
       try {

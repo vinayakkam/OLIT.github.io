@@ -732,14 +732,6 @@
       New chat
     </button>
 
-    <button class="btn-new-chat" id="inviteTriggerBtn">
-      <svg viewBox="0 0 24 24">
-        <path d="M22 6l-10 7L2 6"></path>
-        <path d="M2 6h20v12H2z"></path>
-      </svg>
-      Invite someone
-    </button>
-
     <div class="history-list" id="historyList"></div>
 
     <div class="profile-footer" id="profileFooter">
@@ -777,29 +769,6 @@
 
       <button class="submit-btn" id="saveSettingsBtn">Save changes</button>
       <button class="logout-btn" id="logoutBtn">Log out</button>
-    </div>
-  </div>
-
-  <div class="modal-backdrop" id="inviteBackdrop">
-    <div class="modal-card">
-      <div class="modal-header">
-        <h3>Invite someone</h3>
-        <button class="modal-close" id="closeInviteBtn" aria-label="Close">✕</button>
-      </div>
-
-      <div class="error-msg" id="inviteError"></div>
-      <div class="success-msg" id="inviteSuccess"></div>
-
-      <div class="field">
-        <label>Their email</label>
-        <input type="email" id="inviteEmail" placeholder="friend@example.com">
-      </div>
-      <div class="field">
-        <label>Note (optional)</label>
-        <input type="text" id="inviteMessage" placeholder="Thought you'd like this">
-      </div>
-
-      <button class="submit-btn" id="sendInviteBtn">Send invite</button>
     </div>
   </div>
 
@@ -949,72 +918,6 @@
     logoutBtn.addEventListener('click', () => {
       localStorage.removeItem('olit_nexus_auth');
       window.location.href = 'login.html';
-    });
-
-    // ---- Invite modal ----
-    const inviteTriggerBtn = document.getElementById('inviteTriggerBtn');
-    const inviteBackdrop = document.getElementById('inviteBackdrop');
-    const closeInviteBtn = document.getElementById('closeInviteBtn');
-    const inviteEmail = document.getElementById('inviteEmail');
-    const inviteMessage = document.getElementById('inviteMessage');
-    const inviteError = document.getElementById('inviteError');
-    const inviteSuccess = document.getElementById('inviteSuccess');
-    const sendInviteBtn = document.getElementById('sendInviteBtn');
-
-    function openInvite() {
-      inviteEmail.value = '';
-      inviteMessage.value = '';
-      inviteError.classList.remove('show');
-      inviteSuccess.classList.remove('show');
-      inviteBackdrop.classList.add('show');
-      closeDrawer();
-    }
-    function closeInvite() { inviteBackdrop.classList.remove('show'); }
-
-    inviteTriggerBtn.addEventListener('click', openInvite);
-    closeInviteBtn.addEventListener('click', closeInvite);
-    inviteBackdrop.addEventListener('click', (e) => {
-      if (e.target === inviteBackdrop) closeInvite();
-    });
-
-    sendInviteBtn.addEventListener('click', async () => {
-      inviteError.classList.remove('show');
-      inviteSuccess.classList.remove('show');
-      const email = inviteEmail.value.trim();
-
-      if (!email || !email.includes('@')) {
-        inviteError.textContent = 'Enter a valid email address.';
-        inviteError.classList.add('show');
-        return;
-      }
-
-      sendInviteBtn.disabled = true;
-      sendInviteBtn.textContent = 'Sending…';
-
-      try {
-        const res = await authFetch(`${API_BASE}/api/invite`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, message: inviteMessage.value.trim() })
-        });
-        const data = await res.json();
-
-        if (data.success) {
-          inviteSuccess.textContent = 'Invite sent.';
-          inviteSuccess.classList.add('show');
-          inviteEmail.value = '';
-          inviteMessage.value = '';
-        } else {
-          inviteError.textContent = data.error || 'Could not send the invite.';
-          inviteError.classList.add('show');
-        }
-      } catch {
-        inviteError.textContent = 'Could not reach the backend.';
-        inviteError.classList.add('show');
-      } finally {
-        sendInviteBtn.disabled = false;
-        sendInviteBtn.textContent = 'Send invite';
-      }
     });
 
     // ---- Authenticated fetch: attaches the JWT, and bounces to login on
