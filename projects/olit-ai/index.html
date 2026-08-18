@@ -797,7 +797,9 @@
   </main>
 
   <script>
-    const API_BASE = 'https://olitapi.olittechnologies.co.in';
+    // Same-origin local app: Flask serves both this page and the API,
+    // so relative paths work directly — no cross-origin domain needed.
+    const API_BASE = '';
 
     // ---- Auth guard: bounce to login if not signed in ----
     const authRaw = localStorage.getItem('olit_nexus_auth');
