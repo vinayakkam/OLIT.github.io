@@ -21,9 +21,9 @@
     "slug": "gitpilot",
     "name": "GitPilot",
     "icon": "🗒️",
-    "tagline": "Utility.",
+    "tagline": "Git Utility,Interface.",
     "tags": ["In Development"],
-    "link": "https://github.com/vinayakkam/gitpilot/releases",
-    "external": true
+    "link": "git-pilot/",
+    "external": false
   }
 ]
