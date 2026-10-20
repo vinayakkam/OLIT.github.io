@@ -17,7 +17,6 @@
     "link": "olit-ai/",
     "external": false
   },
-  ,
   {
     "slug": "gitpilot",
     "name": "GitPilot",
@@ -26,5 +25,5 @@
     "tags": ["In Development"],
     "link": "https://github.com/vinayakkam/gitpilot/releases",
     "external": true
-  }
+  },
 ]
