@@ -16,5 +16,15 @@
     "tags": ["In Development"],
     "link": "olit-ai/",
     "external": false
+  },
+  ,
+  {
+    "slug": "gitpilot",
+    "name": "GitPilot",
+    "icon": "🗒️",
+    "tagline": "Utility.",
+    "tags": ["In Development"],
+    "link": "https://github.com/vinayakkam/gitpilot/releases",
+    "external": true
   }
 ]
