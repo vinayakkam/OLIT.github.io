@@ -25,5 +25,13 @@
     "tags": ["In Development"],
     "link": "git-pilot/",
     "external": false
+  },
+  {
+    "slug": "portfolio",
+    "name": "About Myself",
+    "icon": "🪪",
+    "tagline": "My Portfolio.",
+    "link": "portfolio/",
+    "external": false
   }
 ]
