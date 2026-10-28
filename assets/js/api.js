@@ -10,14 +10,11 @@ async function apiFetch(path, options = {}) {
     'X-API-Key': API_KEY,
     ...(options.headers || {})
   };
-  try {
-    const res = await fetch(url, { ...options, headers });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
-    return data;
-  } catch (e) {
-    throw e;
-  }
+  const res = await fetch(url, { ...options, headers });
+  // Error pages from a proxy may not be JSON; fall back to the status code.
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+  return data;
 }
 
 const API = {

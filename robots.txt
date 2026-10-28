@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /bot/dashboard.html
+Disallow: /bot/server.html
+Disallow: /callback.html
+
+Sitemap: https://olittechnologies.co.in/sitemap.xml

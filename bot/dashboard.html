@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — OLIT</title>
+  <meta name="description" content="Manage the OLIT Discord bot in your servers.">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#0b0b0f">
+  <link rel="icon" type="image/png" href="/assets/img/logo.png">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <style>
+    .page-header { padding: 40px 0 28px; }
+    .page-header h1 { font-size: 1.7rem; margin-bottom: 4px; }
+
+    .servers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; margin-top: 20px; }
+    .server-tile {
+      display: flex; align-items: center; gap: 14px; padding: 18px 20px;
+      background: var(--bg-1); border: 1px solid var(--border); border-radius: var(--radius-lg);
+      color: inherit; text-decoration: none;
+      transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+    }
+    .server-tile:hover { border-color: var(--accent-border); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .server-tile-info { flex: 1; min-width: 0; }
+    .server-tile-name { font-weight: 600; font-size: 0.92rem; }
+    .server-tile-meta { font-size: 0.75rem; color: var(--text-3); }
+    .server-tile-arrow { color: var(--text-3); font-size: 1.2rem; }
+
+    .panel { max-width: 440px; margin: 64px auto; text-align: center; padding: 56px 36px; border-radius: var(--radius-xl); }
+    .panel-icon { font-size: 2.8rem; margin-bottom: 18px; }
+    .panel h2 { margin-bottom: 10px; }
+    .panel p { margin-bottom: 28px; }
+
+    .api-status { display: inline-flex; align-items: center; gap: 10px; padding: 10px 16px; font-size: 0.82rem; color: var(--text-2); border-radius: var(--radius-md); }
+
+    .filter-bar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .filter-bar input { max-width: 300px; }
+
+    .global-stats { margin-top: 48px; }
+    .global-stats h2 { margin-bottom: 16px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-3); }
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a href="/bot/" class="brand"><img src="/assets/img/logo.png" alt="" width="30" height="30">OLIT <small>Dashboard</small></a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="/bot/" class="nav-optional">Bot home</a>
+      <div id="nav-user"></div>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="container" style="padding-bottom:64px">
+
+  <!-- Not logged in -->
+  <section id="login-prompt" class="card panel">
+    <div class="panel-icon" aria-hidden="true">🔐</div>
+    <h2>Connect your Discord</h2>
+    <p>Log in with Discord to manage your servers with OLIT.</p>
+    <button type="button" class="btn btn-discord btn-lg" id="login-btn">Log in with Discord</button>
+    <p class="text-xs mt-lg" style="margin-bottom:8px">Or manage a server directly:</p>
+    <button type="button" class="btn btn-secondary btn-sm" id="manual-btn">Enter Guild ID manually</button>
+  </section>
+
+  <!-- Manual entry fallback -->
+  <section id="manual-entry" class="card hidden" style="max-width:420px;margin:64px auto">
+    <h2 style="font-size:1.15rem;margin-bottom:16px">Manage by Guild ID</h2>
+    <form id="manual-form" novalidate>
+      <div class="form-group">
+        <label for="manual-guild-id">Discord Server (Guild) ID</label>
+        <input type="text" id="manual-guild-id" inputmode="numeric" autocomplete="off" placeholder="e.g. 123456789012345678">
+      </div>
+      <button type="submit" class="btn btn-primary w-full">Open Server Dashboard</button>
+    </form>
+    <button type="button" class="btn btn-ghost btn-sm w-full mt-sm" id="manual-back">Back</button>
+  </section>
+
+  <!-- Logged in -->
+  <div id="dashboard-content" class="hidden">
+    <div class="page-header flex-between flex-wrap gap-md">
+      <div>
+        <h1>Your Servers</h1>
+        <p class="text-sm" id="user-greeting">Select a server to manage</p>
+      </div>
+      <div id="api-status" class="card api-status" aria-live="polite"><span class="status-dot connecting"></span>Checking API…</div>
+    </div>
+
+    <div class="filter-bar">
+      <label for="server-search" class="sr-only">Search servers</label>
+      <input type="search" id="server-search" placeholder="Search servers…">
+      <span class="text-xs" id="server-count" aria-live="polite"></span>
+    </div>
+
+    <div id="servers-grid" class="servers-grid"></div>
+
+    <div id="no-servers" class="empty-state hidden">
+      <div class="empty-state-icon" aria-hidden="true">🛸</div>
+      <p>No servers found where you have Manage Server permission.</p>
+      <p class="text-xs mt-sm">Make sure OLIT is added to your server first.</p>
+    </div>
+
+    <section class="global-stats" id="global-stats-section" aria-labelledby="global-stats-title">
+      <h2 id="global-stats-title">Global bot stats</h2>
+      <div class="stats-grid" id="global-stats">
+        <div class="stat-card skeleton"></div>
+        <div class="stat-card skeleton"></div>
+        <div class="stat-card skeleton"></div>
+        <div class="stat-card skeleton"></div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container site-footer__inner">
+    <p>© <span data-year>2026</span> OLIT Technologies</p>
+    <nav aria-label="Footer">
+      <a href="/">Home</a>
+      <a href="/terms.html">Terms</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="https://discord.gg/J8ByjCcm5U" target="_blank" rel="noopener">Support</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="/assets/js/auth.js"></script>
+<script src="/assets/js/ui.js"></script>
+<script src="/assets/js/api.js"></script>
+<script>
+  UI.renderNav();
+
+  const $ = id => document.getElementById(id);
+  const loginPrompt = $('login-prompt');
+  const manualEntry = $('manual-entry');
+
+  $('login-btn').insertAdjacentHTML('afterbegin', UI.discordIcon);
+  $('login-btn').addEventListener('click', () => Auth.login());
+  $('manual-btn').addEventListener('click', () => {
+    loginPrompt.classList.add('hidden');
+    manualEntry.classList.remove('hidden');
+    $('manual-guild-id').focus();
+  });
+  $('manual-back').addEventListener('click', () => {
+    manualEntry.classList.add('hidden');
+    loginPrompt.classList.remove('hidden');
+  });
+  $('manual-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const id = $('manual-guild-id').value.trim();
+    if (!/^\d+$/.test(id)) { UI.toast('Enter a valid numeric Guild ID', 'error'); return; }
+    window.location.href = `/bot/server.html?id=${id}`;
+  });
+
+  function countLabel(n) { return `${n} server${n !== 1 ? 's' : ''}`; }
+
+  $('server-search').addEventListener('input', e => {
+    const q = e.target.value.toLowerCase();
+    let visible = 0;
+    document.querySelectorAll('.server-tile').forEach(tile => {
+      const show = tile.dataset.name.toLowerCase().includes(q);
+      tile.classList.toggle('hidden', !show);
+      if (show) visible++;
+    });
+    $('server-count').textContent = countLabel(visible);
+    $('no-servers').classList.toggle('hidden', visible > 0);
+  });
+
+  function renderServers(guilds) {
+    const grid = $('servers-grid');
+    $('server-count').textContent = countLabel(guilds.length);
+    if (!guilds.length) {
+      grid.innerHTML = '';
+      $('no-servers').classList.remove('hidden');
+      return;
+    }
+    grid.innerHTML = guilds.map(g => {
+      const icon = Auth.iconUrl(g);
+      const initials = UI.escape(UI.serverInitials(g.name));
+      return `
+        <a class="server-tile" href="/bot/server.html?id=${encodeURIComponent(g.id)}" data-name="${UI.escape(g.name)}">
+          <div class="server-icon" data-initials="${initials}">
+            ${icon ? `<img src="${UI.escape(icon)}" alt="" loading="lazy">` : initials}
+          </div>
+          <div class="server-tile-info">
+            <div class="server-tile-name truncate">${UI.escape(g.name)}</div>
+            <div class="server-tile-meta">${g.owner ? 'Owner' : 'Admin'} · ${UI.escape(g.id)}</div>
+          </div>
+          <span class="server-tile-arrow" aria-hidden="true">›</span>
+        </a>`;
+    }).join('');
+  }
+
+  // Broken guild icon: fall back to initials. Error events don't bubble, so listen in the capture phase.
+  $('servers-grid').addEventListener('error', e => {
+    if (e.target.tagName !== 'IMG') return;
+    const box = e.target.parentElement;
+    box.textContent = box.dataset.initials;
+  }, true);
+
+  async function loadGlobalStats() {
+    try {
+      const { stats } = await API.stats();
+      const card = (n, label) => `<div class="stat-card"><div class="stat-number">${UI.escape(n)}</div><div class="stat-label">${label}</div></div>`;
+      $('global-stats').innerHTML =
+        card(stats.total_guilds_configured, 'Configured Servers') +
+        card(stats.total_custom_commands, 'Custom Commands') +
+        card(stats.total_automod_words, 'Automod Words') +
+        card(stats.automod_enabled_guilds, 'Automod Active');
+    } catch {
+      $('global-stats-section').classList.add('hidden');
+    }
+  }
+
+  async function checkApiStatus() {
+    const el = $('api-status');
+    try {
+      await API.health();
+      el.innerHTML = '<span class="status-dot online"></span>API connected';
+    } catch {
+      el.innerHTML = '<span class="status-dot"></span>API unreachable';
+    }
+  }
+
+  if (Auth.isLoggedIn()) {
+    loginPrompt.classList.add('hidden');
+    $('dashboard-content').classList.remove('hidden');
+    const user = Auth.getUser();
+    $('user-greeting').textContent = `Logged in as ${user.global_name || user.username}`;
+    renderServers(Auth.managedGuilds());
+    checkApiStatus();
+    loadGlobalStats();
+  }
+</script>
+</body>
+</html>

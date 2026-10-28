@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OLIT — The Discord Bot for Space Explorers</title>
+  <meta name="description" content="OLIT is a Discord bot with a galaxy RPG, 15+ mini games, auto-moderation, leaderboards, custom commands and a web dashboard.">
+  <meta name="theme-color" content="#0b0b0f">
+  <link rel="canonical" href="https://olittechnologies.co.in/bot/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="OLIT — The Discord bot for space explorers">
+  <meta property="og:description" content="Gaming, exploration, moderation and interactive entertainment — all in one bot.">
+  <meta property="og:url" content="https://olittechnologies.co.in/bot/">
+  <meta property="og:image" content="https://olittechnologies.co.in/assets/img/logo.png">
+  <link rel="icon" type="image/png" href="/assets/img/logo.png">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <style>
+    .hero { position: relative; padding: 104px 0 80px; text-align: center; }
+    .hero::before {
+      content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: min(640px, 100%); height: 320px; pointer-events: none;
+      background: radial-gradient(ellipse at 50% 0%, var(--accent-glow) 0%, transparent 70%);
+    }
+    .hero h1 { margin: 24px 0 20px; }
+    .hero .lead { font-size: 1.12rem; max-width: 540px; margin: 0 auto 36px; }
+
+    .feature-card .card-icon { margin-bottom: 14px; }
+
+    .cta-panel {
+      position: relative; overflow: hidden; text-align: center;
+      padding: 56px 32px; border-radius: var(--radius-xl);
+    }
+    .cta-panel::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 60% 100% at 50% 100%, var(--accent-dim), transparent);
+    }
+    .cta-panel > * { position: relative; }
+    .cta-panel p { margin: 12px auto 28px; max-width: 460px; }
+
+    .team-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+    .team-card { text-align: center; }
+    .team-avatar {
+      width: 56px; height: 56px; border-radius: 50%; margin: 0 auto 14px;
+      display: grid; place-items: center; font-size: 24px; background: var(--bg-3);
+    }
+    .team-card h3 { font-size: 0.98rem; }
+    .team-card p { font-size: 0.82rem; margin: 2px 0 10px; }
+    .team-card.founder { border-color: var(--accent-border); }
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="bg-grid" aria-hidden="true"></div>
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a href="/bot/" class="brand"><img src="/assets/img/logo.png" alt="" width="30" height="30">OLIT</a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="#features" class="nav-optional">Features</a>
+      <a href="/#projects" class="nav-optional">Projects</a>
+      <a href="https://github.com/vinayakkam/my-discord-bot" target="_blank" rel="noopener" class="nav-optional">GitHub</a>
+      <a href="/bot/dashboard.html" class="btn btn-secondary btn-sm">Dashboard</a>
+      <div id="nav-user"></div>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero">
+    <div class="container">
+      <span class="eyebrow"><span class="status-dot online"></span>Bot is live</span>
+      <h1>The Discord bot for<br><span class="gradient-text">space explorers</span></h1>
+      <p class="lead">Gaming, exploration, moderation and interactive entertainment — all in one bot.</p>
+      <div class="actions">
+        <a href="https://discord.com/oauth2/authorize?client_id=1414168461172539454&amp;permissions=8&amp;integration_type=0&amp;scope=applications.commands+bot"
+           target="_blank" rel="noopener" class="btn btn-discord btn-lg">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+          Add to Server
+        </a>
+        <a href="/bot/dashboard.html" class="btn btn-secondary btn-lg">Open Dashboard</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="stat-strip" aria-label="At a glance">
+      <div><strong>15+</strong><span>Mini Games</span></div>
+      <div><strong>1000+</strong><span>Star Systems</span></div>
+      <div><strong>60+</strong><span>Trivia Questions</span></div>
+      <div><strong>∞</strong><span>Adventures</span></div>
+    </div>
+
+    <section id="features" class="section">
+      <div class="section-head">
+        <h2>Everything your server needs</h2>
+        <p>Powerful features designed for active Discord communities.</p>
+      </div>
+      <div class="cards">
+        <article class="card feature-card">
+          <div class="card-icon" aria-hidden="true">🌌</div>
+          <h3>Galaxy Explorer</h3>
+          <p>Persistent RPG with procedurally generated star systems, ship upgrades and cosmic boss battles.</p>
+        </article>
+        <article class="card feature-card">
+          <div class="card-icon" aria-hidden="true">🎮</div>
+          <h3>15+ Games</h3>
+          <p>Space Trivia, Booster Catch, Word Unscramble, RPS, Number Guess, Math Quiz and more.</p>
+        </article>
+        <article class="card feature-card">
+          <div class="card-icon" aria-hidden="true">🛡️</div>
+          <h3>Auto-Moderation</h3>
+          <p>Configurable word filters with automatic enforcement. Manage them from the dashboard, no restarts needed.</p>
+        </article>
+        <article class="card feature-card">
+          <div class="card-icon" aria-hidden="true">🏆</div>
+          <h3>Leaderboards</h3>
+          <p>Server-specific rankings with automatic role assignment and detailed per-user statistics.</p>
+        </article>
+        <article class="card feature-card">
+          <div class="card-icon" aria-hidden="true">💬</div>
+          <h3>Custom Commands</h3>
+          <p>Create unlimited server-specific commands from the dashboard. No code required.</p>
+        </article>
+        <article class="card feature-card">
+          <div class="card-icon" aria-hidden="true">👋</div>
+          <h3>Welcome System</h3>
+          <p>Greet new members automatically in any channel you configure.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="card cta-panel" aria-labelledby="cta-title">
+      <h2 id="cta-title">Ready to launch?</h2>
+      <p>Add OLIT to your server in seconds. Configure everything from the dashboard.</p>
+      <div class="actions">
+        <a href="https://discord.com/oauth2/authorize?client_id=1414168461172539454&amp;permissions=8&amp;integration_type=0&amp;scope=applications.commands+bot"
+           target="_blank" rel="noopener" class="btn btn-primary btn-lg">Add to Discord</a>
+        <a href="https://discord.gg/J8ByjCcm5U" target="_blank" rel="noopener" class="btn btn-secondary btn-lg">Join Support Server</a>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="team-title">
+      <div class="section-head">
+        <h2 id="team-title">The team</h2>
+        <p>Built and tested by space enthusiasts.</p>
+      </div>
+      <div class="cards team-grid">
+        <div class="card team-card founder">
+          <div class="team-avatar" aria-hidden="true">👨‍💻</div>
+          <h3>Vinayak</h3>
+          <p>Lead Developer &amp; Creator</p>
+          <span class="badge badge-accent">Founder</span>
+        </div>
+        <div class="card team-card">
+          <div class="team-avatar" aria-hidden="true">🚀</div>
+          <h3>Booster16</h3>
+          <p>Elite Game Master</p>
+          <span class="badge badge-warn">VIP Explorer</span>
+        </div>
+        <div class="card team-card">
+          <div class="team-avatar" aria-hidden="true">🎮</div>
+          <h3>Liam</h3>
+          <p>Beta Tester</p>
+          <span class="badge badge-neutral">Tester</span>
+        </div>
+        <div class="card team-card">
+          <div class="team-avatar" aria-hidden="true">🦊</div>
+          <h3>Raf Protogen</h3>
+          <p>Beta Tester</p>
+          <span class="badge badge-neutral">Tester</span>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container site-footer__inner">
+    <p>© <span data-year>2026</span> OLIT Technologies. Built with discord.py.</p>
+    <nav aria-label="Footer">
+      <a href="/">Home</a>
+      <a href="/terms.html">Terms</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="https://github.com/vinayakkam/my-discord-bot" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://discord.gg/J8ByjCcm5U" target="_blank" rel="noopener">Support</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="/assets/js/auth.js"></script>
+<script src="/assets/js/ui.js"></script>
+<script>UI.renderNav();</script>
+</body>
+</html>

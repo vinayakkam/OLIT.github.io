@@ -4,46 +4,68 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Privacy Policy — OLIT</title>
-  <link rel="icon" type="image/png" href="assets/img/logo.png">
-  <link rel="stylesheet" href="assets/css/site.css">
-  <style>
-    .doc-page { max-width: 680px; margin: 48px auto; padding: 0 24px 80px; }
-    .doc-page h1 { margin-bottom: 8px; }
-    .doc-page .lead { margin-bottom: 40px; }
-    h2 { font-size: 1rem; margin: 32px 0 10px; color: var(--text-1); }
-    p, li { color: var(--text-2); font-size: 0.9rem; line-height: 1.8; }
-    ul { margin-left: 20px; }
-    a { color: var(--accent); }
-  </style>
+  <meta name="description" content="How the OLIT Discord bot and dashboard collect, use and delete data.">
+  <meta name="theme-color" content="#0b0b0f">
+  <link rel="canonical" href="https://olittechnologies.co.in/privacy.html">
+  <link rel="icon" type="image/png" href="/assets/img/logo.png">
+  <link rel="stylesheet" href="/assets/css/site.css">
 </head>
 <body>
-<nav class="nav">
-  <div class="nav-inner">
-    <a href="index.html" class="nav-brand"><div class="nav-logo"><img src="assets/img/logo.png" alt="OLIT" onerror="this.style.display='none';this.parentElement.textContent='🚀'" style="width:20px;height:20px;border-radius:4px;object-fit:contain"></div> OLIT</a>
-    <div class="nav-actions"><a href="index.html" class="btn btn-ghost btn-sm">← Home</a></div>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a href="/" class="brand"><img src="/assets/img/logo.png" alt="" width="30" height="30">OLIT Technologies</a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="/#projects" class="nav-optional">Projects</a>
+      <a href="/bot/">OLIT Bot</a>
+      <a href="/projects/git-pilot/" class="nav-optional">GitPilot</a>
+    </nav>
   </div>
-</nav>
-<div class="doc-page">
-  <h1>Privacy Policy</h1>
-  <p class="lead">Last updated: <span class="year"></span></p>
-  <h2>1. What We Collect</h2>
-  <ul>
-    <li>Discord User IDs and Server (Guild) IDs</li>
-    <li>Game statistics and leaderboard scores</li>
-    <li>Server configuration (custom commands, automod settings)</li>
-    <li>Basic message content during active command usage only</li>
-  </ul>
-  <h2>2. How We Use It</h2>
-  <p>Data is used exclusively to provide bot functionality: tracking scores, delivering game experiences, enforcing automod rules, and maintaining per-server configuration.</p>
-  <h2>3. Data Sharing</h2>
-  <p>We do not sell or share your data with third parties. Configuration data may be synced to a private GitHub repository owned by the OLIT developer.</p>
-  <h2>4. Data Retention & Deletion</h2>
-  <p>Data is retained as long as the bot is active in your server. To request deletion, contact us in the <a href="https://discord.gg/J8ByjCcm5U" target="_blank">support server</a>.</p>
-  <h2>5. Dashboard OAuth</h2>
-  <p>When you log in via Discord OAuth, we request read-only access to your profile and server list. Tokens are stored in session storage and never sent to our servers.</p>
-  <h2>6. Contact</h2>
-  <p>For privacy requests: <a href="https://discord.gg/J8ByjCcm5U" target="_blank">discord.gg/J8ByjCcm5U</a></p>
-</div>
-<script>document.querySelectorAll('.year').forEach(e=>e.textContent=new Date().getFullYear())</script>
+</header>
+
+<main id="main">
+  <article class="prose">
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated: <time datetime="2026-06-26">26 June 2026</time></p>
+
+    <h2>1. What we collect</h2>
+    <ul>
+      <li>Discord User IDs and Server (Guild) IDs</li>
+      <li>Game statistics and leaderboard scores</li>
+      <li>Server configuration (custom commands, automod settings)</li>
+      <li>Basic message content during active command usage only</li>
+    </ul>
+
+    <h2>2. How we use it</h2>
+    <p>Data is used exclusively to provide bot functionality: tracking scores, delivering game experiences, enforcing automod rules, and maintaining per-server configuration.</p>
+
+    <h2>3. Data sharing</h2>
+    <p>We do not sell or share your data with third parties. Configuration data may be synced to a private GitHub repository owned by the OLIT developer.</p>
+
+    <h2>4. Data retention &amp; deletion</h2>
+    <p>Data is retained as long as the bot is active in your server. To request deletion, contact us in the <a href="https://discord.gg/J8ByjCcm5U" target="_blank" rel="noopener">support server</a>.</p>
+
+    <h2>5. Dashboard OAuth</h2>
+    <p>When you log in via Discord OAuth, we request read-only access to your profile and server list. Tokens are stored in session storage and never sent to our servers.</p>
+
+    <h2>6. Contact</h2>
+    <p>For privacy requests: <a href="https://discord.gg/J8ByjCcm5U" target="_blank" rel="noopener">discord.gg/J8ByjCcm5U</a></p>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="container site-footer__inner">
+    <p>© <span data-year>2026</span> OLIT Technologies</p>
+    <nav aria-label="Footer">
+      <a href="/">Home</a>
+      <a href="/terms.html">Terms</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="https://discord.gg/J8ByjCcm5U" target="_blank" rel="noopener">Support</a>
+    </nav>
+  </div>
+</footer>
+
+<script>document.querySelectorAll('[data-year]').forEach(function (el) { el.textContent = new Date().getFullYear(); });</script>
 </body>
 </html>
