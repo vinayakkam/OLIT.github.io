@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Projects — OLIT Technologies</title>
-  <link rel="icon" type="image/png" href="../logo.png">
-  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="icon" type="image/png" href="../assets/img/logo.png">
+  <link rel="stylesheet" href="../assets/css/site.css">
   <style>
     .page-header { padding: 64px 24px 40px; text-align: center; }
     .page-header p { max-width: 480px; margin: 10px auto 0; }
@@ -35,7 +35,7 @@
   <div class="nav-inner">
     <a href="../index.html" class="nav-brand">
       <div class="nav-logo">
-        <img src="../logo.png" alt="OLIT" onerror="this.style.display='none';this.parentElement.textContent='🚀'" style="width:20px;height:20px;border-radius:4px;object-fit:contain">
+        <img src="../assets/img/logo.png" alt="OLIT" onerror="this.style.display='none';this.parentElement.textContent='🚀'" style="width:20px;height:20px;border-radius:4px;object-fit:contain">
       </div>
       OLIT
     </a>
@@ -68,7 +68,7 @@
 <script>
   document.querySelectorAll('.year').forEach(el => el.textContent = new Date().getFullYear());
 
-  fetch('projects.json')
+  fetch('../data/projects.json')
     .then(r => r.json())
     .then(projects => {
       const grid = document.getElementById('projects-grid');
