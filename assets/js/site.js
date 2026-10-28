@@ -66,7 +66,7 @@
     palette.innerHTML =
       '<div class="cmdk-backdrop" data-cmdk-close></div>' +
       '<div class="cmdk-panel" role="dialog" aria-modal="true" aria-label="Search the site">' +
-        '<div class="cmdk-search"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#search"/></svg>' +
+        '<div class="cmdk-search"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=ac69379e93#search"/></svg>' +
         '<input type="text" role="combobox" aria-expanded="true" aria-controls="cmdk-list" aria-autocomplete="list" autocomplete="off" spellcheck="false" placeholder="Search pages and actions…">' +
         '<kbd>Esc</kbd></div>' +
         '<ul class="cmdk-list" id="cmdk-list" role="listbox" aria-label="Results"></ul>' +
@@ -170,7 +170,7 @@
     btn.className = 'icon-btn';
     btn.setAttribute('aria-label', 'Search the site (Ctrl+K)');
     btn.title = 'Search (Ctrl+K)';
-    btn.innerHTML = '<svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#search"/></svg>';
+    btn.innerHTML = '<svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=ac69379e93#search"/></svg>';
     btn.addEventListener('click', open);
     actions.insertBefore(btn, themeBtn);
   }

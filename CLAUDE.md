@@ -43,6 +43,7 @@ Deploy = push to `main`. GitHub Pages serves the repo root as-is.
 ## Conventions
 
 - Every page except OLIT AI loads `/assets/css/site.css` and `/assets/js/site.js`, and sets `data-theme` in a tiny inline `<head>` script before paint. Page-specific CSS goes in a `<style>` block in that page.
+- Shared asset URLs carry a content hash (`/assets/css/site.css?v=…`) because the site is cached for hours. After changing anything in `assets/`, run `python3 tools/version_assets.py` before committing, or visitors get new HTML with stale CSS/JS.
 - Header (`.site-header`) and footer (`.site-footer`) markup is copied into each page. When changing it, update all pages.
 - Bot pages load `auth.js`, then `ui.js`, then `api.js`. Page logic is an inline `<script>` at the bottom of the page.
 - Escape any API, Discord, GitHub or JSON data with `UI.escape()` (or the page's `esc()`) before putting it in `innerHTML`. Use `data-*` attributes + `addEventListener`, never inline `onclick` with interpolated values.
