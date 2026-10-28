@@ -7,290 +7,177 @@
   <meta name="description" content="GitPilot is a desktop Git manager for Windows and Linux. See exactly what changed, stage individual lines, and keep branches in sync with plain-language explanations." />
   <meta property="og:title" content="GitPilot — Git, made clear" />
   <meta property="og:description" content="A desktop Git manager for Windows and Linux by OLIT Technologies." />
-  <meta property="og:image" content="screenshot.jpg" />
-  <link rel="icon" href="../../assets/img/logo.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://olittechnologies.co.in/projects/git-pilot/" />
+  <meta property="og:image" content="https://olittechnologies.co.in/projects/git-pilot/screenshot.jpg" />
+  <link rel="canonical" href="https://olittechnologies.co.in/projects/git-pilot/" />
+  <meta name="theme-color" content="#0b0b0f" />
+  <link rel="icon" type="image/png" href="/assets/img/logo.png" />
+  <link rel="stylesheet" href="/assets/css/site.css" />
   <style>
-    :root {
-      --bg: #0b0b0d;
-      --surface: #111114;
-      --surface-2: #16161a;
-      --border: #222228;
-      --border-strong: #2e2e36;
-      --text: #f3f3f5;
-      --muted: #a1a1aa;
-      --faint: #6b6b76;
-      --accent: #5865f2;
-      --accent-2: #7c87ff;
-      --accent-soft: rgba(88, 101, 242, 0.12);
-      --green: #3ecf8e;
-      --radius: 14px;
-      --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
-      font-size: 16px;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-    }
-    a { color: inherit; text-decoration: none; }
-    img { max-width: 100%; height: auto; display: block; }
-    .wrap { width: min(1080px, calc(100% - 32px)); margin: 0 auto; }
-
-    /* Nav */
-    .nav {
-      position: sticky; top: 0; z-index: 20;
-      background: rgba(11, 11, 13, 0.82);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-    }
-    .nav .wrap { display: flex; align-items: center; gap: 24px; height: 64px; }
-    .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 17px; }
-    .brand img { width: 32px; height: 32px; border-radius: 8px; }
-    .nav-links { margin-left: auto; display: flex; align-items: center; gap: 6px; }
-    .nav-links a { padding: 8px 12px; border-radius: 8px; font-size: 14px; color: var(--muted); transition: color .15s, background .15s; }
-    .nav-links a:hover { color: var(--text); background: var(--surface-2); }
-    .nav-links a.current { color: var(--text); }
-    .nav-links .btn-nav { border: 1px solid var(--border-strong); color: var(--text); background: var(--surface-2); font-weight: 600; }
-
-    /* Buttons */
-    .btn {
-      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-      height: 52px; padding: 0 26px; border-radius: 12px;
-      font-weight: 600; font-size: 16px; border: 1px solid transparent;
-      transition: transform .15s, background .15s, border-color .15s, box-shadow .15s;
-      cursor: pointer;
-    }
-    .btn svg { width: 18px; height: 18px; flex-shrink: 0; }
-    .btn-primary { background: var(--accent); color: #fff; box-shadow: 0 8px 30px -8px rgba(88, 101, 242, 0.7); }
-    .btn-primary:hover { background: #4752e0; transform: translateY(-1px); }
-    .btn-ghost { background: var(--surface); border-color: var(--border-strong); color: var(--text); }
-    .btn-ghost:hover { border-color: #44444f; transform: translateY(-1px); }
-    .btn:focus-visible, .nav-links a:focus-visible, .copy:focus-visible, .dl-card:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 3px; }
+    /* GitPilot page — builds on /assets/css/site.css */
+    main section { padding: 96px 0 0; }
 
     /* Hero */
-    .hero { position: relative; overflow: hidden; padding: 110px 0 70px; text-align: center; }
+    .hero { position: relative; overflow: hidden; padding: 104px 0 64px; text-align: center; }
     .hero::before {
-      content: ""; position: absolute; inset: 0;
+      content: ""; position: absolute; inset: 0; pointer-events: none;
       background-image:
-        linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px);
+        linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
       background-size: 60px 60px;
-      mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, #000 40%, transparent 100%);
       -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, #000 40%, transparent 100%);
-      pointer-events: none;
+      mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, #000 40%, transparent 100%);
     }
     .hero::after {
-      content: ""; position: absolute; left: 50%; top: -120px; width: 720px; height: 420px; transform: translateX(-50%);
-      background: radial-gradient(closest-side, rgba(88,101,242,0.22), transparent);
-      pointer-events: none;
+      content: ""; position: absolute; left: 50%; top: -120px; transform: translateX(-50%);
+      width: min(720px, 100%); height: 420px; pointer-events: none;
+      background: radial-gradient(closest-side, var(--accent-glow), transparent);
     }
     .hero > * { position: relative; z-index: 1; }
-    .pill {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 6px 14px; border-radius: 999px;
-      border: 1px solid rgba(88,101,242,0.45); background: var(--accent-soft);
-      color: var(--accent-2); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
-    }
-    .pill .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 3px rgba(62,207,142,0.18); }
-    h1 {
-      margin: 26px auto 18px; max-width: 760px;
-      font-size: clamp(40px, 6.4vw, 64px); line-height: 1.06; font-weight: 800; letter-spacing: -0.035em;
-    }
-    h1 .accent { color: var(--accent-2); }
-    .lede { margin: 0 auto; max-width: 560px; color: var(--muted); font-size: 18px; }
+    .hero h1 { margin: 26px auto 18px; max-width: 760px; font-size: clamp(2.5rem, 6.4vw, 4rem); font-weight: 800; letter-spacing: -0.035em; }
+    .lede { margin: 0 auto; max-width: 560px; font-size: 1.12rem; }
     .cta { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin-top: 36px; }
-    .meta { margin-top: 18px; font-size: 13px; color: var(--faint); }
+    .cta .btn { padding: 14px 26px; font-size: 1rem; border-radius: var(--radius-lg); }
+    .meta { margin-top: 18px; font-size: 0.82rem; color: var(--text-3); }
 
-    .pill-link { transition: border-color .15s, background .15s; }
-    .pill-link:hover { border-color: rgba(124,135,255,0.8); background: rgba(88,101,242,0.2); }
-    .pill-arrow { width: 13px; height: 13px; transition: transform .15s; }
+    .pill-link { text-decoration: none; transition: background var(--transition); }
+    .pill-link:hover { background: var(--accent-border); }
+    .pill-arrow { width: 13px; height: 13px; transition: transform var(--transition); }
     .pill-link:hover .pill-arrow { transform: translateX(2px); }
 
+    /* Screenshot */
+    .shot { margin-top: 64px; position: relative; }
+    .shot::before {
+      content: ""; position: absolute; inset: -40px -20px auto; height: 300px; z-index: 0;
+      background: radial-gradient(closest-side, var(--accent-dim), transparent);
+    }
+    .frame { position: relative; z-index: 1; overflow: hidden; border: 1px solid var(--border-strong); border-radius: var(--radius-lg); background: var(--bg-1); box-shadow: var(--shadow-lg); }
+    .frame img { height: auto; }
+    .frame-bar { display: flex; gap: 7px; padding: 12px 14px; border-bottom: 1px solid var(--border); }
+    .frame-bar i { width: 11px; height: 11px; border-radius: 50%; background: var(--bg-3); }
+    .caption { text-align: center; color: var(--text-3); font-size: 0.82rem; margin-top: 14px; }
+
     /* Release notes */
-    .release { max-width: 820px; margin: 0 auto; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); overflow: hidden; }
-    .release-head { display: flex; align-items: center; gap: 16px; padding: 22px 26px; border-bottom: 1px solid var(--border); background: linear-gradient(90deg, rgba(88,101,242,0.10), transparent 60%); }
-    .tag { flex-shrink: 0; font-family: var(--mono); font-weight: 700; font-size: 14px; color: var(--accent-2); background: var(--accent-soft); border: 1px solid rgba(88,101,242,0.45); border-radius: 8px; padding: 5px 10px; }
+    .release { max-width: 820px; margin: 0 auto; overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--bg-1); }
+    .release-head { display: flex; align-items: center; gap: 16px; padding: 22px 26px; border-bottom: 1px solid var(--border); background: linear-gradient(90deg, var(--accent-dim), transparent 60%); }
+    .tag { flex-shrink: 0; padding: 5px 10px; border: 1px solid var(--accent-border); border-radius: 8px; background: var(--accent-dim); color: var(--accent-fg); font: 700 0.875rem var(--font-mono); }
     .release-title { min-width: 0; flex: 1; }
-    .release-title h3 { margin: 0; font-size: 18px; font-weight: 700; letter-spacing: -0.01em; }
-    .release-title time { font-size: 13px; color: var(--faint); }
-    .release-link { flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; color: var(--muted); padding: 8px 12px; border: 1px solid var(--border-strong); border-radius: 9px; transition: color .15s, border-color .15s; }
-    .release-link:hover { color: var(--text); border-color: #44444f; }
+    .release-title h3 { font-size: 1.12rem; font-weight: 700; }
+    .release-title time { font-size: 0.82rem; color: var(--text-3); }
+    .release-link { flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; border: 1px solid var(--border-strong); border-radius: 9px; color: var(--text-2); font-size: 0.875rem; font-weight: 600; text-decoration: none; transition: color var(--transition), border-color var(--transition); }
+    .release-link:hover { color: var(--text-1); }
     .release-link svg { width: 15px; height: 15px; }
-    .release-body { position: relative; padding: 8px 26px 26px; color: var(--muted); font-size: 15px; overflow-wrap: anywhere; }
+    .release-body { position: relative; padding: 8px 26px 26px; color: var(--text-2); font-size: 0.94rem; overflow-wrap: anywhere; }
     .release-body.collapsed { max-height: 440px; overflow: hidden; }
-    .release-body.collapsed::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 120px; background: linear-gradient(transparent, var(--surface)); pointer-events: none; }
-    .release-body h1, .release-body h2, .release-body h3, .release-body h4 { color: var(--text); letter-spacing: -0.01em; line-height: 1.3; margin: 26px 0 10px; }
-    .release-body h1 { font-size: 22px; }
-    .release-body h2 { font-size: 19px; }
-    .release-body h3, .release-body h4 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent-2); }
+    .release-body.collapsed::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 120px; background: linear-gradient(transparent, var(--bg-1)); pointer-events: none; }
+    .release-body h1, .release-body h2, .release-body h3, .release-body h4 { color: var(--text-1); letter-spacing: -0.01em; line-height: 1.3; margin: 26px 0 10px; }
+    .release-body h1 { font-size: 1.38rem; }
+    .release-body h2 { font-size: 1.2rem; }
+    .release-body h3, .release-body h4 { font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent-fg); }
     .release-body p { margin: 10px 0; }
     .release-body ul, .release-body ol { margin: 8px 0; padding-left: 0; list-style: none; }
     .release-body ol { counter-reset: li; }
     .release-body li { position: relative; padding-left: 22px; margin: 8px 0; }
     .release-body ul > li::before { content: ""; position: absolute; left: 4px; top: 0.62em; width: 6px; height: 6px; border-radius: 2px; background: var(--accent); }
-    .release-body ol > li::before { counter-increment: li; content: counter(li) "."; position: absolute; left: 0; font-family: var(--mono); font-size: 13px; color: var(--accent-2); }
+    .release-body ol > li::before { counter-increment: li; content: counter(li) "."; position: absolute; left: 0; font: 0.82rem var(--font-mono); color: var(--accent-fg); }
     .release-body li li { margin: 4px 0; }
-    .release-body strong { color: var(--text); font-weight: 600; }
-    .release-body a { color: var(--accent-2); }
+    .release-body strong { color: var(--text-1); font-weight: 600; }
     .release-body a:hover { text-decoration: underline; }
-    .release-body code { font-family: var(--mono); font-size: 0.86em; background: var(--surface-2); border: 1px solid var(--border); border-radius: 5px; padding: 1px 6px; color: #d4d4dc; }
-    .release-body pre { background: #0d0d10; border: 1px solid var(--border); border-radius: 10px; padding: 14px; overflow-x: auto; }
+    .release-body code { padding: 1px 6px; border: 1px solid var(--border); border-radius: 5px; background: var(--bg-2); color: var(--text-1); }
+    .release-body pre { padding: 14px; overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--bg-0); }
     .release-body pre code { border: 0; padding: 0; background: none; }
     .release-body hr { border: 0; border-top: 1px solid var(--border); margin: 24px 0; }
-    .release-body blockquote { margin: 14px 0; padding: 10px 16px; border-left: 3px solid var(--accent); background: var(--accent-soft); border-radius: 0 8px 8px 0; }
-    .release-body table { width: 100%; border-collapse: collapse; font-size: 14px; display: block; overflow-x: auto; }
+    .release-body blockquote { margin: 14px 0; padding: 10px 16px; border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; background: var(--accent-dim); }
+    .release-body table { display: block; width: 100%; overflow-x: auto; border-collapse: collapse; font-size: 0.875rem; }
     .release-body th, .release-body td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); }
-    .release-body th { color: var(--text); }
-    .release-body img { border-radius: 10px; border: 1px solid var(--border); }
+    .release-body th { color: var(--text-1); }
+    .release-body img { border: 1px solid var(--border); border-radius: var(--radius-md); }
     .release-body > :first-child { margin-top: 18px; }
-    .release-more { display: block; width: 100%; padding: 14px; border: 0; border-top: 1px solid var(--border); background: var(--surface-2); color: var(--text); font: 600 14px Inter, sans-serif; cursor: pointer; }
-    .release-more:hover { background: #1c1c22; }
-    .release-more:focus-visible, .release-link:focus-visible, .pill-link:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 3px; }
-    @media (max-width: 640px) {
-      .release-head { flex-wrap: wrap; padding: 18px; }
-      .release-link { width: 100%; justify-content: center; }
-      .release-body { padding: 4px 18px 20px; }
-    }
+    .release-more { display: block; width: 100%; padding: 14px; border: 0; border-top: 1px solid var(--border); background: var(--bg-2); color: var(--text-1); font-weight: 600; font-size: 0.875rem; cursor: pointer; }
+    .release-more:hover { background: var(--bg-hover); }
 
-    /* Stats */
-    .stats {
-      display: grid; grid-template-columns: repeat(4, 1fr);
-      border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface);
-      overflow: hidden; margin-top: 10px;
-    }
-    .stat { padding: 30px 16px; text-align: center; border-right: 1px solid var(--border); }
-    .stat:last-child { border-right: 0; }
-    .stat b { display: block; font-family: var(--mono); font-size: 28px; font-weight: 700; letter-spacing: -0.02em; }
-    .stat span { display: block; margin-top: 6px; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); }
-
-    /* Screenshot */
-    .shot { margin-top: 70px; position: relative; }
-    .shot::before {
-      content: ""; position: absolute; inset: -40px -20px auto; height: 300px; z-index: 0;
-      background: radial-gradient(closest-side, rgba(88,101,242,0.18), transparent);
-    }
-    .frame { position: relative; z-index: 1; border: 1px solid var(--border-strong); border-radius: 16px; background: var(--surface); overflow: hidden; box-shadow: 0 40px 80px -30px rgba(0,0,0,0.8); }
-    .frame-bar { display: flex; gap: 7px; padding: 12px 14px; border-bottom: 1px solid var(--border); }
-    .frame-bar i { width: 11px; height: 11px; border-radius: 50%; background: #2a2a31; }
-    .caption { text-align: center; color: var(--faint); font-size: 13px; margin-top: 14px; }
-
-    /* Sections */
-    section { padding: 96px 0 0; }
-    .section-head { text-align: center; max-width: 620px; margin: 0 auto 44px; }
-    h2 { margin: 0 0 10px; font-size: clamp(28px, 4vw, 36px); font-weight: 700; letter-spacing: -0.025em; line-height: 1.15; }
-    .section-head p { margin: 0; color: var(--muted); }
-
-    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-    .card {
-      padding: 26px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface);
-      transition: border-color .2s, transform .2s;
-    }
-    .card:hover { border-color: var(--border-strong); transform: translateY(-2px); }
-    .icon {
-      width: 42px; height: 42px; border-radius: 10px; display: grid; place-items: center;
-      background: var(--accent-soft); color: var(--accent-2); margin-bottom: 18px;
-    }
-    .icon svg { width: 21px; height: 21px; }
-    .card h3 { margin: 0 0 8px; font-size: 17px; font-weight: 600; }
-    .card p { margin: 0; color: var(--muted); font-size: 15px; }
+    /* Stats & features */
+    .stat-strip { margin-top: 8px; }
+    .features-grid .card-icon, .dl-top .card-icon { margin-bottom: 18px; }
+    .features-grid { grid-template-columns: repeat(3, 1fr); }
+    .card p { font-size: 0.94rem; }
+    .card h3 { margin-bottom: 8px; }
 
     /* Downloads */
     .downloads { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
-    .dl-card { min-width: 0; display: flex; flex-direction: column; gap: 14px; padding: 26px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+    .dl-card { min-width: 0; display: flex; flex-direction: column; gap: 14px; padding: 26px; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--bg-1); }
     .dl-top { display: flex; align-items: center; gap: 14px; }
-    .dl-top .icon { margin: 0; }
-    .dl-top h3 { margin: 0; font-size: 18px; }
-    .dl-top small { display: block; color: var(--faint); font-size: 13px; }
+    .dl-top .card-icon { margin: 0; }
+    .dl-top h3 { font-size: 1.12rem; }
+    .dl-top small { display: block; color: var(--text-3); font-size: 0.82rem; }
     .dl-links { display: flex; flex-wrap: wrap; gap: 10px; }
-    .dl-links .btn { height: 44px; padding: 0 18px; font-size: 15px; }
     .code {
-      display: flex; align-items: center; gap: 10px;
-      border: 1px solid var(--border); background: #0d0d10; border-radius: 10px; padding: 10px 10px 10px 14px;
-      font-family: var(--mono); font-size: 13px; color: #d4d4dc; overflow-x: auto;
+      display: flex; align-items: center; gap: 10px; overflow-x: auto;
+      padding: 10px 10px 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-md);
+      background: var(--bg-0); color: var(--text-1); font: 0.82rem var(--font-mono);
     }
-    .code code { white-space: nowrap; flex: 1; }
-    .code .prompt { color: var(--faint); user-select: none; }
-    .copy {
-      flex-shrink: 0; border: 1px solid var(--border-strong); background: var(--surface-2); color: var(--muted);
-      border-radius: 7px; padding: 5px 10px; font: 600 12px Inter, sans-serif; cursor: pointer;
-    }
-    .copy:hover { color: var(--text); }
-    .note { color: var(--faint); font-size: 13px; margin: 0; }
-    .note a { color: var(--accent-2); }
+    .code code { flex: 1; white-space: nowrap; font-size: inherit; }
+    .code .prompt { color: var(--text-3); user-select: none; }
+    .copy { flex-shrink: 0; padding: 5px 10px; border: 1px solid var(--border-strong); border-radius: 7px; background: var(--bg-2); color: var(--text-2); font-weight: 600; font-size: 0.75rem; cursor: pointer; }
+    .copy:hover { color: var(--text-1); }
+    .note { margin: 0; color: var(--text-3); font-size: 0.82rem; }
     .note a:hover { text-decoration: underline; }
 
     /* Steps */
     .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; counter-reset: step; }
     .step { padding: 26px; border-left: 2px solid var(--border-strong); }
-    .step::before { counter-increment: step; content: "0" counter(step); display: block; font-family: var(--mono); color: var(--accent-2); font-weight: 700; margin-bottom: 10px; }
-    .step h3 { margin: 0 0 6px; font-size: 17px; }
-    .step p { margin: 0; color: var(--muted); font-size: 15px; }
+    .step::before { counter-increment: step; content: "0" counter(step); display: block; margin-bottom: 10px; color: var(--accent-fg); font: 700 1rem var(--font-mono); }
+    .step h3 { margin-bottom: 6px; }
+    .step p { font-size: 0.94rem; }
 
-    /* Footer */
-    .final { margin: 110px 0 0; padding: 56px 32px; text-align: center; border: 1px solid var(--border); border-radius: 18px; background: linear-gradient(180deg, rgba(88,101,242,0.10), transparent 70%), var(--surface); }
+    /* Closing CTA */
+    .final { margin-top: 104px; padding: 56px 32px; text-align: center; border: 1px solid var(--border); border-radius: var(--radius-xl); background: linear-gradient(180deg, var(--accent-dim), transparent 70%), var(--bg-1); }
     .final h2 { margin-bottom: 10px; }
-    .final p { color: var(--muted); margin: 0 auto 28px; max-width: 480px; }
-    footer { margin-top: 80px; border-top: 1px solid var(--border); padding: 28px 0 40px; color: var(--faint); font-size: 14px; }
-    footer .wrap { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between; }
-    footer nav { display: flex; gap: 18px; }
-    footer a:hover { color: var(--text); }
+    .final p { margin: 0 auto 28px; max-width: 480px; }
 
     @media (max-width: 860px) {
-      .grid, .steps { grid-template-columns: 1fr 1fr; }
+      .features-grid, .steps { grid-template-columns: 1fr 1fr; }
       .downloads { grid-template-columns: 1fr; }
     }
     @media (max-width: 640px) {
-      .nav-links a:not(.btn-nav) { display: none; }
       .hero { padding: 72px 0 48px; }
-      .lede { font-size: 16px; }
-      .stats { grid-template-columns: 1fr 1fr; }
-      .stat:nth-child(2) { border-right: 0; }
-      .stat:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
-      .grid, .steps { grid-template-columns: 1fr; }
-      section { padding-top: 72px; }
+      .lede { font-size: 1rem; }
+      .features-grid, .steps { grid-template-columns: 1fr; }
+      main section { padding-top: 72px; }
       .cta .btn { width: 100%; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      * { transition: none !important; }
+      .release-head { flex-wrap: wrap; padding: 18px; }
+      .release-link { width: 100%; justify-content: center; }
+      .release-body { padding: 4px 18px 20px; }
     }
   </style>
 </head>
 <body>
-  <header class="nav">
-    <div class="wrap">
-      <a class="brand" href="../../index.html">
-        <img src="../../assets/img/logo.png" alt="" />
-        <span>OLIT</span>
-      </a>
-      <nav class="nav-links" aria-label="Main">
-        <a href="../" class="current">Projects</a>
-        <a href="https://github.com/vinayakkam/gitpilot" target="_blank" rel="noopener">GitHub</a>
-        <a href="#download" class="btn-nav">Download</a>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a href="/" class="brand"><img src="/assets/img/logo.png" alt="" width="30" height="30">OLIT <small>GitPilot</small></a>
+      <nav class="site-nav" aria-label="Main">
+        <a href="/#projects" class="nav-optional">Projects</a>
+        <a href="https://github.com/vinayakkam/gitpilot" target="_blank" rel="noopener" class="nav-optional">GitHub</a>
+        <a href="#download" class="btn btn-primary btn-sm">Download</a>
       </nav>
     </div>
   </header>
 
-  <main>
+  <main id="main">
     <div class="hero">
-      <div class="wrap">
-        <a class="pill pill-link" href="#whats-new" data-version-pill-link><span class="dot"></span><span data-version-pill>Free for Windows &amp; Linux</span><svg class="pill-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
-        <h1>Git, made <span class="accent">clear</span></h1>
+      <div class="container">
+        <a class="eyebrow pill-link" href="#whats-new" data-version-pill-link><span class="status-dot online"></span><span data-version-pill>Free for Windows &amp; Linux</span><svg class="pill-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
+        <h1>Git, made <span class="gradient-text">clear</span></h1>
         <p class="lede">GitPilot is a desktop Git manager for Windows and Linux. See exactly what changed, pick the lines that go into each commit, and get a plain explanation whenever Git says no.</p>
         <div class="cta">
           <a class="btn btn-primary" href="#download">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
             Download GitPilot
           </a>
-          <a class="btn btn-ghost" href="https://github.com/vinayakkam/gitpilot" target="_blank" rel="noopener">
+          <a class="btn btn-secondary" href="https://github.com/vinayakkam/gitpilot" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.77.11 3.06.74.8 1.19 1.83 1.19 3.09 0 4.42-2.7 5.39-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg>
             View on GitHub
           </a>
@@ -307,17 +194,17 @@
       </div>
     </div>
 
-    <div class="wrap">
-      <div class="stats" aria-label="At a glance">
-        <div class="stat"><b>Line</b><span>level staging</span></div>
-        <div class="stat"><b>2 OS</b><span>Windows &amp; Linux</span></div>
-        <div class="stat"><b>Signed</b><span>auto updates</span></div>
-        <div class="stat"><b>Free</b><span>to download</span></div>
+    <div class="container">
+      <div class="stat-strip" aria-label="At a glance">
+        <div><strong>Line</strong><span>level staging</span></div>
+        <div><strong>2 OS</strong><span>Windows &amp; Linux</span></div>
+        <div><strong>Signed</strong><span>auto updates</span></div>
+        <div><strong>Free</strong><span>to download</span></div>
       </div>
     </div>
 
     <section id="whats-new" hidden>
-      <div class="wrap">
+      <div class="container">
         <div class="section-head">
           <h2>What's new</h2>
           <p>Straight from the latest release notes on GitHub.</p>
@@ -340,39 +227,39 @@
     </section>
 
     <section id="features">
-      <div class="wrap">
+      <div class="container">
         <div class="section-head">
           <h2>Everything you do with Git, in one window</h2>
           <p>Built on the Git you already have installed, so nothing is simulated and your repositories stay exactly as Git expects.</p>
         </div>
-        <div class="grid">
+        <div class="cards features-grid">
           <article class="card">
-            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18"/><path d="M5 8h4"/><path d="M15 16h4"/><path d="M17 14v4"/></svg></div>
+            <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18"/><path d="M5 8h4"/><path d="M15 16h4"/><path d="M17 14v4"/></svg></div>
             <h3>Commit exactly what you mean</h3>
             <p>Stage whole files, single hunks, or individual lines straight from the diff. Unstaged work is never swept into a commit.</p>
           </article>
           <article class="card">
-            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4v16"/><path d="M6 9h3M15 9h3M6 13h3M15 13h3"/></svg></div>
+            <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4v16"/><path d="M6 9h3M15 9h3M6 13h3M15 13h3"/></svg></div>
             <h3>A diff viewer that reads like an editor</h3>
             <p>Unified or side-by-side, syntax highlighting, line numbers, and sensible handling of binary, renamed and very large files.</p>
           </article>
           <article class="card">
-            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="8" r="2.5"/><path d="M6 8.5v7"/><path d="M18 10.5c0 4-6 3-11 6"/></svg></div>
+            <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="8" r="2.5"/><path d="M6 8.5v7"/><path d="M18 10.5c0 4-6 3-11 6"/></svg></div>
             <h3>Branches without the fear</h3>
             <p>Create, switch, merge, rebase, cherry-pick and revert. When Git pauses for conflicts you get Continue, Skip and Abort, not a wall of text.</p>
           </article>
           <article class="card">
-            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg></div>
+            <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg></div>
             <h3>Safe by default</h3>
             <p>Discarding changes asks first and keeps a backup. No silent force-pushes, no auto-stashing, no history rewrites without your say-so.</p>
           </article>
           <article class="card">
-            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg></div>
+            <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg></div>
             <h3>Sync that tells the truth</h3>
             <p>Fetch, pull and push with progress you can cancel. Ahead, behind, diverged or never fetched: you always know where you stand.</p>
           </article>
           <article class="card">
-            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 4.6L18.5 9l-4.7 1.5L12 15l-1.8-4.5L5.5 9l4.7-1.4Z"/><path d="M19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9Z"/></svg></div>
+            <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 4.6L18.5 9l-4.7 1.5L12 15l-1.8-4.5L5.5 9l4.7-1.4Z"/><path d="M19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9Z"/></svg></div>
             <h3>AI and Claude Code, if you want them</h3>
             <p>Optional commit-message suggestions from your staged changes, and one click to open Claude Code in the repository with a ready-made prompt.</p>
           </article>
@@ -381,7 +268,7 @@
     </section>
 
     <section id="download">
-      <div class="wrap">
+      <div class="container">
         <div class="section-head">
           <h2>Download</h2>
           <p data-version-line>Get the latest release. Git must be installed on your computer.</p>
@@ -389,19 +276,19 @@
         <div class="downloads">
           <div class="dl-card">
             <div class="dl-top">
-              <div class="icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.5 10.5 4.4v7.1H3zM11.5 4.3 21 3v8.5h-9.5zM3 12.5h7.5v7.1L3 18.5zM11.5 12.5H21V21l-9.5-1.3z"/></svg></div>
+              <div class="card-icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.5 10.5 4.4v7.1H3zM11.5 4.3 21 3v8.5h-9.5zM3 12.5h7.5v7.1L3 18.5zM11.5 12.5H21V21l-9.5-1.3z"/></svg></div>
               <div><h3>Windows</h3><small>Windows 10 and 11, 64-bit</small></div>
             </div>
             <div class="dl-links">
               <a class="btn btn-primary" data-asset="x64-setup.exe" href="https://github.com/vinayakkam/gitpilot/releases/latest">Installer (.exe)</a>
-              <a class="btn btn-ghost" data-asset="_en-US.msi" href="https://github.com/vinayakkam/gitpilot/releases/latest">MSI package</a>
+              <a class="btn btn-secondary" data-asset="_en-US.msi" href="https://github.com/vinayakkam/gitpilot/releases/latest">MSI package</a>
             </div>
             <p class="note">Windows may say “Windows protected your PC” because the installer isn't code-signed yet. Choose <b>More info → Run anyway</b>. Needs <a href="https://git-scm.com/download/win" target="_blank" rel="noopener">Git for Windows</a>.</p>
           </div>
 
           <div class="dl-card">
             <div class="dl-top">
-              <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2c-2 3-3 5.5-3 8 0 1.5.5 2.5 1 3.5-2 1-5 3-6 7h16c-1-4-4-6-6-7 .5-1 1-2 1-3.5 0-2.5-1-5-3-8Z"/></svg></div>
+              <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2c-2 3-3 5.5-3 8 0 1.5.5 2.5 1 3.5-2 1-5 3-6 7h16c-1-4-4-6-6-7 .5-1 1-2 1-3.5 0-2.5-1-5-3-8Z"/></svg></div>
               <div><h3>CachyOS, Arch &amp; Manjaro</h3><small>pacman package</small></div>
             </div>
             <div class="dl-links">
@@ -412,7 +299,7 @@
 
           <div class="dl-card">
             <div class="dl-top">
-              <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg></div>
+              <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg></div>
               <div><h3>Debian &amp; Ubuntu</h3><small>.deb package</small></div>
             </div>
             <div class="dl-links">
@@ -423,7 +310,7 @@
 
           <div class="dl-card">
             <div class="dl-top">
-              <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></svg></div>
+              <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></svg></div>
               <div><h3>Any Linux</h3><small>AppImage, no install needed</small></div>
             </div>
             <div class="dl-links">
@@ -437,7 +324,7 @@
     </section>
 
     <section id="updates">
-      <div class="wrap">
+      <div class="container">
         <div class="section-head">
           <h2>Install once, stay up to date</h2>
           <p>GitPilot checks for new versions and updates itself in place. Your repositories and settings are kept.</p>
@@ -450,26 +337,26 @@
       </div>
     </section>
 
-    <div class="wrap">
+    <div class="container">
       <div class="final">
         <h2>Try GitPilot</h2>
         <p>Open a repository you already have and see your changes the way they should look.</p>
         <div class="cta" style="margin-top:0">
           <a class="btn btn-primary" href="#download">Download GitPilot</a>
-          <a class="btn btn-ghost" href="../">More OLIT projects</a>
+          <a class="btn btn-secondary" href="/#projects">More OLIT projects</a>
         </div>
       </div>
     </div>
   </main>
 
-  <footer>
-    <div class="wrap">
-      <span>© <span data-year>2026</span> OLIT Technologies</span>
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <p>© <span data-year>2026</span> OLIT Technologies</p>
       <nav aria-label="Footer">
-        <a href="../../index.html">Home</a>
-        <a href="../">Projects</a>
+        <a href="/">Home</a>
+        <a href="/#projects">Projects</a>
         <a href="https://github.com/vinayakkam/gitpilot" target="_blank" rel="noopener">GitHub</a>
-        <a href="../../privacy.html">Privacy</a>
+        <a href="/privacy.html">Privacy</a>
       </nav>
     </div>
   </footer>
