@@ -6,13 +6,21 @@
   <title>Server Settings — OLIT</title>
   <meta name="description" content="Configure the OLIT Discord bot for your server.">
   <meta name="robots" content="noindex">
-  <meta name="theme-color" content="#0b0b0f">
+  <meta name="theme-color" content="#fafaf9" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0c0c0b" media="(prefers-color-scheme: dark)">
   <link rel="icon" type="image/png" href="/assets/img/logo.png">
+  <script>try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch(e){}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
   <link rel="stylesheet" href="/assets/css/site.css">
   <style>
     .page-header { padding: 32px 0 24px; border-bottom: 1px solid var(--border); margin-bottom: 28px; }
     .server-header { display: flex; align-items: center; gap: 16px; min-width: 0; }
-    .server-header h1 { font-size: 1.45rem; margin-bottom: 4px; overflow-wrap: anywhere; }
+    .back-link { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 20px; color: var(--text-2); font-size: 0.88rem; text-decoration: none; }
+    .back-link:hover { color: var(--text-1); }
+    .back-link svg { width: 14px; height: 14px; transform: scaleX(-1); }
+    .server-header h1 { font-size: 1.6rem; margin-bottom: 4px; overflow-wrap: anywhere; }
 
     .layout { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 24px; align-items: start; }
 
@@ -26,8 +34,9 @@
       transition: background var(--transition), color var(--transition);
     }
     .sidebar-item:hover { background: var(--bg-hover); color: var(--text-1); }
-    .sidebar-item[aria-current="true"] { background: var(--accent-dim); color: var(--text-1); }
-    .sidebar-icon { width: 20px; text-align: center; }
+    .sidebar-item[aria-current="true"] { background: var(--bg-2); color: var(--text-1); }
+    .sidebar-icon { display: inline-grid; color: var(--text-3); }
+    .sidebar-item[aria-current="true"] .sidebar-icon { color: var(--accent-fg); }
 
     .content-panel[hidden] { display: none; }
     .panel-header { margin-bottom: 24px; }
@@ -35,8 +44,8 @@
     .card h3 { font-size: 0.92rem; margin-bottom: 14px; }
 
     .cmd-tag {
-      display: inline-flex; align-items: center; padding: 3px 10px; border-radius: var(--radius-sm);
-      background: var(--bg-3); color: var(--accent-fg); font: 500 0.8rem var(--font-mono);
+      display: inline-flex; align-items: center; padding: 2px 8px; border-radius: var(--radius-sm);
+      background: var(--bg-2); border: 1px solid var(--border); color: var(--text-1); font: 500 0.8rem var(--font-mono);
     }
 
     .setting-row {
@@ -59,7 +68,7 @@
     .check-icon { width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: #fff; font-size: 10px; }
 
     .log-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.82rem; }
-    .log-method { flex-shrink: 0; padding: 2px 6px; border-radius: 4px; background: var(--accent-dim); color: var(--accent-fg); font: 700 0.7rem var(--font-mono); }
+    .log-method { flex-shrink: 0; min-width: 52px; padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border); text-align: center; color: var(--text-2); font: 500 0.7rem var(--font-mono); }
     .log-path { flex: 1; color: var(--text-1); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .log-time { flex-shrink: 0; color: var(--text-3); }
 
@@ -77,11 +86,18 @@
 
 <header class="site-header">
   <div class="site-header__inner">
-    <a href="/bot/" class="brand"><img src="/assets/img/logo.png" alt="" width="30" height="30">OLIT <small>Dashboard</small></a>
-    <nav class="site-nav" aria-label="Main">
-      <a href="/bot/dashboard.html">← All servers</a>
-      <div id="nav-user"></div>
+    <a href="/bot/" class="brand"><img src="/assets/img/logo.png" alt="" width="26" height="26">OLIT<small>Dashboard</small></a>
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      <a href="/#work">Work</a>
+      <a href="/bot/">OLIT Bot</a>
+      <a href="/projects/git-pilot/">GitPilot</a>
+      <a href="/#contact">Contact</a>
     </nav>
+    <div class="site-actions">
+      <div id="nav-user"></div>
+      <button type="button" class="icon-btn" data-theme-toggle aria-label="Toggle dark mode"><svg class="icon theme-icon-dark" aria-hidden="true"><use href="/assets/img/icons.svg#moon"/></svg><svg class="icon theme-icon-light" aria-hidden="true"><use href="/assets/img/icons.svg#sun"/></svg></button>
+      <button type="button" class="icon-btn nav-toggle" aria-controls="site-nav" aria-expanded="false" aria-label="Open menu"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#menu"/></svg></button>
+    </div>
   </div>
 </header>
 
@@ -91,6 +107,7 @@
 
   <div id="main-layout" class="hidden">
     <div class="page-header">
+      <a href="/bot/dashboard.html" class="back-link"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#arrow-right"/></svg>All servers</a>
       <div class="server-header">
         <div class="server-icon lg" id="server-icon-el"></div>
         <div style="min-width:0">
@@ -107,15 +124,15 @@
       <nav class="card sidebar" aria-label="Server settings">
         <div class="sidebar-group">
           <div class="sidebar-label">Manage</div>
-          <button type="button" class="sidebar-item" data-panel="overview" aria-current="true"><span class="sidebar-icon" aria-hidden="true">📊</span>Overview</button>
-          <button type="button" class="sidebar-item" data-panel="commands"><span class="sidebar-icon" aria-hidden="true">💬</span>Commands</button>
-          <button type="button" class="sidebar-item" data-panel="automod"><span class="sidebar-icon" aria-hidden="true">🛡️</span>Automod</button>
-          <button type="button" class="sidebar-item" data-panel="users"><span class="sidebar-icon" aria-hidden="true">👥</span>Exempt Users</button>
-          <button type="button" class="sidebar-item" data-panel="welcome"><span class="sidebar-icon" aria-hidden="true">👋</span>Welcome</button>
+          <button type="button" class="sidebar-item" data-panel="overview" aria-current="true"><span class="sidebar-icon"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#planet"/></svg></span>Overview</button>
+          <button type="button" class="sidebar-item" data-panel="commands"><span class="sidebar-icon"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#message"/></svg></span>Commands</button>
+          <button type="button" class="sidebar-item" data-panel="automod"><span class="sidebar-icon"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#shield"/></svg></span>Automod</button>
+          <button type="button" class="sidebar-item" data-panel="users"><span class="sidebar-icon"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#check"/></svg></span>Exempt Users</button>
+          <button type="button" class="sidebar-item" data-panel="welcome"><span class="sidebar-icon"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#door"/></svg></span>Welcome</button>
         </div>
         <div class="sidebar-group">
           <div class="sidebar-label">System</div>
-          <button type="button" class="sidebar-item" data-panel="logs"><span class="sidebar-icon" aria-hidden="true">📋</span>Logs</button>
+          <button type="button" class="sidebar-item" data-panel="logs"><span class="sidebar-icon"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#terminal"/></svg></span>Logs</button>
         </div>
       </nav>
 
@@ -258,6 +275,7 @@
   </div>
 </main>
 
+<script src="/assets/js/site.js"></script>
 <script src="/assets/js/auth.js"></script>
 <script src="/assets/js/ui.js"></script>
 <script src="/assets/js/api.js"></script>
@@ -278,8 +296,7 @@
     window.location.replace('/bot/dashboard.html');
   }
 
-  const emptyState = (icon, text) =>
-    `<div class="empty-state"><div class="empty-state-icon" aria-hidden="true">${icon}</div><p>${text}</p></div>`;
+  const emptyState = text => `<div class="empty-state"><p>${text}</p></div>`;
 
   // ── Panel switching ──────────────────────────────────────────────────────
   function switchPanel(name) {
@@ -346,7 +363,6 @@
     } catch (e) {
       loading.innerHTML = `
         <div class="empty-state">
-          <div class="empty-state-icon" aria-hidden="true">⚠️</div>
           <p>Could not load config: ${esc(e.message)}</p>
           <button type="button" class="btn btn-secondary btn-sm mt-md" id="retry-config">Retry</button>
         </div>`;
@@ -378,7 +394,7 @@
     const el   = $('commands-list');
     const cmds = config?.commands || {};
     if (!Object.keys(cmds).length) {
-      el.innerHTML = emptyState('💬', 'No custom commands yet.');
+      el.innerHTML = emptyState('No custom commands yet.');
       return;
     }
     el.innerHTML = Object.entries(cmds).map(([name, data]) => `
@@ -434,7 +450,7 @@
     const el    = $('automod-list');
     const words = config?.automod_words || [];
     if (!words.length) {
-      el.innerHTML = emptyState('🛡️', 'No banned words configured.');
+      el.innerHTML = emptyState('No banned words configured.');
       return;
     }
     el.innerHTML = words.map(w => `
@@ -489,7 +505,7 @@
     const el    = $('users-list');
     const users = config?.allowed_users || [];
     if (!users.length) {
-      el.innerHTML = emptyState('👥', 'No exempt users. All users are subject to automod.');
+      el.innerHTML = emptyState('No exempt users. All users are subject to automod.');
       return;
     }
     el.innerHTML = users.map(uid => `
@@ -574,7 +590,6 @@
     const current = config?.welcome_channel || '';
     return `
       <div class="alert alert-warn">
-        <span aria-hidden="true">⚠️</span>
         <span>Couldn't load channels automatically${reason ? ': ' + esc(reason) : ''}. Make sure the bot is in this server, then <button type="button" class="btn-link" data-action="retry-channels">try again</button>.</span>
       </div>
       <form id="manual-channel-form" novalidate>
@@ -590,7 +605,7 @@
   function renderChannelList(channels) {
     const container = $('channel-list-container');
     if (!channels.length) {
-      container.innerHTML = emptyState('💬', 'No text channels found.');
+      container.innerHTML = emptyState('No text channels found.');
       return;
     }
     const currentId = String(config?.welcome_channel || '');
@@ -668,7 +683,7 @@
     try {
       const { logs } = await API.logs(50);
       if (!logs.length) {
-        el.innerHTML = emptyState('📋', 'No logs yet.');
+        el.innerHTML = emptyState('No logs yet.');
         return;
       }
       el.innerHTML = [...logs].reverse().map(l => `

@@ -2,27 +2,30 @@
   {
     "slug": "olit",
     "name": "OLIT",
-    "icon": "🚀",
+    "icon": "planet",
+    "status": "Live",
     "tagline": "Discord bot for space explorers — games, moderation, leaderboards and a web dashboard.",
-    "tags": ["Discord Bot", "Flask", "Live"],
+    "tags": ["Discord Bot", "Flask"],
     "link": "/bot/",
     "external": false
   },
   {
     "slug": "gitpilot",
     "name": "GitPilot",
-    "icon": "🧭",
+    "icon": "git",
+    "status": "In development",
     "tagline": "Desktop Git client for Windows and Linux with line-level staging and plain-language errors.",
-    "tags": ["Desktop App", "In Development"],
+    "tags": ["Desktop App"],
     "link": "/projects/git-pilot/",
     "external": false
   },
   {
     "slug": "olit-ai",
     "name": "OLIT AI",
-    "icon": "🤖",
+    "icon": "spark",
+    "status": "In development",
     "tagline": "A small AI model with its own chat console.",
-    "tags": ["AI", "In Development"],
+    "tags": ["AI"],
     "link": "/projects/olit-ai/",
     "external": false
   }

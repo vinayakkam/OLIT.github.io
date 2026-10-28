@@ -5,62 +5,120 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Terms &amp; Conditions — OLIT</title>
   <meta name="description" content="Terms and conditions for using the OLIT Discord bot.">
-  <meta name="theme-color" content="#0b0b0f">
+  <meta name="theme-color" content="#fafaf9" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0c0c0b" media="(prefers-color-scheme: dark)">
   <link rel="canonical" href="https://olittechnologies.co.in/terms.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Terms &amp; Conditions — OLIT">
+  <meta property="og:description" content="Terms and conditions for using the OLIT Discord bot.">
+  <meta property="og:url" content="https://olittechnologies.co.in/terms.html">
+  <meta property="og:image" content="https://olittechnologies.co.in/assets/img/logo.png">
   <link rel="icon" type="image/png" href="/assets/img/logo.png">
+  <script>try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch(e){}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
   <link rel="stylesheet" href="/assets/css/site.css">
+  <style>
+
+    .legal { padding: 64px 0 96px; }
+    .legal-nav { position: sticky; top: calc(var(--header-h) + 32px); align-self: start; display: grid; gap: 4px; }
+    .legal-nav a { padding: 6px 0; color: var(--text-2); text-decoration: none; font-size: 0.92rem; }
+    .legal-nav a[aria-current="page"] { color: var(--text-1); font-weight: 500; }
+    @media (max-width: 900px) { .legal-nav { position: static; display: flex; gap: 20px; } }
+  </style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 
 <header class="site-header">
   <div class="site-header__inner">
-    <a href="/" class="brand"><img src="/assets/img/logo.png" alt="" width="30" height="30">OLIT Technologies</a>
-    <nav class="site-nav" aria-label="Main">
-      <a href="/#projects" class="nav-optional">Projects</a>
+    <a href="/" class="brand"><img src="/assets/img/logo.png" alt="" width="26" height="26">OLIT<small>Legal</small></a>
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      <a href="/#work">Work</a>
       <a href="/bot/">OLIT Bot</a>
-      <a href="/projects/git-pilot/" class="nav-optional">GitPilot</a>
+      <a href="/projects/git-pilot/">GitPilot</a>
+      <a href="/#contact">Contact</a>
     </nav>
+    <div class="site-actions">
+      <button type="button" class="icon-btn" data-theme-toggle aria-label="Toggle dark mode"><svg class="icon theme-icon-dark" aria-hidden="true"><use href="/assets/img/icons.svg#moon"/></svg><svg class="icon theme-icon-light" aria-hidden="true"><use href="/assets/img/icons.svg#sun"/></svg></button>
+      <button type="button" class="icon-btn nav-toggle" aria-controls="site-nav" aria-expanded="false" aria-label="Open menu"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#menu"/></svg></button>
+    </div>
   </div>
 </header>
 
-<main id="main">
-  <article class="prose">
-    <h1>Terms &amp; Conditions</h1>
-    <p class="updated">Last updated: <time datetime="2026-06-26">26 June 2026</time></p>
+<main id="main" class="legal">
+  <div class="container section-grid">
+    <nav class="legal-nav" aria-label="Legal">
+      <p class="section-label" style="margin-bottom:8px">Legal</p>
+          <a href="/privacy.html">Privacy Policy</a>
+          <a href="/terms.html" aria-current="page">Terms &amp; Conditions</a>
+    </nav>
+    <article class="prose">
+      <h1>Terms &amp; Conditions</h1>
+      <p class="updated">Last updated <time datetime="2026-06-26">26 June 2026</time></p>
 
-    <h2>1. Acceptance of terms</h2>
-    <p>By adding or using OLIT (“the Bot”) in your Discord server, you agree to these Terms and Conditions.</p>
+      <h2>1. Acceptance of terms</h2>
+      <p>By adding or using OLIT (“the Bot”) in your Discord server, you agree to these Terms and Conditions.</p>
 
-    <h2>2. Service description</h2>
-    <p>OLIT provides entertainment, trivia, games, moderation, and utility features inside Discord servers.</p>
+      <h2>2. Service description</h2>
+      <p>OLIT provides entertainment, trivia, games, moderation, and utility features inside Discord servers.</p>
 
-    <h2>3. User conduct</h2>
-    <p>You agree not to use the Bot to harass, abuse, or harm others, or to circumvent Discord's Terms of Service.</p>
+      <h2>3. User conduct</h2>
+      <p>You agree not to use the Bot to harass, abuse, or harm others, or to circumvent Discord's Terms of Service.</p>
 
-    <h2>4. Data</h2>
-    <p>The Bot stores minimal data necessary to function (guild IDs, user IDs, game scores). Data can be deleted upon request via our <a href="https://discord.gg/J8ByjCcm5U" target="_blank" rel="noopener">support server</a>. See the <a href="/privacy.html">Privacy Policy</a> for details.</p>
+      <h2>4. Data</h2>
+      <p>The Bot stores minimal data necessary to function (guild IDs, user IDs, game scores). Data can be deleted upon request via our <a href="https://discord.gg/J8ByjCcm5U" target="_blank" rel="noopener">support server</a>. See the <a href="/privacy.html">Privacy Policy</a> for details.</p>
 
-    <h2>5. Changes</h2>
-    <p>We reserve the right to modify these terms. Continued use constitutes acceptance of updated terms.</p>
+      <h2>5. Changes</h2>
+      <p>We reserve the right to modify these terms. Continued use constitutes acceptance of updated terms.</p>
 
-    <h2>6. Contact</h2>
-    <p>Questions? Join our <a href="https://discord.gg/J8ByjCcm5U" target="_blank" rel="noopener">support server</a>.</p>
-  </article>
+      <h2>6. Contact</h2>
+      <p>Questions? Join our <a href="https://discord.gg/J8ByjCcm5U" target="_blank" rel="noopener">support server</a>.</p>
+    </article>
+  </div>
 </main>
 
 <footer class="site-footer">
-  <div class="container site-footer__inner">
-    <p>© <span data-year>2026</span> OLIT Technologies</p>
-    <nav aria-label="Footer">
-      <a href="/">Home</a>
-      <a href="/terms.html">Terms</a>
-      <a href="/privacy.html">Privacy</a>
-      <a href="https://discord.gg/J8ByjCcm5U" target="_blank" rel="noopener">Support</a>
-    </nav>
+  <div class="container">
+    <div class="site-footer__grid">
+      <div class="site-footer__brand">
+        <a href="/" class="brand"><img src="/assets/img/logo.png" alt="" width="26" height="26">OLIT Technologies</a>
+        <p>Bots, developer tools and AI experiences by K Vinayak Kamath, Mangaluru.</p>
+      </div>
+      <nav aria-labelledby="f-products">
+        <h2 id="f-products">Products</h2>
+        <ul>
+          <li><a href="/bot/">OLIT Bot</a></li>
+          <li><a href="/bot/dashboard.html">Bot dashboard</a></li>
+          <li><a href="/projects/git-pilot/">GitPilot</a></li>
+          <li><a href="/projects/olit-ai/">OLIT AI</a></li>
+        </ul>
+      </nav>
+      <nav aria-labelledby="f-connect">
+        <h2 id="f-connect">Connect</h2>
+        <ul>
+          <li><a href="mailto:vinayakkamath2006@gmail.com">Email</a></li>
+          <li><a href="https://github.com/vinayakkam" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="https://www.linkedin.com/in/k-vinayakkamath-322a07218" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://discord.gg/J8ByjCcm5U" target="_blank" rel="noopener">Discord support</a></li>
+        </ul>
+      </nav>
+      <nav aria-labelledby="f-legal">
+        <h2 id="f-legal">Legal</h2>
+        <ul>
+          <li><a href="/privacy.html">Privacy</a></li>
+          <li><a href="/terms.html">Terms</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="site-footer__bottom">
+      <span>© <span data-year>2026</span> OLIT Technologies</span>
+      <span>Mangaluru, India</span>
+    </div>
   </div>
 </footer>
 
-<script>document.querySelectorAll('[data-year]').forEach(function (el) { el.textContent = new Date().getFullYear(); });</script>
+<script src="/assets/js/site.js"></script>
 </body>
 </html>

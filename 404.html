@@ -5,9 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Page not found — OLIT Technologies</title>
   <meta name="description" content="This page does not exist.">
-  <meta name="theme-color" content="#0b0b0f">
   <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#fafaf9" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0c0c0b" media="(prefers-color-scheme: dark)">
   <link rel="icon" type="image/png" href="/assets/img/logo.png">
+  <script>try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch(e){}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
   <link rel="stylesheet" href="/assets/css/site.css">
 </head>
 <body>
@@ -15,39 +20,72 @@
 
 <header class="site-header">
   <div class="site-header__inner">
-    <a href="/" class="brand"><img src="/assets/img/logo.png" alt="" width="30" height="30">OLIT Technologies</a>
-    <nav class="site-nav" aria-label="Main">
-      <a href="/#projects" class="nav-optional">Projects</a>
+    <a href="/" class="brand">K Vinayak Kamath</a>
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      <a href="/#work">Work</a>
       <a href="/bot/">OLIT Bot</a>
-      <a href="/projects/git-pilot/" class="nav-optional">GitPilot</a>
+      <a href="/projects/git-pilot/">GitPilot</a>
+      <a href="/#contact">Contact</a>
     </nav>
+    <div class="site-actions">
+      <button type="button" class="icon-btn" data-theme-toggle aria-label="Toggle dark mode"><svg class="icon theme-icon-dark" aria-hidden="true"><use href="/assets/img/icons.svg#moon"/></svg><svg class="icon theme-icon-light" aria-hidden="true"><use href="/assets/img/icons.svg#sun"/></svg></button>
+      <button type="button" class="icon-btn nav-toggle" aria-controls="site-nav" aria-expanded="false" aria-label="Open menu"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#menu"/></svg></button>
+    </div>
   </div>
 </header>
 
 <main id="main">
-  <section class="container text-center" style="padding:120px var(--gutter) 80px">
-    <p class="eyebrow">Error 404</p>
-    <h1 style="margin:20px 0 14px">Page not found</h1>
-    <p style="max-width:440px;margin:0 auto 32px">The page you were looking for doesn't exist or has moved.</p>
-    <div class="actions">
-      <a href="/" class="btn btn-primary">Go home</a>
-      <a href="/#projects" class="btn btn-secondary">View projects</a>
+  <section class="container" style="padding:120px var(--gutter) 120px">
+    <p class="section-label"><span>404</span>Not found</p>
+    <h1 style="margin:20px 0 16px">This page doesn't exist.</h1>
+    <p class="lead">It may have moved, or the link may be wrong.</p>
+    <div class="actions mt-lg">
+      <a href="/" class="btn btn-primary">Go home <svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#arrow-right"/></svg></a>
+      <a href="/#work" class="btn btn-secondary">See projects</a>
     </div>
   </section>
 </main>
 
 <footer class="site-footer">
-  <div class="container site-footer__inner">
-    <p>© <span data-year>2026</span> OLIT Technologies</p>
-    <nav aria-label="Footer">
-      <a href="/">Home</a>
-      <a href="/terms.html">Terms</a>
-      <a href="/privacy.html">Privacy</a>
-      <a href="https://discord.gg/J8ByjCcm5U" target="_blank" rel="noopener">Support</a>
-    </nav>
+  <div class="container">
+    <div class="site-footer__grid">
+      <div class="site-footer__brand">
+        <a href="/" class="brand"><img src="/assets/img/logo.png" alt="" width="26" height="26">OLIT Technologies</a>
+        <p>Bots, developer tools and AI experiences by K Vinayak Kamath, Mangaluru.</p>
+      </div>
+      <nav aria-labelledby="f-products">
+        <h2 id="f-products">Products</h2>
+        <ul>
+          <li><a href="/bot/">OLIT Bot</a></li>
+          <li><a href="/bot/dashboard.html">Bot dashboard</a></li>
+          <li><a href="/projects/git-pilot/">GitPilot</a></li>
+          <li><a href="/projects/olit-ai/">OLIT AI</a></li>
+        </ul>
+      </nav>
+      <nav aria-labelledby="f-connect">
+        <h2 id="f-connect">Connect</h2>
+        <ul>
+          <li><a href="mailto:vinayakkamath2006@gmail.com">Email</a></li>
+          <li><a href="https://github.com/vinayakkam" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="https://www.linkedin.com/in/k-vinayakkamath-322a07218" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://discord.gg/J8ByjCcm5U" target="_blank" rel="noopener">Discord support</a></li>
+        </ul>
+      </nav>
+      <nav aria-labelledby="f-legal">
+        <h2 id="f-legal">Legal</h2>
+        <ul>
+          <li><a href="/privacy.html">Privacy</a></li>
+          <li><a href="/terms.html">Terms</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="site-footer__bottom">
+      <span>© <span data-year>2026</span> OLIT Technologies</span>
+      <span>Mangaluru, India</span>
+    </div>
   </div>
 </footer>
 
-<script>document.querySelectorAll('[data-year]').forEach(function (el) { el.textContent = new Date().getFullYear(); });</script>
+<script src="/assets/js/site.js"></script>
 </body>
 </html>

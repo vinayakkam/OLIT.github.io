@@ -6,28 +6,34 @@
   <title>Dashboard — OLIT</title>
   <meta name="description" content="Manage the OLIT Discord bot in your servers.">
   <meta name="robots" content="noindex">
-  <meta name="theme-color" content="#0b0b0f">
+  <meta name="theme-color" content="#fafaf9" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0c0c0b" media="(prefers-color-scheme: dark)">
   <link rel="icon" type="image/png" href="/assets/img/logo.png">
+  <script>try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch(e){}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
   <link rel="stylesheet" href="/assets/css/site.css">
   <style>
     .page-header { padding: 40px 0 28px; }
-    .page-header h1 { font-size: 1.7rem; margin-bottom: 4px; }
+    .page-header h1 { font-size: 2rem; margin-bottom: 4px; }
 
     .servers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; margin-top: 20px; }
     .server-tile {
       display: flex; align-items: center; gap: 14px; padding: 18px 20px;
       background: var(--bg-1); border: 1px solid var(--border); border-radius: var(--radius-lg);
       color: inherit; text-decoration: none;
-      transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+      transition: border-color var(--transition), background var(--transition);
     }
-    .server-tile:hover { border-color: var(--accent-border); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .server-tile:hover { border-color: var(--border-strong); background: var(--bg-2); }
     .server-tile-info { flex: 1; min-width: 0; }
-    .server-tile-name { font-weight: 600; font-size: 0.92rem; }
+    .server-tile-name { font-weight: 500; font-size: 0.92rem; }
     .server-tile-meta { font-size: 0.75rem; color: var(--text-3); }
-    .server-tile-arrow { color: var(--text-3); font-size: 1.2rem; }
+    .server-tile-arrow { color: var(--text-3); }
 
-    .panel { max-width: 440px; margin: 64px auto; text-align: center; padding: 56px 36px; border-radius: var(--radius-xl); }
-    .panel-icon { font-size: 2.8rem; margin-bottom: 18px; }
+    .panel { max-width: 440px; margin: 80px auto; text-align: center; padding: 48px 36px; border-radius: var(--radius-xl); }
+    .panel-icon { margin: 0 auto 20px; width: 48px; height: 48px; }
+    .panel-icon svg { width: 22px; height: 22px; }
     .panel h2 { margin-bottom: 10px; }
     .panel p { margin-bottom: 28px; }
 
@@ -37,7 +43,7 @@
     .filter-bar input { max-width: 300px; }
 
     .global-stats { margin-top: 48px; }
-    .global-stats h2 { margin-bottom: 16px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-3); }
+    .global-stats h2 { margin-bottom: 16px; font: 500 0.75rem var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-3); }
   </style>
 </head>
 <body>
@@ -45,11 +51,18 @@
 
 <header class="site-header">
   <div class="site-header__inner">
-    <a href="/bot/" class="brand"><img src="/assets/img/logo.png" alt="" width="30" height="30">OLIT <small>Dashboard</small></a>
-    <nav class="site-nav" aria-label="Main">
-      <a href="/bot/" class="nav-optional">Bot home</a>
-      <div id="nav-user"></div>
+    <a href="/bot/" class="brand"><img src="/assets/img/logo.png" alt="" width="26" height="26">OLIT<small>Dashboard</small></a>
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      <a href="/#work">Work</a>
+      <a href="/bot/">OLIT Bot</a>
+      <a href="/projects/git-pilot/">GitPilot</a>
+      <a href="/#contact">Contact</a>
     </nav>
+    <div class="site-actions">
+      <div id="nav-user"></div>
+      <button type="button" class="icon-btn" data-theme-toggle aria-label="Toggle dark mode"><svg class="icon theme-icon-dark" aria-hidden="true"><use href="/assets/img/icons.svg#moon"/></svg><svg class="icon theme-icon-light" aria-hidden="true"><use href="/assets/img/icons.svg#sun"/></svg></button>
+      <button type="button" class="icon-btn nav-toggle" aria-controls="site-nav" aria-expanded="false" aria-label="Open menu"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#menu"/></svg></button>
+    </div>
   </div>
 </header>
 
@@ -57,7 +70,7 @@
 
   <!-- Not logged in -->
   <section id="login-prompt" class="card panel">
-    <div class="panel-icon" aria-hidden="true">🔐</div>
+    <span class="card-icon panel-icon"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#discord"/></svg></span>
     <h2>Connect your Discord</h2>
     <p>Log in with Discord to manage your servers with OLIT.</p>
     <button type="button" class="btn btn-discord btn-lg" id="login-btn">Log in with Discord</button>
@@ -97,7 +110,6 @@
     <div id="servers-grid" class="servers-grid"></div>
 
     <div id="no-servers" class="empty-state hidden">
-      <div class="empty-state-icon" aria-hidden="true">🛸</div>
       <p>No servers found where you have Manage Server permission.</p>
       <p class="text-xs mt-sm">Make sure OLIT is added to your server first.</p>
     </div>
@@ -115,17 +127,46 @@
 </main>
 
 <footer class="site-footer">
-  <div class="container site-footer__inner">
-    <p>© <span data-year>2026</span> OLIT Technologies</p>
-    <nav aria-label="Footer">
-      <a href="/">Home</a>
-      <a href="/terms.html">Terms</a>
-      <a href="/privacy.html">Privacy</a>
-      <a href="https://discord.gg/J8ByjCcm5U" target="_blank" rel="noopener">Support</a>
-    </nav>
+  <div class="container">
+    <div class="site-footer__grid">
+      <div class="site-footer__brand">
+        <a href="/" class="brand"><img src="/assets/img/logo.png" alt="" width="26" height="26">OLIT Technologies</a>
+        <p>Bots, developer tools and AI experiences by K Vinayak Kamath, Mangaluru.</p>
+      </div>
+      <nav aria-labelledby="f-products">
+        <h2 id="f-products">Products</h2>
+        <ul>
+          <li><a href="/bot/">OLIT Bot</a></li>
+          <li><a href="/bot/dashboard.html">Bot dashboard</a></li>
+          <li><a href="/projects/git-pilot/">GitPilot</a></li>
+          <li><a href="/projects/olit-ai/">OLIT AI</a></li>
+        </ul>
+      </nav>
+      <nav aria-labelledby="f-connect">
+        <h2 id="f-connect">Connect</h2>
+        <ul>
+          <li><a href="mailto:vinayakkamath2006@gmail.com">Email</a></li>
+          <li><a href="https://github.com/vinayakkam" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="https://www.linkedin.com/in/k-vinayakkamath-322a07218" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://discord.gg/J8ByjCcm5U" target="_blank" rel="noopener">Discord support</a></li>
+        </ul>
+      </nav>
+      <nav aria-labelledby="f-legal">
+        <h2 id="f-legal">Legal</h2>
+        <ul>
+          <li><a href="/privacy.html">Privacy</a></li>
+          <li><a href="/terms.html">Terms</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="site-footer__bottom">
+      <span>© <span data-year>2026</span> OLIT Technologies</span>
+      <span>Mangaluru, India</span>
+    </div>
   </div>
 </footer>
 
+<script src="/assets/js/site.js"></script>
 <script src="/assets/js/auth.js"></script>
 <script src="/assets/js/ui.js"></script>
 <script src="/assets/js/api.js"></script>
@@ -188,7 +229,7 @@
             <div class="server-tile-name truncate">${UI.escape(g.name)}</div>
             <div class="server-tile-meta">${g.owner ? 'Owner' : 'Admin'} · ${UI.escape(g.id)}</div>
           </div>
-          <span class="server-tile-arrow" aria-hidden="true">›</span>
+          <span class="server-tile-arrow"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#arrow-right"/></svg></span>
         </a>`;
     }).join('');
   }

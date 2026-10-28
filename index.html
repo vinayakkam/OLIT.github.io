@@ -2,306 +2,249 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>K Vinayak Kamath — AI Engineering Student &amp; Developer</title>
   <meta name="description" content="Portfolio of K Vinayak Kamath, an AI engineering student from Mangaluru building Discord bots, desktop tools and AI experiences under OLIT Technologies.">
-  <meta name="theme-color" content="#0b0b0f">
+  <meta name="theme-color" content="#fafaf9" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0c0c0b" media="(prefers-color-scheme: dark)">
   <link rel="canonical" href="https://olittechnologies.co.in/">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="K Vinayak Kamath — Portfolio">
-  <meta property="og:description" content="AI engineering student from Mangaluru, building smart bots, tools and interactive experiences.">
+  <meta property="og:title" content="K Vinayak Kamath — AI Engineering Student &amp; Developer">
+  <meta property="og:description" content="Portfolio of K Vinayak Kamath, an AI engineering student from Mangaluru building Discord bots, desktop tools and AI experiences under OLIT Technologies.">
   <meta property="og:url" content="https://olittechnologies.co.in/">
   <meta property="og:image" content="https://olittechnologies.co.in/assets/img/profile.jpg">
   <link rel="icon" type="image/png" href="/assets/img/logo.png">
+  <script>try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch(e){}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
   <link rel="stylesheet" href="/assets/css/site.css">
-  <script>document.documentElement.classList.add('js')</script>
   <style>
-    #scene { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
 
-    .avatar-btn {
-      padding: 0; border: 2px solid var(--accent); border-radius: 50%; background: none;
-      cursor: zoom-in; box-shadow: 0 0 22px var(--accent-glow);
-      transition: transform 0.3s, box-shadow 0.3s;
+    .hero { padding: 72px 0 0; }
+    .hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 64px; align-items: end; }
+    .hero h1 { margin: 22px 0 22px; max-width: 760px; }
+    .hero .actions { margin-top: 32px; }
+    .portrait { border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; background: var(--bg-1); }
+    .portrait img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+    .portrait figcaption { padding: 12px 14px; font-size: 0.86rem; border-top: 1px solid var(--border); }
+    .portrait figcaption span { display: block; font: 0.76rem var(--font-mono); color: var(--text-3); }
+
+    .facts { display: grid; grid-template-columns: repeat(4, 1fr); margin: 72px 0 0; border-top: 1px solid var(--border); }
+    .facts div { padding: 20px 20px 28px 0; }
+    .facts div + div { padding-left: 20px; border-left: 1px solid var(--border); }
+    .facts dt { font: 0.74rem var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-3); }
+    .facts dd { margin-top: 6px; font-size: 1rem; font-weight: 500; }
+    .hero + .section { margin-top: 0; }
+
+    .work-list { list-style: none; border-top: 1px solid var(--border); }
+    .work-item {
+      display: grid; grid-template-columns: 48px minmax(0, 1fr) auto 20px; gap: 20px; align-items: center;
+      padding: 24px 4px; border-bottom: 1px solid var(--border);
+      color: inherit; text-decoration: none; transition: background var(--transition);
     }
-    .avatar-btn:hover { transform: scale(1.06); box-shadow: 0 0 32px var(--accent-glow); }
-    .avatar-btn img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
-    .brand-name { letter-spacing: 0.04em; text-transform: uppercase; font-size: 0.92rem; }
-    @media (max-width: 420px) { .brand-name { font-size: 0.8rem; } }
+    .work-item:hover { background: var(--bg-2); }
+    .work-item .card-icon { width: 44px; height: 44px; }
+    .work-title { display: flex; align-items: center; gap: 10px; font-size: 1.2rem; font-weight: 500; letter-spacing: -0.02em; }
+    .work-desc { display: block; margin-top: 4px; color: var(--text-2); font-size: 0.95rem; }
+    .work-item > .icon { color: var(--text-3); transition: transform var(--transition), color var(--transition); }
+    .work-item:hover > .icon { color: var(--text-1); transform: translate(2px, -2px); }
+    .work-skeleton { height: 93px; border-bottom: 1px solid var(--border); border-radius: 0; }
 
-    .hero {
-      min-height: calc(100svh - var(--header-h));
-      display: flex; align-items: center; justify-content: center;
-      text-align: center; padding: 64px 0;
+    .edu-list { list-style: none; border-top: 1px solid var(--border); }
+    .edu-list li { display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: 20px; padding: 20px 4px; border-bottom: 1px solid var(--border); }
+    .edu-when { font: 0.82rem/1.9 var(--font-mono); color: var(--text-3); }
+    .edu-list strong { display: block; font-weight: 500; }
+    .edu-list span:not(.edu-when) { display: block; color: var(--text-2); font-size: 0.92rem; margin-top: 2px; }
+
+    .contact h2 { font-size: clamp(2rem, 4.6vw, 3.4rem); max-width: 720px; }
+    .contact .actions { margin-top: 32px; }
+
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+      .portrait { max-width: 320px; }
+      .facts { grid-template-columns: 1fr 1fr; }
+      .facts div:nth-child(3) { padding-left: 0; border-left: 0; }
+      .facts div:nth-child(n+3) { border-top: 1px solid var(--border); }
     }
-    .hero h1 { font-size: clamp(2.6rem, 8vw, 4.75rem); margin: 24px 0 18px; }
-    .hero .lead { max-width: 560px; margin: 0 auto 32px; font-size: 1.12rem; }
-    .scroll-hint { margin-top: 44px; font: 500 0.7rem var(--font-mono); letter-spacing: 0.14em; color: var(--text-3); }
-    .eyebrow .status-dot { width: 7px; height: 7px; }
-
-    .glass { background: color-mix(in srgb, var(--bg-1) 86%, transparent); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
-    .stat-strip > div { background: color-mix(in srgb, var(--bg-1) 86%, transparent); }
-
-    .project-card { min-height: 100%; }
-    .project-card .card-top { display: flex; align-items: center; justify-content: space-between; }
-    .project-card .arrow { color: var(--text-3); transition: transform var(--transition), color var(--transition); }
-    .project-card:hover .arrow { color: var(--accent-fg); transform: translate(2px, -2px); }
-
-    .timeline { max-width: 640px; margin: 0 auto; border-left: 2px solid var(--border); padding-left: 28px; }
-    .timeline li { list-style: none; position: relative; padding-bottom: 28px; }
-    .timeline li:last-child { padding-bottom: 0; }
-    .timeline li::before {
-      content: ''; position: absolute; left: -35px; top: 6px;
-      width: 12px; height: 12px; border-radius: 50%;
-      background: var(--accent); box-shadow: 0 0 14px var(--accent-glow);
+    @media (max-width: 560px) {
+      .hero { padding-top: 48px; }
+      .work-item { grid-template-columns: minmax(0, 1fr) 20px; }
+      .work-item .card-icon { display: none; }
+      .work-item .tags { grid-column: 1; }
+      .edu-list li { grid-template-columns: 1fr; gap: 4px; }
     }
-    .timeline strong { display: block; color: var(--text-1); }
-    .timeline span { color: var(--text-2); font-size: 0.88rem; }
-
-    .zoom-bg { position: fixed; inset: 0; z-index: 200; background: rgba(5, 5, 10, 0.72); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); opacity: 0; transition: opacity 0.4s; cursor: zoom-out; }
-    .zoom-img { position: fixed; z-index: 201; object-fit: cover; border: 3px solid var(--accent); border-radius: 50%; box-shadow: 0 0 70px var(--accent-glow); cursor: zoom-out; transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
   </style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
-<div class="bg-grid" aria-hidden="true"></div>
-<canvas id="scene" aria-hidden="true"></canvas>
 
 <header class="site-header">
   <div class="site-header__inner">
-    <div class="brand">
-      <button type="button" class="avatar-btn" id="pfp-btn" aria-label="Enlarge profile photo">
-        <img id="pfp" src="/assets/img/profile.jpg" alt="K Vinayak Kamath" width="40" height="40">
-      </button>
-      <a href="/" class="brand-name" style="color:inherit;text-decoration:none">K Vinayak Kamath</a>
-    </div>
-    <nav class="site-nav" aria-label="Main">
-      <a href="#about" class="nav-optional">About</a>
-      <a href="#projects" class="nav-optional">Projects</a>
-      <a href="#education" class="nav-optional">Education</a>
-      <a href="#contact" class="btn btn-primary btn-sm">Contact</a>
+    <a href="/" class="brand">K Vinayak Kamath</a>
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      <a href="/#work" aria-current="page">Work</a>
+      <a href="/bot/">OLIT Bot</a>
+      <a href="/projects/git-pilot/">GitPilot</a>
+      <a href="/#contact">Contact</a>
     </nav>
+    <div class="site-actions">
+      <button type="button" class="icon-btn" data-theme-toggle aria-label="Toggle dark mode"><svg class="icon theme-icon-dark" aria-hidden="true"><use href="/assets/img/icons.svg#moon"/></svg><svg class="icon theme-icon-light" aria-hidden="true"><use href="/assets/img/icons.svg#sun"/></svg></button>
+      <button type="button" class="icon-btn nav-toggle" aria-controls="site-nav" aria-expanded="false" aria-label="Open menu"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#menu"/></svg></button>
+    </div>
   </div>
 </header>
 
 <main id="main">
-  <div class="container">
-
-    <section class="hero">
-      <div>
-        <span class="eyebrow"><span class="status-dot online"></span>Open to opportunities</span>
-        <h1><span class="gradient-text">K Vinayak Kamath</span></h1>
-        <p class="lead">AI engineering student from Mangaluru, building smart bots, tools and interactive experiences.</p>
-        <div class="actions">
-          <a class="btn btn-primary btn-lg" href="#projects">View projects</a>
-          <a class="btn btn-secondary btn-lg" href="#contact">Get in touch</a>
+  <section class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow"><span class="status-dot online"></span>Open to opportunities</p>
+          <h1>Building bots, developer tools and AI&nbsp;experiences.</h1>
+          <p class="lead">I'm K Vinayak Kamath, an AI engineering student from Mangaluru. Under OLIT Technologies I build and ship a Discord bot, a desktop Git client and an AI console.</p>
+          <div class="actions">
+            <a class="btn btn-primary btn-lg" href="#work">See my work <svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#arrow-right"/></svg></a>
+            <a class="btn btn-secondary btn-lg" href="#contact">Get in touch</a>
+          </div>
         </div>
-        <p class="scroll-hint" aria-hidden="true">↕ MOVE YOUR MOUSE · DRAG · SCROLL</p>
+        <figure class="portrait">
+          <img src="/assets/img/profile.jpg" alt="Portrait of K Vinayak Kamath" width="420" height="420">
+          <figcaption>K Vinayak Kamath<span>Founder, OLIT Technologies</span></figcaption>
+        </figure>
       </div>
-    </section>
+      <dl class="facts">
+        <div><dt>Studying</dt><dd>BE, Artificial Intelligence</dd></div>
+        <div><dt>Based in</dt><dd>Mangaluru, India</dd></div>
+        <div><dt>Building</dt><dd>OLIT Technologies</dd></div>
+        <div><dt>Live</dt><dd>1 Discord bot</dd></div>
+      </dl>
+    </div>
+  </section>
 
-    <section id="about" class="reveal" style="padding-top:8px" aria-label="At a glance">
-      <div class="stat-strip glass">
-        <div><strong>BE</strong><span>Artificial Intelligence</span></div>
-        <div><strong>1</strong><span>Live Discord Bot</span></div>
-        <div><strong>∞</strong><span>Curiosity</span></div>
-      </div>
-    </section>
-
-    <section id="projects" class="section">
-      <div class="section-head reveal">
-        <h2>Projects</h2>
-        <p>What I'm building under OLIT Technologies.</p>
-      </div>
-      <div class="cards" id="projects-grid" aria-live="polite">
-        <div class="skeleton" style="height:180px"></div>
-        <div class="skeleton" style="height:180px"></div>
-        <div class="skeleton" style="height:180px"></div>
-      </div>
-      <noscript>
-        <ul class="text-center" style="list-style:none">
-          <li><a href="/bot/">OLIT — Discord bot</a></li>
-          <li><a href="/projects/git-pilot/">GitPilot — desktop Git client</a></li>
-          <li><a href="/projects/olit-ai/">OLIT AI</a></li>
+  <section id="work" class="section">
+    <div class="container section-grid">
+      <p class="section-label"><span>01</span>Selected work</p>
+      <div>
+        <div class="section-head">
+          <h2>Things I've built</h2>
+          <p>Products I design, build and maintain under OLIT Technologies.</p>
+        </div>
+        <ul class="work-list" id="projects-list" aria-live="polite">
+          <li class="skeleton work-skeleton"></li>
+          <li class="skeleton work-skeleton"></li>
+          <li class="skeleton work-skeleton"></li>
         </ul>
-      </noscript>
-    </section>
-
-    <section id="education" class="section">
-      <div class="section-head reveal">
-        <h2>Education</h2>
-        <p>The path so far.</p>
+        <noscript>
+          <ul class="work-list">
+            <li><a class="work-item" href="/bot/"><span></span><span class="work-title">OLIT — Discord bot</span></a></li>
+            <li><a class="work-item" href="/projects/git-pilot/"><span></span><span class="work-title">GitPilot — desktop Git client</span></a></li>
+            <li><a class="work-item" href="/projects/olit-ai/"><span></span><span class="work-title">OLIT AI</span></a></li>
+          </ul>
+        </noscript>
       </div>
-      <ol class="timeline reveal">
-        <li><strong>AJ Institute of Engineering and Technology</strong><span>Bachelor of Engineering, Artificial Intelligence · Mangaluru</span></li>
-        <li><strong>Canara PU College</strong><span>July 2022 – March 2024</span></li>
-        <li><strong>Sri Chaitanya College of Education</strong><span>June 2021 – May 2022</span></li>
-        <li><strong>Podar International School</strong><span>June 2015 – March 2021</span></li>
-      </ol>
-    </section>
+    </div>
+  </section>
 
-    <section id="contact" class="section text-center">
-      <div class="section-head reveal" style="margin-bottom:32px">
-        <h2>Let’s <span class="gradient-text">build</span> something</h2>
-        <p>Always happy to talk projects, ideas or opportunities.</p>
+  <section id="education" class="section">
+    <div class="container section-grid">
+      <p class="section-label"><span>02</span>Education</p>
+      <div>
+        <div class="section-head"><h2>The path so far</h2></div>
+        <ol class="edu-list">
+          <li><span class="edu-when">Current</span><div><strong>AJ Institute of Engineering and Technology</strong><span>Bachelor of Engineering, Artificial Intelligence · Mangaluru</span></div></li>
+          <li><span class="edu-when">2022 – 2024</span><div><strong>Canara PU College</strong><span>July 2022 – March 2024</span></div></li>
+          <li><span class="edu-when">2021 – 2022</span><div><strong>Sri Chaitanya College of Education</strong><span>June 2021 – May 2022</span></div></li>
+          <li><span class="edu-when">2015 – 2021</span><div><strong>Podar International School</strong><span>June 2015 – March 2021</span></div></li>
+        </ol>
       </div>
-      <div class="actions reveal">
-        <a class="btn btn-primary btn-lg" href="mailto:vinayakkamath2006@gmail.com">✉ vinayakkamath2006@gmail.com</a>
-        <a class="btn btn-secondary btn-lg" href="https://www.linkedin.com/in/k-vinayakkamath-322a07218" target="_blank" rel="noopener">LinkedIn</a>
-      </div>
-    </section>
+    </div>
+  </section>
 
-  </div>
+  <section id="contact" class="section contact">
+    <div class="container section-grid">
+      <p class="section-label"><span>03</span>Contact</p>
+      <div>
+        <h2>Let's build something together.</h2>
+        <p class="lead mt-md">Always happy to talk projects, ideas or opportunities.</p>
+        <div class="actions" id="contact-actions">
+          <a class="btn btn-primary btn-lg" href="mailto:vinayakkamath2006@gmail.com"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#mail"/></svg> vinayakkamath2006@gmail.com</a>
+          <a class="btn btn-secondary btn-lg" href="https://www.linkedin.com/in/k-vinayakkamath-322a07218" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#linkedin"/></svg> LinkedIn</a>
+          <a class="btn btn-secondary btn-lg" href="https://github.com/vinayakkam" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#github"/></svg> GitHub</a>
+        </div>
+      </div>
+    </div>
+  </section>
 </main>
 
 <footer class="site-footer">
-  <div class="container site-footer__inner">
-    <p>© <span data-year>2026</span> K Vinayak Kamath · Mangaluru, India</p>
-    <nav aria-label="Footer">
-      <a href="/bot/">OLIT Bot</a>
-      <a href="/projects/git-pilot/">GitPilot</a>
-      <a href="/privacy.html">Privacy</a>
-      <a href="/terms.html">Terms</a>
-    </nav>
+  <div class="container">
+    <div class="site-footer__grid">
+      <div class="site-footer__brand">
+        <a href="/" class="brand"><img src="/assets/img/logo.png" alt="" width="26" height="26">OLIT Technologies</a>
+        <p>Bots, developer tools and AI experiences by K Vinayak Kamath, Mangaluru.</p>
+      </div>
+      <nav aria-labelledby="f-products">
+        <h2 id="f-products">Products</h2>
+        <ul>
+          <li><a href="/bot/">OLIT Bot</a></li>
+          <li><a href="/bot/dashboard.html">Bot dashboard</a></li>
+          <li><a href="/projects/git-pilot/">GitPilot</a></li>
+          <li><a href="/projects/olit-ai/">OLIT AI</a></li>
+        </ul>
+      </nav>
+      <nav aria-labelledby="f-connect">
+        <h2 id="f-connect">Connect</h2>
+        <ul>
+          <li><a href="mailto:vinayakkamath2006@gmail.com">Email</a></li>
+          <li><a href="https://github.com/vinayakkam" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="https://www.linkedin.com/in/k-vinayakkamath-322a07218" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://discord.gg/J8ByjCcm5U" target="_blank" rel="noopener">Discord support</a></li>
+        </ul>
+      </nav>
+      <nav aria-labelledby="f-legal">
+        <h2 id="f-legal">Legal</h2>
+        <ul>
+          <li><a href="/privacy.html">Privacy</a></li>
+          <li><a href="/terms.html">Terms</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="site-footer__bottom">
+      <span>© <span data-year>2026</span> OLIT Technologies</span>
+      <span>Mangaluru, India</span>
+    </div>
   </div>
 </footer>
 
+<script src="/assets/js/site.js"></script>
 <script>
 (function () {
-  var y = document.querySelector('[data-year]');
-  if (y) y.textContent = new Date().getFullYear();
-
   function esc(v) {
     return String(v == null ? '' : v).replace(/[&<>"']/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
     });
   }
+  function svg(name, cls) { return '<svg class="' + (cls || 'icon') + '" aria-hidden="true"><use href="/assets/img/icons.svg#' + name + '"/></svg>'; }
 
-  // Scroll reveal
-  var io = 'IntersectionObserver' in window
-    ? new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-      }, { threshold: 0.12 })
-    : null;
-  function observe(el) { if (io) io.observe(el); else el.classList.add('in'); }
-  document.querySelectorAll('.reveal').forEach(observe);
-
-  // Projects
-  var grid = document.getElementById('projects-grid');
+  var list = document.getElementById('projects-list');
   fetch('/data/projects.json')
     .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
     .then(function (projects) {
-      if (!projects.length) {
-        grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><p>No projects yet — check back soon.</p></div>';
-        return;
-      }
-      grid.innerHTML = projects.map(function (p) {
+      list.innerHTML = projects.map(function (p, i) {
         var ext = p.external ? ' target="_blank" rel="noopener"' : '';
-        return '<a class="card card-link project-card reveal" href="' + esc(p.link) + '"' + ext + '>' +
-          '<div class="card-top"><div class="card-icon" aria-hidden="true">' + esc(p.icon || '📦') + '</div>' +
-          '<span class="arrow" aria-hidden="true">↗</span></div>' +
-          '<h3>' + esc(p.name) + '</h3>' +
-          '<p>' + esc(p.tagline) + '</p>' +
-          '<div class="tags">' + (p.tags || []).map(function (t) { return '<span class="badge badge-neutral">' + esc(t) + '</span>'; }).join('') + '</div>' +
-        '</a>';
+        return '<li><a class="work-item" href="' + esc(p.link) + '"' + ext + '>' +
+          '<span class="card-icon">' + svg(esc(p.icon || 'arrow-up-right')) + '</span>' +
+          '<span><span class="work-title">' + esc(p.name) + (p.status ? ' <span class="badge ' + (p.status === 'Live' ? 'badge-success' : 'badge-neutral') + '">' + esc(p.status) + '</span>' : '') + '</span>' +
+          '<span class="work-desc">' + esc(p.tagline) + '</span></span>' +
+          '<span class="tags">' + (p.tags || []).map(function (t) { return '<span class="badge">' + esc(t) + '</span>'; }).join('') + '</span>' +
+          svg('arrow-up-right') +
+        '</a></li>';
       }).join('');
-      grid.querySelectorAll('.reveal').forEach(observe);
     })
     .catch(function () {
-      grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><p>Could not load projects. <a href="/bot/">OLIT Bot</a> · <a href="/projects/git-pilot/">GitPilot</a> · <a href="/projects/olit-ai/">OLIT AI</a></p></div>';
+      list.innerHTML = '<li class="empty-state">Could not load projects. <a href="/bot/">OLIT Bot</a> · <a href="/projects/git-pilot/">GitPilot</a> · <a href="/projects/olit-ai/">OLIT AI</a></li>';
     });
-
-  // Profile photo zoom
-  var btn = document.getElementById('pfp-btn'), pfp = document.getElementById('pfp');
-  btn.addEventListener('click', function () {
-    var r = pfp.getBoundingClientRect(), bg = document.createElement('div'), z = document.createElement('img'), open = true;
-    bg.className = 'zoom-bg'; z.className = 'zoom-img'; z.src = pfp.src; z.alt = pfp.alt;
-    z.style.cssText += 'left:' + r.left + 'px;top:' + r.top + 'px;width:' + r.width + 'px;height:' + r.height + 'px';
-    document.body.appendChild(bg); document.body.appendChild(z); pfp.style.visibility = 'hidden';
-    var d = Math.min(Math.min(innerWidth, innerHeight) * 0.78, 520);
-    void z.offsetWidth;
-    bg.style.opacity = 1;
-    z.style.left = (innerWidth - d) / 2 + 'px'; z.style.top = (innerHeight - d) / 2 + 'px'; z.style.width = d + 'px'; z.style.height = d + 'px';
-    function close() {
-      if (!open) return; open = false;
-      var q = pfp.getBoundingClientRect();
-      bg.style.opacity = 0; z.style.left = q.left + 'px'; z.style.top = q.top + 'px'; z.style.width = q.width + 'px'; z.style.height = q.height + 'px';
-      setTimeout(function () { bg.remove(); z.remove(); pfp.style.visibility = 'visible'; btn.focus(); }, 500);
-      removeEventListener('keydown', key);
-    }
-    function key(e) { if (e.key === 'Escape') close(); }
-    bg.addEventListener('click', close); z.addEventListener('click', close); addEventListener('keydown', key);
-  });
-})();
-</script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>
-// Interactive wireframe background. Skipped entirely if three.js fails to load.
-(function () {
-  if (!window.THREE) return;
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var light = window.matchMedia('(prefers-color-scheme: light)').matches;
-  var canvas = document.getElementById('scene');
-  var renderer;
-  try { renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true }); }
-  catch (e) { return; } // no WebGL
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-  var scene = new THREE.Scene();
-  var cam = new THREE.PerspectiveCamera(50, 1, 0.1, 100); cam.position.z = 7;
-  var accent = light ? 0x4f46e5 : 0x6366f1, soft = light ? 0x6366f1 : 0xa5b4fc;
-
-  var group = new THREE.Group(); scene.add(group);
-  var knot = new THREE.Mesh(new THREE.TorusKnotGeometry(1.5, 0.42, 160, 24), new THREE.MeshBasicMaterial({ color: accent, wireframe: true, transparent: true, opacity: light ? 0.35 : 0.55 }));
-  var core = new THREE.Mesh(new THREE.IcosahedronGeometry(0.9, 1), new THREE.MeshBasicMaterial({ color: soft, wireframe: true, transparent: true, opacity: light ? 0.5 : 0.7 }));
-  group.add(knot, core);
-  var ring = new THREE.Mesh(new THREE.TorusGeometry(2.8, 0.01, 8, 120), new THREE.MeshBasicMaterial({ color: soft, transparent: true, opacity: 0.4 }));
-  ring.rotation.x = 1.2; group.add(ring);
-
-  var N = 700, pos = new Float32Array(N * 3);
-  for (var i = 0; i < N; i++) {
-    var r = 4 + Math.random() * 9, t = Math.random() * 6.283, p = Math.acos(2 * Math.random() - 1);
-    pos[i * 3] = r * Math.sin(p) * Math.cos(t); pos[i * 3 + 1] = r * Math.sin(p) * Math.sin(t); pos[i * 3 + 2] = r * Math.cos(p);
-  }
-  var g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-  var stars = new THREE.Points(g, new THREE.PointsMaterial({ color: soft, size: 0.04, transparent: true, opacity: 0.8 }));
-  scene.add(stars);
-
-  var mx = 0, my = 0, tx = 0, ty = 0, drag = false, lx = 0, spin = 0, sy = 0;
-  addEventListener('pointermove', function (e) {
-    tx = (e.clientX / innerWidth - 0.5) * 2; ty = (e.clientY / innerHeight - 0.5) * 2;
-    if (drag) { spin += (e.clientX - lx) * 0.01; lx = e.clientX; }
-  });
-  addEventListener('pointerdown', function (e) { drag = true; lx = e.clientX; });
-  addEventListener('pointerup', function () { drag = false; });
-  addEventListener('scroll', function () {
-    sy = window.scrollY / Math.max(1, innerHeight);
-    // Fade the scene past the hero so it doesn't compete with the text below.
-    canvas.style.opacity = Math.max(0.2, 1 - sy * 0.8);
-  }, { passive: true });
-
-  function size() {
-    var w = innerWidth, h = innerHeight;
-    renderer.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix();
-    group.position.x = w > 800 ? 2.4 : 0;
-  }
-  addEventListener('resize', size); size();
-
-  var clock = new THREE.Clock();
-  function tick() {
-    var t = clock.getElapsedTime(), k = reduce ? 0 : 1;
-    mx += (tx - mx) * 0.05; my += (ty - my) * 0.05;
-    group.rotation.y = t * 0.2 * k + mx * 0.8 + spin;
-    group.rotation.x = my * 0.5 + Math.sin(t * 0.4) * 0.1 * k;
-    core.rotation.y = -t * 0.5 * k; core.rotation.x = t * 0.3 * k;
-    core.scale.setScalar(1 + Math.sin(t * 1.2) * 0.04 * k);
-    stars.rotation.y = t * 0.02 * k + sy * 0.3;
-    group.position.y = sy * 1.5;
-    group.scale.setScalar(Math.max(0.4, 1 - sy * 0.25));
-    cam.position.x = mx * 0.4; cam.position.y = -my * 0.3; cam.lookAt(0, 0, 0);
-    renderer.render(scene, cam);
-    requestAnimationFrame(tick);
-  }
-  tick();
 })();
 </script>
 </body>
