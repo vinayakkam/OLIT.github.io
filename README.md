@@ -20,9 +20,9 @@ Open http://localhost:8000. Static HTML, CSS and JavaScript. No build step.
 ## Structure
 
 ```
-assets/css/site.css   shared design system
-assets/js/            Discord login, bot API client, UI helpers
-assets/img/           logo and profile photo
+assets/css/site.css   shared design system (light and dark themes)
+assets/js/            site chrome and command palette, Discord login, bot API client, UI helpers
+assets/img/           logo, profile photo and SVG icon sprite
 data/projects.json    project cards on the home page
 bot/                  bot landing page and dashboard
 projects/             GitPilot and OLIT AI
@@ -36,4 +36,4 @@ Push to `main`. GitHub Pages publishes the repo root.
 
 1. Create `projects/<slug>/index.html` using `/assets/css/site.css`.
 2. Add an entry to `data/projects.json`.
-3. Add the URL to `sitemap.xml`.
+3. Add the URL to `sitemap.xml` and a palette entry to `COMMANDS` in `assets/js/site.js`.

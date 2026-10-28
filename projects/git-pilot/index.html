@@ -110,6 +110,9 @@
     .note { margin: 0; color: var(--text-3); font-size: 0.82rem; }
     .note a:hover { text-decoration: underline; }
 
+    .dl-card.recommended { border-color: var(--text-1); }
+    .dl-top h3 .badge { margin-left: 8px; vertical-align: 2px; }
+
     /* Steps */
     .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; counter-reset: step; }
     .step { padding: 20px 0 0; border-top: 1px solid var(--text-1); }
@@ -481,6 +484,24 @@
           var pillLink = document.querySelector("[data-version-pill-link]");
           if (pillLink) pillLink.href = "#download";
         });
+    })();
+  </script>
+  <script>
+    // Highlight the download that matches the visitor's system.
+    (function () {
+      var ua = navigator.userAgent;
+      var platform = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || '';
+      var key = null;
+      if (/Android|CrOS/i.test(ua)) key = null;
+      else if (/Win/i.test(platform) || /Windows/i.test(ua)) key = 'x64-setup.exe';
+      else if (/Linux/i.test(platform) || /Linux/i.test(ua)) {
+        key = /Ubuntu|Debian/i.test(ua) ? '_amd64.deb' : /Arch|Manjaro|CachyOS/i.test(ua) ? 'x86_64.pkg.tar.zst' : '_amd64.AppImage';
+      }
+      var link = key && document.querySelector('[data-asset="' + key + '"]');
+      var card = link && link.closest('.dl-card');
+      if (!card) return;
+      card.classList.add('recommended');
+      card.querySelector('.dl-top h3').insertAdjacentHTML('beforeend', '<span class="badge badge-accent">For your system</span>');
     })();
   </script>
 </body>

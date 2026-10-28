@@ -57,6 +57,18 @@
     .edu-list strong { display: block; font-weight: 500; }
     .edu-list span:not(.edu-when) { display: block; color: var(--text-2); font-size: 0.92rem; margin-top: 2px; }
 
+    .repo-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .repo { min-height: 148px; }
+    .repo-name { display: flex; align-items: center; gap: 8px; font: 500 0.95rem var(--font-mono); }
+    .repo-name .icon { width: 16px; height: 16px; color: var(--text-3); }
+    .repo p { font-size: 0.92rem; flex: 1; }
+    .repo-meta { display: flex; gap: 16px; flex-wrap: wrap; font: 0.76rem var(--font-mono); color: var(--text-3); }
+    .repo-meta span { display: inline-flex; align-items: center; gap: 6px; }
+    .repo-meta .icon { width: 13px; height: 13px; }
+    .lang-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+    .repo-skeleton { height: 148px; }
+    .repo-grid + .arrow-link { margin-top: 24px; }
+
     .contact h2 { font-size: clamp(2rem, 4.6vw, 3.4rem); max-width: 720px; }
     .contact .actions { margin-top: 32px; }
 
@@ -73,6 +85,7 @@
       .work-item .card-icon { display: none; }
       .work-item .tags { grid-column: 1; }
       .edu-list li { grid-template-columns: 1fr; gap: 4px; }
+      .repo-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -146,9 +159,28 @@
     </div>
   </section>
 
+  <section id="open-source" class="section">
+    <div class="container section-grid">
+      <p class="section-label"><span>02</span>Open source</p>
+      <div>
+        <div class="section-head">
+          <h2>Recently on GitHub</h2>
+          <p>My most recently updated public repositories, loaded live from GitHub.</p>
+        </div>
+        <div class="repo-grid" id="repo-grid" aria-live="polite">
+          <div class="skeleton repo-skeleton"></div>
+          <div class="skeleton repo-skeleton"></div>
+          <div class="skeleton repo-skeleton"></div>
+          <div class="skeleton repo-skeleton"></div>
+        </div>
+        <a class="arrow-link" href="https://github.com/vinayakkam" target="_blank" rel="noopener">All repositories on GitHub <svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#arrow-right"/></svg></a>
+      </div>
+    </div>
+  </section>
+
   <section id="education" class="section">
     <div class="container section-grid">
-      <p class="section-label"><span>02</span>Education</p>
+      <p class="section-label"><span>03</span>Education</p>
       <div>
         <div class="section-head"><h2>The path so far</h2></div>
         <ol class="edu-list">
@@ -163,12 +195,13 @@
 
   <section id="contact" class="section contact">
     <div class="container section-grid">
-      <p class="section-label"><span>03</span>Contact</p>
+      <p class="section-label"><span>04</span>Contact</p>
       <div>
         <h2>Let's build something together.</h2>
         <p class="lead mt-md">Always happy to talk projects, ideas or opportunities.</p>
         <div class="actions" id="contact-actions">
           <a class="btn btn-primary btn-lg" href="mailto:vinayakkamath2006@gmail.com"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#mail"/></svg> vinayakkamath2006@gmail.com</a>
+          <button type="button" class="btn btn-secondary btn-lg" id="copy-email" data-email="vinayakkamath2006@gmail.com"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#copy"/></svg><span aria-live="polite">Copy email</span></button>
           <a class="btn btn-secondary btn-lg" href="https://www.linkedin.com/in/k-vinayakkamath-322a07218" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#linkedin"/></svg> LinkedIn</a>
           <a class="btn btn-secondary btn-lg" href="https://github.com/vinayakkam" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#github"/></svg> GitHub</a>
         </div>
@@ -245,6 +278,53 @@
     .catch(function () {
       list.innerHTML = '<li class="empty-state">Could not load projects. <a href="/bot/">OLIT Bot</a> · <a href="/projects/git-pilot/">GitPilot</a> · <a href="/projects/olit-ai/">OLIT AI</a></li>';
     });
+
+  // Open source: latest public repos, cached for an hour to stay under GitHub's unauthenticated rate limit.
+  var repoGrid = document.getElementById('repo-grid');
+  var CACHE_KEY = 'gh-repos-v1', HOUR = 3600000;
+  function getRepos() {
+    try {
+      var c = JSON.parse(sessionStorage.getItem(CACHE_KEY));
+      if (c && Date.now() - c.at < HOUR) return Promise.resolve(c.repos);
+    } catch (e) { /* no cache */ }
+    return fetch('https://api.github.com/users/vinayakkam/repos?sort=pushed&per_page=100', { headers: { Accept: 'application/vnd.github+json' } })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (all) {
+        var repos = all.filter(function (r) { return !r.fork && !r.archived && !r.private; })
+          .sort(function (a, b) { return new Date(b.pushed_at) - new Date(a.pushed_at); })
+          .slice(0, 6)
+          .map(function (r) { return { name: r.name, description: r.description, url: r.html_url, language: r.language, stars: r.stargazers_count, pushed: r.pushed_at }; });
+        try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ at: Date.now(), repos: repos })); } catch (e) { /* storage full or blocked */ }
+        return repos;
+      });
+  }
+  getRepos().then(function (repos) {
+    if (!repos.length) throw new Error('empty');
+    repoGrid.innerHTML = repos.map(function (r) {
+      var url = /^https:\/\/github\.com\//.test(r.url) ? r.url : 'https://github.com/vinayakkam';
+      var when = new Date(r.pushed).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+      return '<a class="card card-link repo" href="' + esc(url) + '" target="_blank" rel="noopener">' +
+        '<span class="repo-name">' + svg('git') + esc(r.name) + '</span>' +
+        '<p>' + esc(r.description || 'No description.') + '</p>' +
+        '<span class="repo-meta">' +
+          (r.language ? '<span><span class="lang-dot"></span>' + esc(r.language) + '</span>' : '') +
+          '<span>' + svg('star') + esc(r.stars) + '</span>' +
+          '<span>Updated ' + esc(when) + '</span>' +
+        '</span></a>';
+    }).join('');
+  }).catch(function () {
+    repoGrid.innerHTML = '<p class="empty-state" style="grid-column:1/-1">Repositories could not be loaded right now.</p>';
+  });
+
+  // Copy email
+  var copyBtn = document.getElementById('copy-email');
+  copyBtn.addEventListener('click', function () {
+    var label = copyBtn.querySelector('span');
+    var email = copyBtn.dataset.email;
+    var done = function (text) { label.textContent = text; setTimeout(function () { label.textContent = 'Copy email'; }, 1800); };
+    if (navigator.clipboard) navigator.clipboard.writeText(email).then(function () { done('Copied'); }, function () { done(email); });
+    else done(email);
+  });
 })();
 </script>
 </body>

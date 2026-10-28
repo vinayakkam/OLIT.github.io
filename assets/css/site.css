@@ -235,6 +235,30 @@ code, .mono { font-family: var(--font-mono); font-size: 0.875em; }
   :root:not([data-theme="light"]) .theme-icon-dark { display: none; }
 }
 
+/* ── Command palette (built by site.js) ─────────────────────────────────── */
+.cmdk { position: fixed; inset: 0; z-index: 1000; }
+.cmdk[hidden] { display: none; }
+.cmdk-backdrop { position: absolute; inset: 0; background: rgba(12, 12, 11, 0.45); }
+.cmdk-panel {
+  position: relative; width: min(560px, calc(100% - 32px)); margin: 12vh auto 0;
+  background: var(--bg-1); border: 1px solid var(--border-strong); border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg); overflow: hidden;
+}
+.cmdk-search { display: flex; align-items: center; gap: 10px; padding: 0 14px; border-bottom: 1px solid var(--border); color: var(--text-3); }
+.cmdk-search input, .cmdk-search input:focus { height: 52px; padding: 0; border: 0; box-shadow: none; background: transparent; font-size: 1rem; }
+kbd {
+  padding: 1px 6px; border: 1px solid var(--border-strong); border-radius: 4px;
+  font: 0.72rem var(--font-mono); color: var(--text-3); background: var(--bg-2);
+}
+.cmdk-list { list-style: none; max-height: min(360px, 55vh); overflow-y: auto; padding: 6px; }
+.cmdk-list li[role="option"] {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+  padding: 10px 12px; border-radius: var(--radius-md); cursor: pointer; font-size: 0.94rem;
+}
+.cmdk-list li[aria-selected="true"] { background: var(--bg-2); }
+.cmdk-list small { color: var(--text-3); font: 0.76rem var(--font-mono); text-align: right; }
+.cmdk-empty { padding: 20px 12px; color: var(--text-3); font-size: 0.9rem; text-align: center; }
+
 /* ── Footer ─────────────────────────────────────────────────────────────── */
 .site-footer { border-top: 1px solid var(--border); padding: 56px 0 40px; font-size: 0.9rem; }
 .site-footer__grid { display: grid; grid-template-columns: 1.6fr repeat(3, 1fr); gap: 32px; }
@@ -493,6 +517,9 @@ textarea { height: auto; min-height: 96px; padding: 10px 12px; resize: vertical;
   .rule-grid { grid-template-columns: 1fr; }
 
   .nav-toggle { display: inline-grid; }
+  .site-header__inner { gap: 12px; }
+  .site-actions { gap: 4px; }
+  .brand small { display: none; }
   .site-nav {
     display: none; position: absolute; top: var(--header-h); left: 0; right: 0;
     flex-direction: column; align-items: stretch; gap: 0; margin: 0;

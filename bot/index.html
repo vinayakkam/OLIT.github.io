@@ -49,6 +49,21 @@
     .team-list span { font-size: 0.86rem; color: var(--text-2); }
     .team-list .badge { margin-left: auto; }
 
+    .spec-foot { display: flex; align-items: flex-start; gap: 8px; }
+    .spec-foot .status-dot { margin-top: 5px; }
+
+    .faq { border-top: 1px solid var(--border); }
+    .faq details { border-bottom: 1px solid var(--border); }
+    .faq summary {
+      display: flex; justify-content: space-between; align-items: center; gap: 16px;
+      padding: 20px 0; cursor: pointer; list-style: none; font-size: 1.05rem; font-weight: 500;
+    }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary::after { content: "+"; font: 400 1.3rem var(--font-mono); color: var(--text-3); }
+    .faq details[open] summary::after { content: "−"; }
+    .faq details p { padding: 0 40px 22px 0; max-width: 680px; }
+    .faq a { text-decoration: underline; }
+
     .cta-band { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; padding: 32px; }
     .cta-band h2 { font-size: 1.6rem; }
     .cta-band p { margin-top: 6px; }
@@ -90,7 +105,7 @@
   <section class="hero">
     <div class="container hero-grid">
       <div>
-        <p class="eyebrow" id="bot-status"><span class="status-dot online"></span>Discord bot · OLIT Technologies</p>
+        <p class="eyebrow">Discord bot · OLIT Technologies</p>
         <h1>The Discord bot for space explorers.</h1>
         <p class="lead">Gaming, exploration, moderation and interactive entertainment — all in one bot, configured from a web dashboard.</p>
         <div class="actions">
@@ -109,7 +124,7 @@
           <div><dt>Trivia questions</dt><dd>60+</dd></div>
           <div><dt>Adventures</dt><dd>∞</dd></div>
         </dl>
-        <p class="spec-foot" id="bot-live-stats">Configure everything from the dashboard.</p>
+        <p class="spec-foot" id="bot-live" aria-live="polite"><span class="status-dot connecting"></span>Checking API status…</p>
       </aside>
     </div>
   </section>
@@ -184,6 +199,22 @@
     </div>
   </section>
 
+  <section id="faq" class="section">
+    <div class="container section-grid">
+      <p class="section-label"><span>04</span>FAQ</p>
+      <div>
+        <div class="section-head"><h2>Questions, answered</h2></div>
+        <div class="faq">
+          <details><summary>How do I add OLIT to my server?</summary><p>Click <a href="https://discord.com/oauth2/authorize?client_id=1414168461172539454&amp;permissions=8&amp;integration_type=0&amp;scope=applications.commands+bot" target="_blank" rel="noopener">Add to Discord</a> and choose a server. You need the Manage Server permission on that server.</p></details>
+          <details><summary>How do I configure the bot?</summary><p>Open the <a href="/bot/dashboard.html">dashboard</a>, log in with Discord and pick a server you manage. You can set custom commands, automod words, exempt users and a welcome channel. Changes apply without restarting the bot.</p></details>
+          <details><summary>What data does OLIT store?</summary><p>Discord user and server IDs, game statistics and leaderboard scores, your server configuration, and message content only while a command is in use. See the <a href="/privacy.html">Privacy Policy</a>.</p></details>
+          <details><summary>Can I have my data deleted?</summary><p>Yes. Ask in the <a href="https://discord.gg/J8ByjCcm5U" target="_blank" rel="noopener">support server</a> and your data will be removed.</p></details>
+          <details><summary>What does logging in to the dashboard give access to?</summary><p>The dashboard asks Discord for read-only access to your profile and server list. The token stays in your browser's session storage and is never sent to OLIT's servers.</p></details>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="section">
     <div class="container">
       <div class="card cta-band">
@@ -243,6 +274,26 @@
 <script src="/assets/js/site.js"></script>
 <script src="/assets/js/auth.js"></script>
 <script src="/assets/js/ui.js"></script>
-<script>UI.renderNav();</script>
+<script src="/assets/js/api.js"></script>
+<script>
+  UI.renderNav();
+
+  // Live API status and usage numbers in the spec panel.
+  (async () => {
+    const el = document.getElementById('bot-live');
+    try {
+      await API.health();
+    } catch {
+      el.innerHTML = '<span class="status-dot offline"></span>Dashboard API unreachable';
+      return;
+    }
+    let text = 'Dashboard API online';
+    try {
+      const { stats } = await API.stats();
+      text += ` · ${Number(stats.total_guilds_configured) || 0} servers configured · ${Number(stats.total_custom_commands) || 0} custom commands`;
+    } catch { /* stats are optional */ }
+    el.innerHTML = '<span class="status-dot online"></span>' + UI.escape(text);
+  })();
+</script>
 </body>
 </html>

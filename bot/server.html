@@ -150,6 +150,7 @@
               <button type="button" class="btn btn-secondary btn-sm" data-goto="commands">Manage Commands</button>
               <button type="button" class="btn btn-secondary btn-sm" data-goto="automod">Configure Automod</button>
               <button type="button" class="btn btn-secondary btn-sm" data-goto="welcome">Set Welcome Channel</button>
+              <button type="button" class="btn btn-secondary btn-sm" id="export-config">Export config (JSON)</button>
               <a href="https://discord.com/oauth2/authorize?client_id=1414168461172539454&amp;permissions=8&amp;integration_type=0&amp;scope=applications.commands+bot"
                  target="_blank" rel="noopener" class="btn btn-primary btn-sm">Add Bot to Server</a>
             </div>
@@ -185,6 +186,8 @@
             </div>
           </form>
 
+          <label for="command-search" class="sr-only">Search commands</label>
+          <input type="search" id="command-search" class="mb-md hidden" placeholder="Search commands…">
           <div id="commands-list"></div>
         </section>
 
@@ -305,9 +308,16 @@
       else btn.removeAttribute('aria-current');
     });
     document.querySelectorAll('.content-panel').forEach(p => { p.hidden = p.id !== `panel-${name}`; });
+    // Keep the open panel in the URL so reloads and shared links land on it.
+    history.replaceState(null, '', name === 'overview' ? location.pathname + location.search : `#${name}`);
     if (name === 'logs') loadLogs();
     if (name === 'welcome') loadChannels();
   }
+  function openPanelFromHash() {
+    const panel = location.hash.slice(1);
+    if (panel && document.getElementById(`panel-${panel}`)) switchPanel(panel);
+  }
+  window.addEventListener('hashchange', () => { if (config) openPanelFromHash(); });
   document.querySelectorAll('[data-panel]').forEach(btn => btn.addEventListener('click', () => switchPanel(btn.dataset.panel)));
   document.querySelectorAll('[data-goto]').forEach(btn => btn.addEventListener('click', () => switchPanel(btn.dataset.goto)));
 
@@ -360,6 +370,8 @@
       renderUsers();
       renderWelcome();
       updateApiDot(true);
+
+      openPanelFromHash();
     } catch (e) {
       loading.innerHTML = `
         <div class="empty-state">
@@ -393,11 +405,19 @@
   function renderCommands() {
     const el   = $('commands-list');
     const cmds = config?.commands || {};
-    if (!Object.keys(cmds).length) {
+    const all  = Object.entries(cmds);
+    $('command-search').classList.toggle('hidden', all.length < 2);
+    if (!all.length) {
       el.innerHTML = emptyState('No custom commands yet.');
       return;
     }
-    el.innerHTML = Object.entries(cmds).map(([name, data]) => `
+    const q = $('command-search').value.trim().toLowerCase();
+    const shown = q ? all.filter(([name, data]) => `${name} ${data.response} ${data.description || ''}`.toLowerCase().includes(q)) : all;
+    if (!shown.length) {
+      el.innerHTML = emptyState('No commands match your search.');
+      return;
+    }
+    el.innerHTML = shown.map(([name, data]) => `
       <div class="list-item">
         <div class="list-item-info">
           <div class="flex items-center gap-sm flex-wrap">
@@ -409,6 +429,8 @@
         <button type="button" class="btn btn-danger btn-sm" data-remove-command="${esc(name)}">Remove</button>
       </div>`).join('');
   }
+
+  $('command-search').addEventListener('input', renderCommands);
 
   $('add-command-form').addEventListener('submit', async e => {
     e.preventDefault();
@@ -674,6 +696,19 @@
       if (channelsFetched) renderChannelList(filteredChannels());
       UI.toast('Welcome channel removed');
     } catch (e) { UI.toast(e.message, 'error'); }
+  });
+
+  // ── Export ───────────────────────────────────────────────────────────────
+  $('export-config').addEventListener('click', () => {
+    const blob = new Blob([JSON.stringify({ guild_id: guildId, exported_at: new Date().toISOString(), config }, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `olit-config-${guildId}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    UI.toast('Config exported');
   });
 
   // ── Logs ─────────────────────────────────────────────────────────────────
