@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
-  <link rel="stylesheet" href="/assets/css/site.css?v=467bde297d">
+  <link rel="stylesheet" href="/assets/css/site.css?v=7cfc374906">
   <style>
     .page-header { padding: 32px 0 24px; border-bottom: 1px solid var(--border); margin-bottom: 28px; }
     .server-header { display: flex; align-items: center; gap: 16px; min-width: 0; }
@@ -95,8 +95,8 @@
     </nav>
     <div class="site-actions">
       <div id="nav-user"></div>
-      <button type="button" class="icon-btn" data-theme-toggle aria-label="Toggle dark mode"><svg class="icon theme-icon-dark" aria-hidden="true"><use href="/assets/img/icons.svg?v=ac69379e93#moon"/></svg><svg class="icon theme-icon-light" aria-hidden="true"><use href="/assets/img/icons.svg?v=ac69379e93#sun"/></svg></button>
-      <button type="button" class="icon-btn nav-toggle" aria-controls="site-nav" aria-expanded="false" aria-label="Open menu"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=ac69379e93#menu"/></svg></button>
+      <button type="button" class="icon-btn" data-theme-toggle aria-label="Toggle dark mode"><svg class="icon theme-icon-dark" aria-hidden="true"><use href="/assets/img/icons.svg?v=5e217053d9#moon"/></svg><svg class="icon theme-icon-light" aria-hidden="true"><use href="/assets/img/icons.svg?v=5e217053d9#sun"/></svg></button>
+      <button type="button" class="icon-btn nav-toggle" aria-controls="site-nav" aria-expanded="false" aria-label="Open menu"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=5e217053d9#menu"/></svg></button>
     </div>
   </div>
 </header>
@@ -107,7 +107,7 @@
 
   <div id="main-layout" class="hidden">
     <div class="page-header">
-      <a href="/bot/dashboard.html" class="back-link"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=ac69379e93#arrow-right"/></svg>All servers</a>
+      <a href="/bot/dashboard.html" class="back-link"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=5e217053d9#arrow-right"/></svg>All servers</a>
       <div class="server-header">
         <div class="server-icon lg" id="server-icon-el"></div>
         <div style="min-width:0">
@@ -124,15 +124,15 @@
       <nav class="card sidebar" aria-label="Server settings">
         <div class="sidebar-group">
           <div class="sidebar-label">Manage</div>
-          <button type="button" class="sidebar-item" data-panel="overview" aria-current="true"><span class="sidebar-icon"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=ac69379e93#planet"/></svg></span>Overview</button>
-          <button type="button" class="sidebar-item" data-panel="commands"><span class="sidebar-icon"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=ac69379e93#message"/></svg></span>Commands</button>
-          <button type="button" class="sidebar-item" data-panel="automod"><span class="sidebar-icon"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=ac69379e93#shield"/></svg></span>Automod</button>
-          <button type="button" class="sidebar-item" data-panel="users"><span class="sidebar-icon"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=ac69379e93#check"/></svg></span>Exempt Users</button>
-          <button type="button" class="sidebar-item" data-panel="welcome"><span class="sidebar-icon"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=ac69379e93#door"/></svg></span>Welcome</button>
+          <button type="button" class="sidebar-item" data-panel="overview" aria-current="true"><span class="sidebar-icon"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=5e217053d9#planet"/></svg></span>Overview</button>
+          <button type="button" class="sidebar-item" data-panel="commands"><span class="sidebar-icon"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=5e217053d9#message"/></svg></span>Commands</button>
+          <button type="button" class="sidebar-item" data-panel="automod"><span class="sidebar-icon"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=5e217053d9#shield"/></svg></span>Automod</button>
+          <button type="button" class="sidebar-item" data-panel="users"><span class="sidebar-icon"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=5e217053d9#check"/></svg></span>Exempt Users</button>
+          <button type="button" class="sidebar-item" data-panel="welcome"><span class="sidebar-icon"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=5e217053d9#door"/></svg></span>Welcome</button>
         </div>
         <div class="sidebar-group">
           <div class="sidebar-label">System</div>
-          <button type="button" class="sidebar-item" data-panel="logs"><span class="sidebar-icon"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=ac69379e93#terminal"/></svg></span>Logs</button>
+          <button type="button" class="sidebar-item" data-panel="logs"><span class="sidebar-icon"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=5e217053d9#terminal"/></svg></span>Logs</button>
         </div>
       </nav>
 
@@ -151,6 +151,8 @@
               <button type="button" class="btn btn-secondary btn-sm" data-goto="automod">Configure Automod</button>
               <button type="button" class="btn btn-secondary btn-sm" data-goto="welcome">Set Welcome Channel</button>
               <button type="button" class="btn btn-secondary btn-sm" id="export-config">Export config (JSON)</button>
+              <button type="button" class="btn btn-secondary btn-sm" id="import-config">Import config (JSON)</button>
+              <input type="file" id="import-file" accept="application/json,.json" class="sr-only" tabindex="-1" aria-hidden="true">
               <a href="https://discord.com/oauth2/authorize?client_id=1414168461172539454&amp;permissions=8&amp;integration_type=0&amp;scope=applications.commands+bot"
                  target="_blank" rel="noopener" class="btn btn-primary btn-sm">Add Bot to Server</a>
             </div>
@@ -165,11 +167,12 @@
           </div>
 
           <form id="add-command-form" class="card hidden mb-lg" novalidate>
-            <h3>New Command</h3>
+            <h3 id="command-form-title">New Command</h3>
             <div class="grid-2">
               <div class="form-group">
                 <label for="cmd-name">Command name</label>
                 <input type="text" id="cmd-name" autocomplete="off" placeholder="e.g. rules">
+                <p class="hint hidden" id="cmd-name-locked">Editing an existing command &mdash; the name stays the same.</p>
               </div>
               <div class="form-group">
                 <label for="cmd-desc">Description (optional)</label>
@@ -181,7 +184,7 @@
               <textarea id="cmd-response" placeholder="What the bot says when this command is used…"></textarea>
             </div>
             <div class="flex gap-sm">
-              <button type="submit" class="btn btn-primary btn-sm">Add Command</button>
+              <button type="submit" class="btn btn-primary btn-sm" id="cmd-submit">Add Command</button>
               <button type="button" class="btn btn-ghost btn-sm" data-close="add-command-form">Cancel</button>
             </div>
           </form>
@@ -206,11 +209,12 @@
           </div>
 
           <form class="card mb-lg" id="automod-form" novalidate>
-            <h3 id="automod-word-title">Add banned word</h3>
+            <h3 id="automod-word-title">Add banned words</h3>
             <div class="input-row">
-              <input type="text" id="automod-word" aria-labelledby="automod-word-title" autocomplete="off" placeholder="Enter word or phrase…">
+              <input type="text" id="automod-word" aria-labelledby="automod-word-title" autocomplete="off" placeholder="word, phrase, another…">
               <button type="submit" class="btn btn-primary btn-sm">Add</button>
             </div>
+            <p class="hint">Separate several entries with commas to add them in one go.</p>
           </form>
 
           <div id="automod-list"></div>
@@ -278,10 +282,10 @@
   </div>
 </main>
 
-<script src="/assets/js/site.js?v=6ea44126db"></script>
-<script src="/assets/js/auth.js?v=ad46d5326e"></script>
-<script src="/assets/js/ui.js?v=5344bcb575"></script>
-<script src="/assets/js/api.js?v=2906f34960"></script>
+<script src="/assets/js/site.js?v=79ade63dfe"></script>
+<script src="/assets/js/auth.js?v=4fddcfdf9e"></script>
+<script src="/assets/js/ui.js?v=1304c698e0"></script>
+<script src="/assets/js/api.js?v=e505ab933f"></script>
 <script>
   UI.renderNav();
 
@@ -291,6 +295,7 @@
   // ── State ───────────────────────────────────────────────────────────────
   const guildId = new URLSearchParams(window.location.search).get('id');
   let config    = null;
+  let editingCommand = null;   // command name being edited, or null when adding
   let automodOn = false;
   let allChannels = [];   // [{id, name, type, parent_name, position}]
   let channelsFetched = false;
@@ -327,8 +332,16 @@
     f.classList.toggle('hidden');
     if (!f.classList.contains('hidden')) $(focusId).focus();
   }
-  $('toggle-command-form').addEventListener('click', () => toggleForm('add-command-form', 'cmd-name'));
+  $('toggle-command-form').addEventListener('click', () => {
+    const form = $('add-command-form');
+    if (form.classList.contains('hidden')) { form.reset(); setCommandFormMode(null); }
+    toggleForm('add-command-form', 'cmd-name');
+  });
   $('toggle-user-form').addEventListener('click', () => toggleForm('add-user-form', 'user-id-input'));
+  // Cancelling the command form also drops edit mode.
+  document.querySelectorAll('[data-close="add-command-form"]').forEach(btn =>
+    btn.addEventListener('click', () => setCommandFormMode(null)));
+
   document.querySelectorAll('[data-close]').forEach(btn => btn.addEventListener('click', () => $(btn.dataset.close).classList.add('hidden')));
 
   // ── Server header ────────────────────────────────────────────────────────
@@ -373,12 +386,15 @@
 
       openPanelFromHash();
     } catch (e) {
+      const expired = e instanceof AuthError;
       loading.innerHTML = `
         <div class="empty-state">
-          <p>Could not load config: ${esc(e.message)}</p>
-          <button type="button" class="btn btn-secondary btn-sm mt-md" id="retry-config">Retry</button>
+          <p>${expired ? esc(e.message) : `Could not load config: ${esc(e.message)}`}</p>
+          <button type="button" class="btn ${expired ? 'btn-discord' : 'btn-secondary'} btn-sm mt-md" id="retry-config">
+            ${expired ? 'Log in with Discord' : 'Retry'}
+          </button>
         </div>`;
-      $('retry-config').addEventListener('click', loadConfig);
+      $('retry-config').addEventListener('click', expired ? () => Auth.login() : loadConfig);
       updateApiDot(false);
     }
   }
@@ -426,11 +442,37 @@
           </div>
           <div class="list-item-meta">${esc(data.response)}</div>
         </div>
-        <button type="button" class="btn btn-danger btn-sm" data-remove-command="${esc(name)}">Remove</button>
+        <div class="flex gap-sm">
+          <button type="button" class="btn btn-secondary btn-sm" data-edit-command="${esc(name)}">Edit</button>
+          <button type="button" class="btn btn-danger btn-sm" data-remove-command="${esc(name)}">Remove</button>
+        </div>
       </div>`).join('');
   }
 
   $('command-search').addEventListener('input', renderCommands);
+
+  // Switch the one command form between "add" and "edit" modes.
+  function setCommandFormMode(name) {
+    editingCommand = name;
+    const editing = name !== null;
+    $('command-form-title').textContent = editing ? `Edit !${name}` : 'New Command';
+    $('cmd-submit').textContent = editing ? 'Save Changes' : 'Add Command';
+    $('cmd-name').readOnly = editing;
+    $('cmd-name-locked').classList.toggle('hidden', !editing);
+  }
+
+  function startEditCommand(name) {
+    const data = (config?.commands || {})[name];
+    if (!data) return;
+    const form = $('add-command-form');
+    form.classList.remove('hidden');
+    setCommandFormMode(name);
+    $('cmd-name').value = name;
+    $('cmd-response').value = data.response || '';
+    $('cmd-desc').value = data.description || '';
+    $('cmd-response').focus();
+    form.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
 
   $('add-command-form').addEventListener('submit', async e => {
     e.preventDefault();
@@ -438,18 +480,24 @@
     const resp = $('cmd-response').value.trim();
     const desc = $('cmd-desc').value.trim();
     if (!name || !resp) { UI.toast('Command name and response are required', 'error'); return; }
+    const wasEditing = editingCommand;
     try {
+      // add_command overwrites an existing name, so the same call saves an edit.
       await API.addCommand(guildId, name, resp, desc);
       if (!config.commands) config.commands = {};
       config.commands[name] = { response: resp, description: desc };
       renderCommands(); renderOverview();
       e.target.reset();
       e.target.classList.add('hidden');
-      UI.toast(`Command !${name} added`);
+      setCommandFormMode(null);
+      UI.toast(`Command !${name} ${wasEditing ? 'updated' : 'added'}`);
     } catch (err) { UI.toast(err.message, 'error'); }
   });
 
   $('commands-list').addEventListener('click', async e => {
+    const edit = e.target.closest('[data-edit-command]');
+    if (edit) { startEditCommand(edit.dataset.editCommand); return; }
+
     const btn = e.target.closest('[data-remove-command]');
     if (!btn) return;
     const name = btn.dataset.removeCommand;
@@ -495,18 +543,39 @@
 
   $('automod-form').addEventListener('submit', async e => {
     e.preventDefault();
-    const word = $('automod-word').value.trim();
-    if (!word) { UI.toast('Enter a word', 'error'); return; }
-    try {
-      await API.addAutomodWord(guildId, word);
-      config.automod_words = config.automod_words || [];
-      if (!config.automod_words.includes(word)) config.automod_words.push(word);
-      // API auto-enables automod on first word add
+    // One word or a comma-separated list; each is a separate API call because
+    // the endpoint takes a single word.
+    const words = [...new Set(
+      $('automod-word').value.split(',').map(w => w.trim()).filter(Boolean)
+    )];
+    if (!words.length) { UI.toast('Enter a word', 'error'); return; }
+
+    const existing = config.automod_words || [];
+    const added = [];
+    const failed = [];
+    for (const word of words) {
+      if (existing.includes(word)) continue;
+      try {
+        await API.addAutomodWord(guildId, word);
+        added.push(word);
+      } catch (err) {
+        failed.push(word);
+        if (err instanceof AuthError) break;
+      }
+    }
+
+    config.automod_words = existing.concat(added);
+    if (added.length) {
+      // The API auto-enables automod on the first word added.
       automodOn = true; config.automod_enabled = true;
       $('automod-word').value = '';
-      renderAutomod(); renderOverview();
-      UI.toast(`"${word}" added to automod`);
-    } catch (err) { UI.toast(err.message, 'error'); }
+    }
+    renderAutomod(); renderOverview();
+
+    if (added.length === 1 && !failed.length) UI.toast(`"${added[0]}" added to automod`);
+    else if (added.length) UI.toast(`${added.length} words added to automod`);
+    if (failed.length) UI.toast(`Could not add: ${failed.join(', ')}`, 'error');
+    if (!added.length && !failed.length) UI.toast('Those words are already filtered', 'info');
   });
 
   $('automod-list').addEventListener('click', async e => {
@@ -699,6 +768,104 @@
   });
 
   // ── Export ───────────────────────────────────────────────────────────────
+  // ── Import config ────────────────────────────────────────────────────────
+  // Merges a previously exported file into this server: it adds and overwrites,
+  // and never deletes anything the file happens to omit. Each setting is its
+  // own API call, so a partial failure still reports what did apply.
+  $('import-config').addEventListener('click', () => $('import-file').click());
+
+  $('import-file').addEventListener('change', async e => {
+    const file = e.target.files?.[0];
+    e.target.value = '';           // let the same file be picked again
+    if (!file) return;
+
+    let incoming;
+    try {
+      const parsed = JSON.parse(await file.text());
+      // Accept a whole export ({guild_id, config}) or a bare config object.
+      incoming = parsed.config || parsed;
+      if (!incoming || typeof incoming !== 'object') throw new Error('not an object');
+    } catch {
+      UI.toast('That file is not valid OLIT config JSON', 'error');
+      return;
+    }
+
+    const commands = incoming.commands && typeof incoming.commands === 'object' ? incoming.commands : {};
+    const words = Array.isArray(incoming.automod_words) ? incoming.automod_words : [];
+    const users = Array.isArray(incoming.allowed_users) ? incoming.allowed_users : [];
+    const planned =
+      Object.keys(commands).length + words.length + users.length +
+      (incoming.welcome_channel ? 1 : 0);
+
+    if (!planned) { UI.toast('Nothing to import from that file', 'info'); return; }
+    if (!await UI.confirm(
+      `Import ${planned} setting${planned === 1 ? '' : 's'} into this server?
+
+` +
+      `${Object.keys(commands).length} commands, ${words.length} filtered words, ` +
+      `${users.length} exempt users.
+
+Existing entries with the same name are overwritten. ` +
+      `Nothing is deleted.`)) return;
+
+    let applied = 0;
+    const errors = [];
+    const step = async (label, fn) => {
+      try { await fn(); applied++; }
+      catch (err) {
+        errors.push(`${label}: ${err.message}`);
+        if (err instanceof AuthError) throw err;   // stop early, token is gone
+      }
+    };
+
+    UI.toast('Importing…', 'info');
+    try {
+      for (const [name, data] of Object.entries(commands)) {
+        const response = typeof data === 'string' ? data : data?.response;
+        if (!response) { errors.push(`!${name}: no response`); continue; }
+        await step(`!${name}`, async () => {
+          await API.addCommand(guildId, name, response, (data && data.description) || '');
+          if (!config.commands) config.commands = {};
+          config.commands[name] = { response, description: (data && data.description) || '' };
+        });
+      }
+
+      for (const word of words) {
+        const w = String(word).trim();
+        if (!w || (config.automod_words || []).includes(w)) continue;
+        await step(`"${w}"`, async () => {
+          await API.addAutomodWord(guildId, w);
+          config.automod_words = (config.automod_words || []).concat(w);
+          automodOn = true; config.automod_enabled = true;
+        });
+      }
+
+      for (const user of users) {
+        const uid = String(user).trim();
+        if (!/^\d+$/.test(uid) || (config.allowed_users || []).includes(uid)) continue;
+        await step(`user ${uid}`, async () => {
+          await API.addAllowedUser(guildId, uid);
+          config.allowed_users = (config.allowed_users || []).concat(uid);
+        });
+      }
+
+      if (incoming.welcome_channel) {
+        const channelId = String(incoming.welcome_channel);
+        await step('welcome channel', async () => {
+          await API.setWelcomeChannel(guildId, channelId);
+          config.welcome_channel = channelId;
+        });
+      }
+    } catch (err) {
+      UI.toast(err.message, 'error');
+    }
+
+    renderCommands(); renderAutomod(); renderUsers(); renderWelcome(); renderOverview();
+
+    if (applied) UI.toast(`Imported ${applied} of ${planned} settings`);
+    if (errors.length) UI.toast(`${errors.length} failed — ${errors[0]}`, 'error');
+  });
+
   $('export-config').addEventListener('click', () => {
     const blob = new Blob([JSON.stringify({ guild_id: guildId, exported_at: new Date().toISOString(), config }, null, 2)], { type: 'application/json' });
     const a = document.createElement('a');
@@ -716,7 +883,7 @@
     const el = $('logs-list');
     el.innerHTML = '<div class="loading" style="justify-content:flex-start"><div class="spinner"></div>Loading…</div>';
     try {
-      const { logs } = await API.logs(50);
+      const { logs } = await API.logs(guildId, 50);
       if (!logs.length) {
         el.innerHTML = emptyState('No logs yet.');
         return;

@@ -26,7 +26,9 @@ Deploy = push to `main`. GitHub Pages serves the repo root as-is.
 - `assets/css/site.css` — the design system. Tokens on `:root` (light default; dark from the OS or `[data-theme="dark"]`), header/footer, command palette, buttons, cards, rule grids, forms, toggle, lists, toasts, utilities.
 - `assets/js/site.js` — loaded on every page: theme toggle (saved in localStorage `theme`), mobile menu, footer year, command palette (Ctrl/Cmd+K and the header search button; edit `COMMANDS` to add entries).
 - `assets/js/auth.js` — `window.Auth`: Discord OAuth2 implicit flow (scopes `identify guilds`), sessionStorage, `managedGuilds()` (owner or MANAGE_GUILD, BigInt).
-- `assets/js/api.js` — `window.API`: bot backend client for `https://api.olittechnologies.co.in`, sends `X-API-Key`.
+- `assets/js/api.js` — `window.API`: bot backend client for `https://api.olittechnologies.co.in`. Sends the
+  visitor's Discord token on per-server calls; `health()` and `publicStatus()` are unauthenticated. Throws
+  `AuthError` (also on `window`) when the token is rejected, so pages can offer the login again.
 - `assets/js/ui.js` — `window.UI`: `escape()`, nav user badge, toasts, confirm, initials.
 - `assets/img/icons.svg` — SVG sprite. Use `<svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#name"/></svg>`.
 - `data/projects.json` — work list: `slug`, `name`, `icon` (sprite id), `status`, `tagline`, `tags`, `link` (root-absolute), `external`.
@@ -58,5 +60,8 @@ Deploy = push to `main`. GitHub Pages serves the repo root as-is.
 
 ## Gotchas
 
-- Everything here is public. The `API_KEY` in `assets/js/api.js` and the Discord client ID ship to every visitor, so real authorization must happen on the backend.
+- Everything here is public, so nothing here may be a secret. `api.js` carries no credential: it sends the
+  signed-in user's own Discord token (`Authorization: Bearer`, from `auth.js`), and the backend asks Discord
+  which servers that person administers before answering. The Discord client ID still ships to every visitor,
+  which is fine — it is public by design. Never reintroduce a shared API key here.
 - The repo has no test suite. To check a change, serve the site locally and load the pages in a browser. Mock `api.olittechnologies.co.in` and `api.github.com` rather than hitting them.

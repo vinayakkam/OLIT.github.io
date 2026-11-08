@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
-  <link rel="stylesheet" href="/assets/css/site.css?v=467bde297d">
+  <link rel="stylesheet" href="/assets/css/site.css?v=7cfc374906">
   <style>
     .page-header { padding: 40px 0 28px; }
     .page-header h1 { font-size: 2rem; margin-bottom: 4px; }
@@ -60,8 +60,8 @@
     </nav>
     <div class="site-actions">
       <div id="nav-user"></div>
-      <button type="button" class="icon-btn" data-theme-toggle aria-label="Toggle dark mode"><svg class="icon theme-icon-dark" aria-hidden="true"><use href="/assets/img/icons.svg?v=ac69379e93#moon"/></svg><svg class="icon theme-icon-light" aria-hidden="true"><use href="/assets/img/icons.svg?v=ac69379e93#sun"/></svg></button>
-      <button type="button" class="icon-btn nav-toggle" aria-controls="site-nav" aria-expanded="false" aria-label="Open menu"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=ac69379e93#menu"/></svg></button>
+      <button type="button" class="icon-btn" data-theme-toggle aria-label="Toggle dark mode"><svg class="icon theme-icon-dark" aria-hidden="true"><use href="/assets/img/icons.svg?v=5e217053d9#moon"/></svg><svg class="icon theme-icon-light" aria-hidden="true"><use href="/assets/img/icons.svg?v=5e217053d9#sun"/></svg></button>
+      <button type="button" class="icon-btn nav-toggle" aria-controls="site-nav" aria-expanded="false" aria-label="Open menu"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=5e217053d9#menu"/></svg></button>
     </div>
   </div>
 </header>
@@ -70,7 +70,7 @@
 
   <!-- Not logged in -->
   <section id="login-prompt" class="card panel">
-    <span class="card-icon panel-icon"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=ac69379e93#discord"/></svg></span>
+    <span class="card-icon panel-icon"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=5e217053d9#discord"/></svg></span>
     <h2>Connect your Discord</h2>
     <p>Log in with Discord to manage your servers with OLIT.</p>
     <button type="button" class="btn btn-discord btn-lg" id="login-btn">Log in with Discord</button>
@@ -167,10 +167,10 @@
   </div>
 </footer>
 
-<script src="/assets/js/site.js?v=6ea44126db"></script>
-<script src="/assets/js/auth.js?v=ad46d5326e"></script>
-<script src="/assets/js/ui.js?v=5344bcb575"></script>
-<script src="/assets/js/api.js?v=2906f34960"></script>
+<script src="/assets/js/site.js?v=79ade63dfe"></script>
+<script src="/assets/js/auth.js?v=4fddcfdf9e"></script>
+<script src="/assets/js/ui.js?v=1304c698e0"></script>
+<script src="/assets/js/api.js?v=e505ab933f"></script>
 <script>
   UI.renderNav();
 
@@ -231,7 +231,7 @@
             <div class="server-tile-name truncate">${UI.escape(g.name)}</div>
             <div class="server-tile-meta">${g.owner ? 'Owner' : 'Admin'} · ${UI.escape(g.id)}</div>
           </div>
-          <span class="server-tile-arrow"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=ac69379e93#arrow-right"/></svg></span>
+          <span class="server-tile-arrow"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=5e217053d9#arrow-right"/></svg></span>
         </a>`;
     }).join('');
   }
@@ -252,15 +252,26 @@
     box.textContent = box.dataset.initials;
   }, true);
 
+  function humanUptime(seconds) {
+    if (seconds == null) return '—';
+    const s = Math.floor(seconds);
+    const d = Math.floor(s / 86400), h = Math.floor((s % 86400) / 3600), m = Math.floor((s % 3600) / 60);
+    if (d) return `${d}d ${h}h`;
+    if (h) return `${h}h ${m}m`;
+    return `${m}m`;
+  }
+
   async function loadGlobalStats() {
     try {
-      const { stats } = await API.stats();
+      // These are whole-service totals, so they come from the public status
+      // route rather than /api/stats, which is an operator-only endpoint.
+      const { totals, uptime_seconds } = await API.publicStatus();
       const card = (n, label) => `<div class="stat-card"><div class="stat-number">${UI.escape(n)}</div><div class="stat-label">${label}</div></div>`;
       $('global-stats').innerHTML =
-        card(stats.total_guilds_configured, 'Configured Servers') +
-        card(stats.total_custom_commands, 'Custom Commands') +
-        card(stats.total_automod_words, 'Automod Words') +
-        card(stats.automod_enabled_guilds, 'Automod Active');
+        card(totals.servers, 'Configured Servers') +
+        card(totals.custom_commands, 'Custom Commands') +
+        card(totals.filtered_words, 'Filtered Words') +
+        card(humanUptime(uptime_seconds), 'Uptime');
     } catch {
       $('global-stats-section').classList.add('hidden');
     }
