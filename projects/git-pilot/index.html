@@ -40,6 +40,14 @@
     .shot { margin-top: 64px; position: relative; }
     .frame { position: relative; z-index: 1; overflow: hidden; border: 1px solid var(--border-strong); border-radius: var(--radius-lg); background: var(--bg-1); box-shadow: var(--shadow-lg); }
     .frame img { height: auto; }
+    /* One screenshot per theme, following the same rules as site.css. */
+    .shot-dark { display: none; }
+    :root[data-theme="dark"] .shot-light { display: none; }
+    :root[data-theme="dark"] .shot-dark { display: block; }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .shot-light { display: none; }
+      :root:not([data-theme="light"]) .shot-dark { display: block; }
+    }
     .frame-bar { display: flex; gap: 7px; padding: 12px 14px; border-bottom: 1px solid var(--border); }
     .frame-bar i { width: 11px; height: 11px; border-radius: 50%; background: var(--bg-3); }
     .caption { text-align: center; color: var(--text-3); font-size: 0.82rem; margin-top: 14px; }
@@ -182,7 +190,8 @@
         <div class="shot">
           <div class="frame">
             <div class="frame-bar" aria-hidden="true"><i></i><i></i><i></i></div>
-            <img src="screenshot.jpg?v=0.6.0" width="1920" height="1230" alt="GitPilot 0.6.0's Changes view: the sidebar grouped into Workspace, Collaborate and Help, staged, changed and new files in the middle, a syntax-highlighted diff of session.ts on the right with an Unstage hunk button, and a commit box." />
+            <img class="shot-light" src="screenshot.jpg?v=0.6.0" width="1920" height="1230" loading="lazy" alt="GitPilot 0.6.0's Changes view: the sidebar grouped into Workspace, Collaborate and Help, staged, changed and new files in the middle, a syntax-highlighted diff of session.ts on the right with an Unstage hunk button, and a commit box." />
+            <img class="shot-dark" src="screenshot-dark.jpg?v=0.6.0" width="1920" height="1230" loading="lazy" alt="GitPilot 0.6.0's Changes view: the sidebar grouped into Workspace, Collaborate and Help, staged, changed and new files in the middle, a syntax-highlighted diff of session.ts on the right with an Unstage hunk button, and a commit box." />
           </div>
           <p class="caption">The Changes view: pick files, hunks or single lines, then commit.</p>
         </div>
@@ -495,7 +504,17 @@
       if (/Android|CrOS/i.test(ua)) key = null;
       else if (/Win/i.test(platform) || /Windows/i.test(ua)) key = 'x64-setup.exe';
       else if (/Linux/i.test(platform) || /Linux/i.test(ua)) {
-        key = /Ubuntu|Debian/i.test(ua) ? '_amd64.deb' : /Arch|Manjaro|CachyOS/i.test(ua) ? 'x86_64.pkg.tar.zst' : '_amd64.AppImage';
+        // Browsers don't say which distribution they run on (just "X11; Linux x86_64"), so only
+        // a distribution named in the user agent, or the Linux package downloaded here before, counts.
+        var saved = null;
+        try { saved = localStorage.getItem('gitpilot-linux-asset'); } catch (e) {}
+        key = /Ubuntu|Debian/i.test(ua) ? '_amd64.deb' : /Arch|Manjaro|CachyOS/i.test(ua) ? 'x86_64.pkg.tar.zst' : saved;
+        ['_amd64.deb', 'x86_64.pkg.tar.zst', '_amd64.AppImage'].forEach(function (k) {
+          var a = document.querySelector('[data-asset="' + k + '"]');
+          if (a) a.addEventListener('click', function () {
+            try { localStorage.setItem('gitpilot-linux-asset', k); } catch (e) {}
+          });
+        });
       }
       var link = key && document.querySelector('[data-asset="' + key + '"]');
       var card = link && link.closest('.dl-card');
