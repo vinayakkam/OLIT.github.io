@@ -20,6 +20,16 @@
     "external": false
   },
   {
+    "slug": "latchverify",
+    "name": "LatchVerify",
+    "icon": "shield",
+    "status": "Live",
+    "tagline": "Guards MCP servers: pins every tool and blocks unreviewed or tampered tools before an AI client can call them.",
+    "tags": ["Security", "MCP"],
+    "link": "https://latchverify.olittechnologies.co.in",
+    "external": true
+  },
+  {
     "slug": "olit-ai",
     "name": "OLIT AI",
     "icon": "spark",

@@ -43,6 +43,7 @@
     { label: 'Bot dashboard', hint: 'Manage your servers', href: '/bot/dashboard.html', keywords: 'discord login servers settings' },
     { label: 'GitPilot', hint: 'Desktop Git client', href: '/projects/git-pilot/', keywords: 'git' },
     { label: 'Download GitPilot', hint: 'Windows & Linux', href: '/projects/git-pilot/#download', keywords: 'install exe deb appimage' },
+    { label: 'LatchVerify', hint: 'MCP security · latchverify.olittechnologies.co.in', href: 'https://latchverify.olittechnologies.co.in', external: true, keywords: 'mcp security' },
     { label: 'OLIT AI', hint: 'AI console', href: '/projects/olit-ai/', keywords: 'chat nexus' },
     { label: 'Privacy Policy', hint: 'Legal', href: '/privacy.html' },
     { label: 'Terms & Conditions', hint: 'Legal', href: '/terms.html' },
@@ -66,7 +67,7 @@
     palette.innerHTML =
       '<div class="cmdk-backdrop" data-cmdk-close></div>' +
       '<div class="cmdk-panel" role="dialog" aria-modal="true" aria-label="Search the site">' +
-        '<div class="cmdk-search"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=5e217053d9#search"/></svg>' +
+        '<div class="cmdk-search"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=ac69379e93#search"/></svg>' +
         '<input type="text" role="combobox" aria-expanded="true" aria-controls="cmdk-list" aria-autocomplete="list" autocomplete="off" spellcheck="false" placeholder="Search pages and actions…">' +
         '<kbd>Esc</kbd></div>' +
         '<ul class="cmdk-list" id="cmdk-list" role="listbox" aria-label="Results"></ul>' +
@@ -170,7 +171,7 @@
     btn.className = 'icon-btn';
     btn.setAttribute('aria-label', 'Search the site (Ctrl+K)');
     btn.title = 'Search (Ctrl+K)';
-    btn.innerHTML = '<svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=5e217053d9#search"/></svg>';
+    btn.innerHTML = '<svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=ac69379e93#search"/></svg>';
     btn.addEventListener('click', open);
     actions.insertBefore(btn, themeBtn);
   }
