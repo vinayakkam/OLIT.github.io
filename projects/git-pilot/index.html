@@ -83,6 +83,7 @@
     .release-body pre code { border: 0; padding: 0; background: none; }
     .release-body hr { border: 0; border-top: 1px solid var(--border); margin: 24px 0; }
     .release-body blockquote { margin: 14px 0; padding: 10px 16px; border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; background: var(--accent-dim); }
+    .release-body img { max-width: 100%; height: auto; border: 1px solid var(--border); border-radius: var(--radius-md); }
     .release-body table { display: block; width: 100%; overflow-x: auto; border-collapse: collapse; font-size: 0.875rem; }
     .release-body th, .release-body td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); }
     .release-body th { color: var(--text-1); }
@@ -453,8 +454,43 @@
         }
       }
 
-      fetch("https://api.github.com/repos/vinayakkam/gitpilot/releases/latest", { headers: { Accept: "application/vnd.github.html+json" } })
-        .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+      // The latest release, from the GitHub API. Visitors get 60 API calls an hour and some
+      // blockers stop them, so a good answer is kept for an hour, and when GitHub can't be
+      // reached the page uses that copy or the one in /data/gitpilot-release.json
+      // (refresh it with tools/update_gitpilot_release.py after each release).
+      var CACHE_KEY = "gitpilot-release";
+      var CACHE_MS = 3600000;
+      function slim(rel) {
+        return {
+          tag_name: rel.tag_name, name: rel.name, published_at: rel.published_at, html_url: rel.html_url, body_html: rel.body_html,
+          assets: (rel.assets || []).map(function (a) { return { name: a.name, size: a.size, browser_download_url: a.browser_download_url }; })
+        };
+      }
+      function cached() {
+        try { var c = JSON.parse(localStorage.getItem(CACHE_KEY) || "null"); return c && c.rel && c.rel.tag_name ? c : null; } catch (e) { return null; }
+      }
+      function latestRelease() {
+        var c = cached();
+        if (c && Date.now() - c.at < CACHE_MS) return Promise.resolve(c.rel);
+        return fetch("https://api.github.com/repos/vinayakkam/gitpilot/releases/latest", { headers: { Accept: "application/vnd.github.html+json" } })
+          .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+          .then(function (rel) {
+            var s = slim(rel);
+            try { localStorage.setItem(CACHE_KEY, JSON.stringify({ at: Date.now(), rel: s })); } catch (e) {}
+            return s;
+          })
+          .catch(function () {
+            return fetch("/data/gitpilot-release.json")
+              .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+              .then(function (local) {
+                // Prefer whichever copy is newer.
+                if (c && (!local.published_at || c.rel.published_at > local.published_at)) return c.rel;
+                return local;
+              }, function (e) { if (c) return c.rel; throw e; });
+          });
+      }
+
+      latestRelease()
         .then(function (rel) {
           var version = String(rel.tag_name || "").replace(/^v/, "");
           if (!version) return;
