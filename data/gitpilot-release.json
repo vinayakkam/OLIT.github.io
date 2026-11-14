@@ -1,0 +1,39 @@
+{
+ "tag_name": "v0.6.1",
+ "name": "GitPilot v0.6.1",
+ "published_at": "2026-11-14T11:07:04Z",
+ "html_url": "https://github.com/vinayakkam/gitpilot/releases/tag/v0.6.1",
+ "body_html": "<h1>GitPilot 0.6.1</h1>\n<p>Fun mode, rebuilt. Every scene is a small animated world that follows your theme, and it now <strong>shows what really happened</strong>: the Git operation runs when you finish the task, and the scene waits for the result. Turn it on in <strong>Settings → General → Fun</strong>.</p>\n<h2>Pull: haul in the commits</h2>\n<p>Haul the rope and the crate of new commits rises out of the remote, then the commits drop onto your branch. If the pull fails, <strong>the rope snaps</strong>, the crate falls back and you land on your back.</p>\n<table>\n<thead>\n<tr>\n<th>Success</th>\n<th>Failure</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://raw.githubusercontent.com/vinayakkam/gitpilot/v0.6.1/docs/media/fun-mode/pull-success.gif\"><img src=\"https://raw.githubusercontent.com/vinayakkam/gitpilot/v0.6.1/docs/media/fun-mode/pull-success.gif\" alt=\"Pull\" style=\"max-width: 100%;\"></a></td>\n<td><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://raw.githubusercontent.com/vinayakkam/gitpilot/v0.6.1/docs/media/fun-mode/pull-fail.gif\"><img src=\"https://raw.githubusercontent.com/vinayakkam/gitpilot/v0.6.1/docs/media/fun-mode/pull-fail.gif\" alt=\"The rope snaps\" style=\"max-width: 100%;\"></a></td>\n</tr>\n</tbody>\n</table>\n<h2>Push: the car up the hill</h2>\n<p>The car is heavy. It <strong>creeps up the hill</strong> after your hand with its tyres turning, while you walk behind it. Let go early and it rolls back down and knocks you over. If the remote rejects the push, the car rolls all the way back.</p>\n<table>\n<thead>\n<tr>\n<th>Success</th>\n<th>Failure</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://raw.githubusercontent.com/vinayakkam/gitpilot/v0.6.1/docs/media/fun-mode/push-success.gif\"><img src=\"https://raw.githubusercontent.com/vinayakkam/gitpilot/v0.6.1/docs/media/fun-mode/push-success.gif\" alt=\"Push\" style=\"max-width: 100%;\"></a></td>\n<td><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://raw.githubusercontent.com/vinayakkam/gitpilot/v0.6.1/docs/media/fun-mode/push-fail.gif\"><img src=\"https://raw.githubusercontent.com/vinayakkam/gitpilot/v0.6.1/docs/media/fun-mode/push-fail.gif\" alt=\"The remote rejects the car\" style=\"max-width: 100%;\"></a></td>\n</tr>\n</tbody>\n</table>\n<h2>Fetch: throw the ball</h2>\n<p>Pull the ball back (you see where it will land) and <strong>let go to throw it</strong>. The dog chases it: reach the kennel and it comes back with the news; fall short and it just brings the ball back. If the fetch fails, the dog trips and the news blows away.</p>\n<table>\n<thead>\n<tr>\n<th>Success</th>\n<th>Failure</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://raw.githubusercontent.com/vinayakkam/gitpilot/v0.6.1/docs/media/fun-mode/fetch-success.gif\"><img src=\"https://raw.githubusercontent.com/vinayakkam/gitpilot/v0.6.1/docs/media/fun-mode/fetch-success.gif\" alt=\"Fetch\" style=\"max-width: 100%;\"></a></td>\n<td><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://raw.githubusercontent.com/vinayakkam/gitpilot/v0.6.1/docs/media/fun-mode/fetch-fail.gif\"><img src=\"https://raw.githubusercontent.com/vinayakkam/gitpilot/v0.6.1/docs/media/fun-mode/fetch-fail.gif\" alt=\"The dog trips\" style=\"max-width: 100%;\"></a></td>\n</tr>\n</tbody>\n</table>\n<h2>Commit: stamp it</h2>\n<p>The page shows your commit summary. Bring the stamp down for <strong>COMMITTED</strong>. If the commit fails, it smudges <strong>FAILED</strong> and the stamp tips over.</p>\n<table>\n<thead>\n<tr>\n<th>Success</th>\n<th>Failure</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://raw.githubusercontent.com/vinayakkam/gitpilot/v0.6.1/docs/media/fun-mode/commit-success.gif\"><img src=\"https://raw.githubusercontent.com/vinayakkam/gitpilot/v0.6.1/docs/media/fun-mode/commit-success.gif\" alt=\"Commit\" style=\"max-width: 100%;\"></a></td>\n<td><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://raw.githubusercontent.com/vinayakkam/gitpilot/v0.6.1/docs/media/fun-mode/commit-fail.gif\"><img src=\"https://raw.githubusercontent.com/vinayakkam/gitpilot/v0.6.1/docs/media/fun-mode/commit-fail.gif\" alt=\"FAILED\" style=\"max-width: 100%;\"></a></td>\n</tr>\n</tbody>\n</table>\n<h2>Also</h2>\n<ul>\n<li>Shows how many commits you're pulling or pushing, and counts your scenes (\"your 5th push in fun mode\").</li>\n<li>Works with the keyboard (arrow keys, Enter) and respects reduced motion.</li>\n<li><strong>Just pull</strong> / <strong>Just push</strong> / … still skips the scene. With fun mode off nothing changes.</li>\n</ul>\n<h2>Install</h2>\n<ul>\n<li><strong>Windows:</strong> <code>GitPilot_0.6.1_x64-setup.exe</code> or the <code>.msi</code></li>\n<li><strong>Debian/Ubuntu:</strong> <code>sudo apt install ./GitPilot_0.6.1_amd64.deb</code></li>\n<li><strong>Arch/CachyOS:</strong> <code>sudo pacman -U gitpilot-0.6.1-1-x86_64.pkg.tar.zst</code></li>\n<li><strong>Any Linux:</strong> the <code>.AppImage</code></li>\n</ul>\n<p>Installed copies update themselves.</p>",
+ "assets": [
+  {
+   "name": "gitpilot-bin-0.6.1-1-x86_64.pkg.tar.zst",
+   "size": 6263654,
+   "browser_download_url": "https://github.com/vinayakkam/gitpilot/releases/download/v0.6.1/gitpilot-bin-0.6.1-1-x86_64.pkg.tar.zst"
+  },
+  {
+   "name": "GitPilot_0.6.1_amd64.AppImage",
+   "size": 85084664,
+   "browser_download_url": "https://github.com/vinayakkam/gitpilot/releases/download/v0.6.1/GitPilot_0.6.1_amd64.AppImage"
+  },
+  {
+   "name": "GitPilot_0.6.1_amd64.deb",
+   "size": 6639578,
+   "browser_download_url": "https://github.com/vinayakkam/gitpilot/releases/download/v0.6.1/GitPilot_0.6.1_amd64.deb"
+  },
+  {
+   "name": "GitPilot_0.6.1_x64-setup.exe",
+   "size": 4363766,
+   "browser_download_url": "https://github.com/vinayakkam/gitpilot/releases/download/v0.6.1/GitPilot_0.6.1_x64-setup.exe"
+  },
+  {
+   "name": "GitPilot_0.6.1_x64_en-US.msi",
+   "size": 6103040,
+   "browser_download_url": "https://github.com/vinayakkam/gitpilot/releases/download/v0.6.1/GitPilot_0.6.1_x64_en-US.msi"
+  },
+  {
+   "name": "latest.json",
+   "size": 5590,
+   "browser_download_url": "https://github.com/vinayakkam/gitpilot/releases/download/v0.6.1/latest.json"
+  }
+ ]
+}
