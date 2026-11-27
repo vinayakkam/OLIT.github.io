@@ -1,0 +1,49 @@
+{
+ "tag_name": "v0.1.0",
+ "name": "DropLink 0.1.0",
+ "published_at": "2026-11-27T11:41:18Z",
+ "html_url": "https://github.com/vinayakkam/DropLink/releases/tag/v0.1.0",
+ "body_html": "<h1>DropLink 0.1.0: first launch 🚀</h1>\n<p>DropLink sends files, folders and text <strong>straight from one device to another</strong>, over your local network or across the internet. No server ever stores your files: they travel encrypted from your device to the other one.</p>\n<p><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://raw.githubusercontent.com/vinayakkam/DropLink/03a987f/docs/screenshots/app-radar.png\"><img src=\"https://raw.githubusercontent.com/vinayakkam/DropLink/03a987f/docs/screenshots/app-radar.png\" alt=\"DropLink's radar and docking bay\" style=\"max-width: 100%;\"></a></p>\n<h2>What's in it</h2>\n<ul>\n<li><strong>Radar.</strong> Devices on your network show up by themselves. Pick one and drop files, a folder or your clipboard into the docking bay.</li>\n<li><strong>Rooms across networks.</strong> Share a short room code (or a <code>droplink://</code> link) to connect two devices on different networks. They connect directly with WebRTC.</li>\n<li><strong>End-to-end encrypted.</strong> Each transfer is encrypted between the two devices. Both screens show the same short code (SAS) so you can check that nobody is in the middle.</li>\n<li><strong>You decide.</strong> Incoming cargo waits for your OK. Trust a device once to let its transfers start without asking. If the sender cancels or goes away, the offer closes at once.</li>\n<li><strong>Resumes after drops.</strong> A broken link picks up where it stopped, and every file is checked with SHA-256 on arrival.</li>\n<li><strong>Light on your machine.</strong> The transfer engine streams everything in small chunks, runs under 64 MiB of memory, and the animated pixel UI pauses when you're not looking.</li>\n<li><strong>Three console themes.</strong> Cyan Nebula, Amber Terminal and Magenta Void, all original pixel art.</li>\n</ul>\n<p><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://raw.githubusercontent.com/vinayakkam/DropLink/03a987f/docs/screenshots/app-config.png\"><img src=\"https://raw.githubusercontent.com/vinayakkam/DropLink/03a987f/docs/screenshots/app-config.png\" alt=\"Settings\" style=\"max-width: 100%;\"></a></p>\n<h2>Install</h2>\n<p><strong>Windows 10/11 (x64).</strong> Download <code>droplink-0.1.0-windows-x64-setup.exe</code> below and run it. It installs for you alone, with no administrator rights, and follows Windows' light or dark mode.</p>\n<p>\n  <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://raw.githubusercontent.com/vinayakkam/DropLink/03a987f/docs/screenshots/installer-welcome.png\"><img src=\"https://raw.githubusercontent.com/vinayakkam/DropLink/03a987f/docs/screenshots/installer-welcome.png\" width=\"49%\" alt=\"Installer welcome page\" style=\"max-width: 100%;\"></a>\n  <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://raw.githubusercontent.com/vinayakkam/DropLink/03a987f/docs/screenshots/installer-tasks.png\"><img src=\"https://raw.githubusercontent.com/vinayakkam/DropLink/03a987f/docs/screenshots/installer-tasks.png\" width=\"49%\" alt=\"Installer options\" style=\"max-width: 100%;\"></a>\n</p>\n<p><strong>Linux (x86_64).</strong> Pick the package for your distro:</p>\n<table>\n<thead>\n<tr>\n<th>Distro</th>\n<th>File</th>\n<th>Install</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Debian, Ubuntu, Mint, Pop!_OS</td>\n<td><code>droplink-0.1.0-linux-amd64.deb</code></td>\n<td><code>sudo apt install ./droplink-0.1.0-linux-amd64.deb</code></td>\n</tr>\n<tr>\n<td>Fedora, RHEL, openSUSE</td>\n<td><code>droplink-0.1.0-linux-amd64.rpm</code></td>\n<td><code>sudo dnf install ./droplink-0.1.0-linux-amd64.rpm</code></td>\n</tr>\n<tr>\n<td>Arch, Manjaro, EndeavourOS</td>\n<td><code>droplink-bin-0.1.0-1-x86_64.pkg.tar.zst</code></td>\n<td><code>sudo pacman -U ./droplink-bin-0.1.0-1-x86_64.pkg.tar.zst</code></td>\n</tr>\n<tr>\n<td>Any other distro</td>\n<td><code>droplink-0.1.0-linux-amd64.AppImage</code></td>\n<td><code>chmod +x droplink-0.1.0-linux-amd64.AppImage</code>, then run it</td>\n</tr>\n</tbody>\n</table>\n<p>To build the Arch package yourself, save <code>droplink-bin.PKGBUILD</code> as <code>PKGBUILD</code> and run <code>makepkg -si</code>.</p>\n<p><strong>macOS.</strong> No build yet.</p>\n<h2>Updates</h2>\n<p>On Windows, DropLink checks this page at start (you can switch that off in CONFIG → UPDATES) and offers new versions. It only runs an installer whose SHA-256 matches the signed <code>latest.json</code>, and whose <strong>Ed25519 signature</strong> matches the release key built into the app. On Linux, install new releases yourself for now.</p>\n<h2>Known limits</h2>\n<ul>\n<li>WebRTC across very strict networks (symmetric NAT on both sides) may need a TURN relay, which is not set up yet.</li>\n<li>Self-update is Windows-only.</li>\n</ul>\n<p>Feedback and bug reports: <a href=\"https://github.com/vinayakkam/DropLink/issues\">open an issue</a>.</p>",
+ "assets": [
+  {
+   "name": "droplink-0.1.0-linux-amd64.AppImage",
+   "size": 86186488,
+   "browser_download_url": "https://github.com/vinayakkam/DropLink/releases/download/v0.1.0/droplink-0.1.0-linux-amd64.AppImage"
+  },
+  {
+   "name": "droplink-0.1.0-linux-amd64.deb",
+   "size": 8024848,
+   "browser_download_url": "https://github.com/vinayakkam/DropLink/releases/download/v0.1.0/droplink-0.1.0-linux-amd64.deb"
+  },
+  {
+   "name": "droplink-0.1.0-linux-amd64.rpm",
+   "size": 8026503,
+   "browser_download_url": "https://github.com/vinayakkam/DropLink/releases/download/v0.1.0/droplink-0.1.0-linux-amd64.rpm"
+  },
+  {
+   "name": "droplink-0.1.0-windows-x64-setup.exe",
+   "size": 7568478,
+   "browser_download_url": "https://github.com/vinayakkam/DropLink/releases/download/v0.1.0/droplink-0.1.0-windows-x64-setup.exe"
+  },
+  {
+   "name": "droplink-bin-0.1.0-1-x86_64.pkg.tar.zst",
+   "size": 7750585,
+   "browser_download_url": "https://github.com/vinayakkam/DropLink/releases/download/v0.1.0/droplink-bin-0.1.0-1-x86_64.pkg.tar.zst"
+  },
+  {
+   "name": "droplink-bin.PKGBUILD",
+   "size": 1410,
+   "browser_download_url": "https://github.com/vinayakkam/DropLink/releases/download/v0.1.0/droplink-bin.PKGBUILD"
+  },
+  {
+   "name": "droplink-bin.SRCINFO",
+   "size": 816,
+   "browser_download_url": "https://github.com/vinayakkam/DropLink/releases/download/v0.1.0/droplink-bin.SRCINFO"
+  },
+  {
+   "name": "latest.json",
+   "size": 576,
+   "browser_download_url": "https://github.com/vinayakkam/DropLink/releases/download/v0.1.0/latest.json"
+  }
+ ]
+}

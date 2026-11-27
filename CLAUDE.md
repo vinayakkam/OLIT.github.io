@@ -22,6 +22,7 @@ Deploy = push to `main`. GitHub Pages serves the repo root as-is.
 - `callback.html` — Discord OAuth redirect target. Calls `Auth.handleCallback()`, then goes to `/bot/dashboard.html`.
 - `privacy.html`, `terms.html`, `404.html` — legal pages and GitHub Pages' not-found page.
 - `projects/git-pilot/` — GitPilot download page. Pulls the latest release from the GitHub API (`vinayakkam/gitpilot`) and fills in links through `data-*` hooks. A second script highlights the download for the visitor's OS. The release is cached in localStorage (`gitpilot-release`, 1 hour); when the API can't be reached the page uses that cache or `data/gitpilot-release.json`. **After each GitPilot release run `python3 tools/update_gitpilot_release.py` and commit the JSON.**
+- `projects/droplink/` — DropLink download page, built like the GitPilot one: latest release from the GitHub API (`vinayakkam/DropLink`), cached in localStorage (`droplink-release`, 1 hour), falling back to `data/droplink-release.json`; OS highlight remembers the Linux package in `droplink-linux-asset`. **After each DropLink release run `python3 tools/update_droplink_release.py` and commit the JSON.**
 - `projects/olit-ai/` — OLIT AI chat app + login. Standalone: own inline CSS, relative paths, `API_BASE = ''`. It is meant to be served by its Flask backend, and its API calls do not work on GitHub Pages.
 - `assets/css/site.css` — the design system. Tokens on `:root` (light default; dark from the OS or `[data-theme="dark"]`), header/footer, command palette, buttons, cards, rule grids, forms, toggle, lists, toasts, utilities.
 - `assets/js/site.js` — loaded on every page: theme toggle (saved in localStorage `theme`), mobile menu, footer year, command palette (Ctrl/Cmd+K and the header search button; edit `COMMANDS` to add entries).
@@ -56,7 +57,7 @@ Deploy = push to `main`. GitHub Pages serves the repo root as-is.
 - `/callback.html` must stay at that path. `origin + '/callback.html'` is registered as the redirect URI in the Discord developer portal, for every origin used (including localhost).
 - `/privacy.html` and `/terms.html` are likely linked from the Discord app listing.
 - sessionStorage keys `discord_token`, `discord_user`, `discord_guilds`; OLIT AI's localStorage key `olit_nexus_auth`.
-- GitPilot's `data-asset`, `data-install`, `data-rel-*` and `data-version-*` hooks are read by its release script.
+- GitPilot's and DropLink's `data-asset`, `data-install`, `data-rel-*` and `data-version-*` hooks are read by their release scripts.
 
 ## Gotchas
 
