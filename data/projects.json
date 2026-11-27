@@ -22,7 +22,7 @@
   {
     "slug": "droplink",
     "name": "DropLink",
-    "icon": "transfer",
+    "icon": "droplink",
     "status": "Live",
     "tagline": "Peer-to-peer file transfer for Windows and Linux: over the LAN or across the internet, encrypted end to end, no server in between.",
     "tags": ["Desktop App", "P2P"],
@@ -32,7 +32,7 @@
   {
     "slug": "latchverify",
     "name": "LatchVerify",
-    "icon": "shield",
+    "icon": "latchverify",
     "status": "Live",
     "tagline": "Guards MCP servers: pins every tool and blocks unreviewed or tampered tools before an AI client can call them.",
     "tags": ["Security", "MCP"],

@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
-  <link rel="stylesheet" href="/assets/css/site.css?v=5038546d20">
+  <link rel="stylesheet" href="/assets/css/site.css?v=c7a80112fb">
   <style>
     .page-header { padding: 40px 0 28px; }
     .page-header h1 { font-size: 2rem; margin-bottom: 4px; }
@@ -56,13 +56,14 @@
       <a href="/#work">Work</a>
       <a href="/bot/">OLIT Bot</a>
       <a href="/projects/git-pilot/">GitPilot</a>
+      <a href="/projects/droplink/">DropLink</a>
       <a href="https://latchverify.olittechnologies.co.in">LatchVerify</a>
       <a href="/#contact">Contact</a>
     </nav>
     <div class="site-actions">
       <div id="nav-user"></div>
-      <button type="button" class="icon-btn" data-theme-toggle aria-label="Toggle dark mode"><svg class="icon theme-icon-dark" aria-hidden="true"><use href="/assets/img/icons.svg?v=66d331b3ad#moon"/></svg><svg class="icon theme-icon-light" aria-hidden="true"><use href="/assets/img/icons.svg?v=66d331b3ad#sun"/></svg></button>
-      <button type="button" class="icon-btn nav-toggle" aria-controls="site-nav" aria-expanded="false" aria-label="Open menu"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=66d331b3ad#menu"/></svg></button>
+      <button type="button" class="icon-btn" data-theme-toggle aria-label="Toggle dark mode"><svg class="icon theme-icon-dark" aria-hidden="true"><use href="/assets/img/icons.svg?v=70d1c3cc1d#moon"/></svg><svg class="icon theme-icon-light" aria-hidden="true"><use href="/assets/img/icons.svg?v=70d1c3cc1d#sun"/></svg></button>
+      <button type="button" class="icon-btn nav-toggle" aria-controls="site-nav" aria-expanded="false" aria-label="Open menu"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=70d1c3cc1d#menu"/></svg></button>
     </div>
   </div>
 </header>
@@ -71,7 +72,7 @@
 
   <!-- Not logged in -->
   <section id="login-prompt" class="card panel">
-    <span class="card-icon panel-icon"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=66d331b3ad#discord"/></svg></span>
+    <span class="card-icon panel-icon"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=70d1c3cc1d#discord"/></svg></span>
     <h2>Connect your Discord</h2>
     <p>Log in with Discord to manage your servers with OLIT.</p>
     <button type="button" class="btn btn-discord btn-lg" id="login-btn">Log in with Discord</button>
@@ -169,9 +170,9 @@
   </div>
 </footer>
 
-<script src="/assets/js/site.js?v=b7bb699288"></script>
+<script src="/assets/js/site.js?v=d04b0ff0b0"></script>
 <script src="/assets/js/auth.js?v=4fddcfdf9e"></script>
-<script src="/assets/js/ui.js?v=32244e4e7a"></script>
+<script src="/assets/js/ui.js?v=3af8a40077"></script>
 <script src="/assets/js/api.js?v=e505ab933f"></script>
 <script>
   UI.renderNav();
@@ -233,7 +234,7 @@
             <div class="server-tile-name truncate">${UI.escape(g.name)}</div>
             <div class="server-tile-meta">${g.owner ? 'Owner' : 'Admin'} · ${UI.escape(g.id)}</div>
           </div>
-          <span class="server-tile-arrow"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=66d331b3ad#arrow-right"/></svg></span>
+          <span class="server-tile-arrow"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=70d1c3cc1d#arrow-right"/></svg></span>
         </a>`;
     }).join('');
   }
