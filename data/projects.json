@@ -20,6 +20,16 @@
     "external": false
   },
   {
+    "slug": "droplink",
+    "name": "DropLink",
+    "icon": "transfer",
+    "status": "Live",
+    "tagline": "Peer-to-peer file transfer for Windows and Linux: over the LAN or across the internet, encrypted end to end, no server in between.",
+    "tags": ["Desktop App", "P2P"],
+    "link": "/projects/droplink/",
+    "external": false
+  },
+  {
     "slug": "latchverify",
     "name": "LatchVerify",
     "icon": "shield",
