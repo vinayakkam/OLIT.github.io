@@ -13,7 +13,7 @@
     "slug": "gitpilot",
     "name": "GitPilot",
     "icon": "git",
-    "status": "In development",
+    "status": "Live",
     "tagline": "Desktop Git client for Windows and Linux with line-level staging and plain-language errors.",
     "tags": ["Desktop App"],
     "link": "/projects/git-pilot/",
