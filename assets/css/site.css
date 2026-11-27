@@ -513,10 +513,26 @@ textarea { height: auto; min-height: 96px; padding: 10px 12px; resize: vertical;
 .hidden { display: none !important; }
 
 /* ── Responsive ─────────────────────────────────────────────────────────── */
-@media (max-width: 900px) {
-  /* Five nav links fit beside the logo only if the page label and padding give way. */
+@media (max-width: 1000px) {
+  /* Six nav links (plus the bot pages' login button) fit beside the logo only if the page label and padding give way. */
   .brand small { display: none; }
   .site-nav a { padding: 6px 8px; }
+}
+
+@media (max-width: 900px) {
+  /* Below this width the six nav links no longer fit beside the logo: use the menu. */
+  .brand small { display: none; }
+  .nav-toggle { display: inline-grid; }
+  .site-header__inner { gap: 12px; }
+  .site-actions { gap: 4px; }
+  .site-nav {
+    display: none; position: absolute; top: var(--header-h); left: 0; right: 0;
+    flex-direction: column; align-items: stretch; gap: 0; margin: 0;
+    padding: 8px var(--gutter) 16px; background: var(--bg-0); border-bottom: 1px solid var(--border);
+  }
+  .site-nav a { padding: 12px 4px; font-size: 1rem; border-radius: 0; border-bottom: 1px solid var(--border); }
+  .site-nav a:last-child { border-bottom: 0; }
+  .site-header.is-open .site-nav { display: flex; }
   .section-grid { grid-template-columns: 1fr; gap: 20px; }
   .rule-grid { grid-template-columns: 1fr 1fr; }
   .site-footer__grid { grid-template-columns: 1fr 1fr; }
@@ -529,18 +545,6 @@ textarea { height: auto; min-height: 96px; padding: 10px 12px; resize: vertical;
   .grid-2 { grid-template-columns: 1fr; }
   .rule-grid { grid-template-columns: 1fr; }
 
-  .nav-toggle { display: inline-grid; }
-  .site-header__inner { gap: 12px; }
-  .site-actions { gap: 4px; }
-  .brand small { display: none; }
-  .site-nav {
-    display: none; position: absolute; top: var(--header-h); left: 0; right: 0;
-    flex-direction: column; align-items: stretch; gap: 0; margin: 0;
-    padding: 8px var(--gutter) 16px; background: var(--bg-0); border-bottom: 1px solid var(--border);
-  }
-  .site-nav a { padding: 12px 4px; font-size: 1rem; border-radius: 0; border-bottom: 1px solid var(--border); }
-  .site-nav a:last-child { border-bottom: 0; }
-  .site-header.is-open .site-nav { display: flex; }
   .site-actions .hide-mobile { display: none; }
 }
 
