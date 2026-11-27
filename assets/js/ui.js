@@ -56,7 +56,7 @@ const UI = {
     return String(name || '').split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase() || '?';
   },
 
-  discordIcon: '<svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=c15e6bcf15#discord"/></svg>',
+  discordIcon: '<svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=d851420871#discord"/></svg>',
 };
 
 window.UI = UI;

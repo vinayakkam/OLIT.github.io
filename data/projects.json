@@ -30,6 +30,16 @@
     "external": false
   },
   {
+    "slug": "twilightos",
+    "name": "TwilightOS",
+    "icon": "twilightos",
+    "status": "Live",
+    "tagline": "A Linux desktop on Arch and KDE Plasma 6 that feels familiar from Windows: its own launcher, Settings and installer, and 0% CPU at idle.",
+    "tags": ["Linux distro", "KDE Plasma"],
+    "link": "/projects/twilightos/",
+    "external": false
+  },
+  {
     "slug": "latchverify",
     "name": "LatchVerify",
     "icon": "latchverify",

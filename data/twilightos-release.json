@@ -1,0 +1,29 @@
+{
+ "tag_name": "v2026.11.27",
+ "name": "TwilightOS 2026.11.27",
+ "published_at": "2026-11-27T18:25:49Z",
+ "html_url": "https://github.com/vinayakkam/TwilightOS/releases/tag/v2026.11.27",
+ "body_html": "<p>The first public release of TwilightOS: Arch Linux with a reworked KDE Plasma 6 desktop that feels familiar to Windows users.</p>\n<p><strong>Highlights</strong></p>\n<ul>\n<li>Dusk launcher, slim floating top bar, Quick Settings (Win+A), notifications, CPU/RAM monitor</li>\n<li>Settings app with everything in-app: display, sound, Bluetooth, mouse and keyboard, network and VPN, accounts, privacy, time and language, accessibility</li>\n<li>Task Manager (Ctrl+Shift+Esc), sign-out screen (Ctrl+Alt+Del), lock and sign-in screens with show-password</li>\n<li><strong>Setup</strong>, a step-by-step installer: btrfs with snapshots, themed GRUB boot menu, firewall on</li>\n<li>Dark and light themes; accent colour recolours the icons</li>\n<li>~840 MB RAM and 0.0% CPU on an idle installed desktop (measured in a VM)</li>\n</ul>\n<p><strong>Download</strong><br>\nGitHub limits release files to 2 GB, so the ISO comes in two parts. Download both parts and the <code>.sha256</code>, then join them:</p>\n<p>Windows:</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"cmd /c copy /b twilightos-2026.11.27-x86_64.iso.part1 + twilightos-2026.11.27-x86_64.iso.part2 twilightos-2026.11.27-x86_64.iso\"><pre class=\"notranslate\"><code>cmd /c copy /b twilightos-2026.11.27-x86_64.iso.part1 + twilightos-2026.11.27-x86_64.iso.part2 twilightos-2026.11.27-x86_64.iso\n</code></pre></div>\n<p>Linux / macOS:</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"cat twilightos-2026.11.27-x86_64.iso.part1 twilightos-2026.11.27-x86_64.iso.part2 &gt; twilightos-2026.11.27-x86_64.iso\nsha256sum -c twilightos-2026.11.27-x86_64.iso.sha256\"><pre class=\"notranslate\"><code>cat twilightos-2026.11.27-x86_64.iso.part1 twilightos-2026.11.27-x86_64.iso.part2 &gt; twilightos-2026.11.27-x86_64.iso\nsha256sum -c twilightos-2026.11.27-x86_64.iso.sha256\n</code></pre></div>\n<p>Write it to a USB stick with Ventoy, Rufus (DD mode) or <code>dd</code>, turn <strong>Secure Boot off</strong>, and boot. Double-click <strong>Install TwilightOS</strong> on the desktop to install (it uses the whole disk you choose).</p>\n<p>See the <a href=\"https://github.com/vinayakkam/TwilightOS#readme\">README</a> for the full tour with screenshots.</p>",
+ "assets": [
+  {
+   "name": "SHA256SUMS-parts.txt",
+   "size": 210,
+   "browser_download_url": "https://github.com/vinayakkam/TwilightOS/releases/download/v2026.11.27/SHA256SUMS-parts.txt"
+  },
+  {
+   "name": "twilightos-2026.11.27-x86_64.iso.part1",
+   "size": 1992294400,
+   "browser_download_url": "https://github.com/vinayakkam/TwilightOS/releases/download/v2026.11.27/twilightos-2026.11.27-x86_64.iso.part1"
+  },
+  {
+   "name": "twilightos-2026.11.27-x86_64.iso.part2",
+   "size": 1208123392,
+   "browser_download_url": "https://github.com/vinayakkam/TwilightOS/releases/download/v2026.11.27/twilightos-2026.11.27-x86_64.iso.part2"
+  },
+  {
+   "name": "twilightos-2026.11.27-x86_64.iso.sha256",
+   "size": 99,
+   "browser_download_url": "https://github.com/vinayakkam/TwilightOS/releases/download/v2026.11.27/twilightos-2026.11.27-x86_64.iso.sha256"
+  }
+ ]
+}
