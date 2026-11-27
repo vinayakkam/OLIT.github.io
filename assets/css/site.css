@@ -207,7 +207,16 @@ code, .mono { font-family: var(--font-mono); font-size: 0.875em; }
   font-weight: 600; font-size: 0.98rem; letter-spacing: -0.01em;
   color: var(--text-1); text-decoration: none;
 }
-.brand img { width: 26px; height: 26px; border-radius: 6px; object-fit: contain; }
+.brand img { height: 44px; width: auto; }
+.site-footer__brand .brand img { height: 64px; }
+/* Logo: black lettering on light, white on dark; follows the same theme rules as the tokens. */
+.logo-dark { display: none; }
+:root[data-theme="dark"] .logo-light { display: none; }
+:root[data-theme="dark"] .logo-dark { display: block; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .logo-light { display: none; }
+  :root:not([data-theme="light"]) .logo-dark { display: block; }
+}
 .brand small { font: 400 0.8rem var(--font-mono); color: var(--text-3); padding-left: 10px; border-left: 1px solid var(--border-strong); }
 .site-nav { display: flex; align-items: center; gap: 2px; margin-left: 8px; }
 .site-nav a {
