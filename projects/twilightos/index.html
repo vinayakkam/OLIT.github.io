@@ -231,7 +231,7 @@
             View on GitHub
           </a>
         </div>
-        <p class="meta" data-version-meta>Free · 64-bit PCs · About 3 GB</p>
+        <p class="meta" data-version-meta>Free · 64-bit PCs · About 2 GB</p>
 
         <div class="shot">
           <div class="frame">
@@ -351,32 +351,31 @@
       <div class="container">
         <div class="section-head">
           <h2>Download</h2>
-          <p data-version-line>The ISO is about 3 GB. GitHub limits files to 2 GB, so it comes in two parts that you join after downloading.</p>
+          <p data-version-line>One ISO file of about 2 GB. Download it, check it, write it to a USB stick.</p>
         </div>
         <div class="downloads">
           <div class="dl-card">
             <div class="dl-top">
               <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/></svg></div>
-              <div><h3>1. Download the ISO</h3><small>Both parts, plus the checksum</small></div>
+              <div><h3>1. Download the ISO</h3><small>One file, plus its checksum</small></div>
             </div>
             <div class="dl-links">
-              <a class="btn btn-primary" data-asset=".iso.part1" href="https://github.com/vinayakkam/TwilightOS/releases/latest">Part 1</a>
-              <a class="btn btn-primary" data-asset=".iso.part2" href="https://github.com/vinayakkam/TwilightOS/releases/latest">Part 2</a>
+              <a class="btn btn-primary" data-asset="-x86_64.iso" href="https://github.com/vinayakkam/TwilightOS/releases/latest">Download ISO</a>
               <a class="btn btn-secondary" data-asset=".iso.sha256" href="https://github.com/vinayakkam/TwilightOS/releases/latest">Checksum</a>
             </div>
-            <p class="note">Save all three files in the same folder.</p>
+            <p class="note">Save both files in the same folder.</p>
           </div>
 
           <div class="dl-card">
             <div class="dl-top">
               <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 7h8"/><path d="M8 17h8"/><path d="M12 3v18"/></svg></div>
-              <div><h3>2. Join the parts</h3><small>Run this in that folder</small></div>
+              <div><h3>2. Check the download</h3><small>Run this in that folder</small></div>
             </div>
-            <p class="os-label">Windows</p>
-            <div class="code"><span class="prompt">&gt;</span><code data-install="windows">cmd /c copy /b twilightos-*.iso.part1 + twilightos-*.iso.part2 twilightos.iso</code><button class="copy" type="button">Copy</button></div>
+            <p class="os-label">Windows (PowerShell)</p>
+            <div class="code"><span class="prompt">&gt;</span><code data-install="windows">Get-FileHash twilightos-*.iso -Algorithm SHA256</code><button class="copy" type="button">Copy</button></div>
             <p class="os-label">Linux and macOS</p>
-            <div class="code"><span class="prompt">$</span><code data-install="unix">cat twilightos-*.iso.part1 twilightos-*.iso.part2 &gt; twilightos.iso</code><button class="copy" type="button">Copy</button></div>
-            <p class="note" data-install="check">Then check it: <code>sha256sum twilightos.iso</code> must match the checksum file.</p>
+            <div class="code"><span class="prompt">$</span><code data-install="unix">sha256sum -c twilightos-*.iso.sha256</code><button class="copy" type="button">Copy</button></div>
+            <p class="note">On Windows, the hash shown must match the one in the checksum file. On Linux it prints “OK”.</p>
           </div>
 
           <div class="dl-card">
@@ -781,27 +780,24 @@
           else if (pill) { pill.textContent = "Version " + version + " is out"; if (pillLink) pillLink.href = "#download"; }
 
           var assets = rel.assets || [];
-          var total = 0;
+          var isoSize = 0;
           document.querySelectorAll("[data-asset]").forEach(function (a) {
             var suffix = a.getAttribute("data-asset");
             var hit = assets.find(function (x) { return x.name.slice(-suffix.length) === suffix; });
             if (hit) {
               a.href = hit.browser_download_url;
-              if (/part\d$/.test(suffix)) {
-                total += hit.size;
+              if (suffix === "-x86_64.iso") {
+                isoSize = hit.size;
                 a.textContent = a.textContent.replace(/ · .*$/, "") + " · " + (hit.size / 1073741824).toFixed(2) + " GB";
               }
             }
           });
           var meta = document.querySelector("[data-version-meta]");
-          if (meta) meta.textContent = "Version " + version + (date ? " · released " + date : "") + " · Free · 64-bit PCs" + (total ? " · " + (total / 1073741824).toFixed(1) + " GB" : "");
-          var p1 = assets.find(function (x) { return /\.iso\.part1$/.test(x.name); });
-          var p2 = assets.find(function (x) { return /\.iso\.part2$/.test(x.name); });
-          if (p1 && p2) {
-            var iso = p1.name.replace(/\.part1$/, "");
-            document.querySelector('[data-install="windows"]').textContent = "cmd /c copy /b " + p1.name + " + " + p2.name + " " + iso;
-            document.querySelector('[data-install="unix"]').textContent = "cat " + p1.name + " " + p2.name + " > " + iso;
-            document.querySelector('[data-install="check"]').innerHTML = "Then check it: <code>sha256sum -c " + iso.replace(/[<>&"]/g, "") + ".sha256</code> (Linux) or <code>Get-FileHash " + iso.replace(/[<>&"]/g, "") + "</code> (Windows) must match the checksum file.";
+          if (meta) meta.textContent = "Version " + version + (date ? " · released " + date : "") + " · Free · 64-bit PCs" + (isoSize ? " · " + (isoSize / 1073741824).toFixed(1) + " GB" : "");
+          var iso = assets.find(function (x) { return /-x86_64\.iso$/.test(x.name); });
+          if (iso) {
+            document.querySelector('[data-install="windows"]').textContent = "Get-FileHash " + iso.name + " -Algorithm SHA256";
+            document.querySelector('[data-install="unix"]').textContent = "sha256sum -c " + iso.name + ".sha256";
           }
         })
         .catch(function () {
